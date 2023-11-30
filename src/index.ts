@@ -1,18 +1,16 @@
-import { version as platformVersion } from 'zapier-platform-core';
-import auth from './authentication';
+import { version as platformVersion } from "zapier-platform-core";
+import auth from "./authentication";
 
-import ActivityCreate from './creates/activity'
+import ActivityCreate from "./creates/activity";
 
-import getMemberships from './triggers/dropdowns/getMemberships';
+import triggerBookingCreated from "./triggers/triggerBookingCreated";
+import triggerBookingWillBegin from "./triggers/triggerBookingWillBegin";
+import triggerMembershipConfirmed from "./triggers/triggerMembershipConfirmed";
+import triggerMembershipPlanChanged from "./triggers/triggerMembershipPlanChanged";
+import triggerExternalBooking from "./triggers/triggerExternalBooking";
+import getSubdomains from "./triggers/dropdowns/getSubdomains";
 
-import triggerBookingCreated from './triggers/triggerBookingCreated';
-import triggerBookingWillBegin from './triggers/triggerBookingWillBegin';
-import triggerMembershipConfirmed from './triggers/triggerMembershipConfirmed';
-import triggerMembershipPlanChanged from './triggers/triggerMembershipPlanChanged';
-import triggerExternalBooking from './triggers/triggerExternalBooking';
-import getSubdomains from './triggers/dropdowns/getSubdomains';
-
-const { version } = require('../package.json');
+const { version } = require("../package.json");
 
 export default {
   version,
@@ -34,8 +32,7 @@ export default {
     [triggerMembershipPlanChanged.key]: triggerMembershipPlanChanged,
     [triggerExternalBooking.key]: triggerExternalBooking,
     // Lists for dropdowns
-    [getMemberships.key]: getMemberships,
-    [getSubdomains.key]: getSubdomains
+    [getSubdomains.key]: getSubdomains,
   },
 
   creates: {

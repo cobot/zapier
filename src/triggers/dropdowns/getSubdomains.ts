@@ -1,41 +1,43 @@
-import { ZObject } from 'zapier-platform-core';
-import { KontentBundle } from '../../types/kontentBundle';
-import { OutputField } from '../../fields/output/outputField';
-import { OutputFromOutputFields } from '../../fields/output/outputFromOutputFields';
+import { ZObject } from "zapier-platform-core";
+import { KontentBundle } from "../../types/kontentBundle";
+import { OutputField } from "../../fields/output/outputField";
+import { OutputFromOutputFields } from "../../fields/output/outputFromOutputFields";
 
 const execute = (z: ZObject, bundle: KontentBundle<{}>): Output => {
-    return bundle.authData.subdomains
-}
+  return bundle.authData.adminOf.map((space) => {
+    return { id: space.subdomain, name: space.name };
+  });
+};
 
 const outputFields = [
   {
-    key: 'id',
-    label: 'Id',
-    type: 'string',
+    key: "id",
+    label: "Id",
+    type: "string",
   },
   {
-    key: 'name',
-    label: 'Subdomain Name',
-    type: 'string',
+    key: "name",
+    label: "Subdomain Name",
+    type: "string",
   },
 ] as const satisfies ReadonlyArray<OutputField>;
 
 type Output = ReadonlyArray<OutputFromOutputFields<typeof outputFields>>;
 
 export default {
-  key: 'get_subdomains',
-  noun: 'Subdomain choice',
+  key: "get_subdomains",
+  noun: "Subdomain choice",
   display: {
-    label: 'Get subdomain choice',
-    description: 'Get subdomain for the input dropdown.',
+    label: "Get subdomain choice",
+    description: "Get subdomain for the input dropdown.",
     hidden: true,
   },
   operation: {
-    type: 'polling',
+    type: "polling",
     perform: execute,
     sample: {
-      'space_name': 'Some space',
-      'id': 'b2c14f2c-6467-460b-a70b-bca17972a33a',
+      name: "Some space",
+      id: "some-space",
     },
     outputFields,
   },

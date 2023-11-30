@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "validate": "npm run build && zapier validate",
-    "build": "npm run clean && tsc",
-    "push": "jest && npm run build && zapier push",
+    "validate": "yarn build && zapier validate",
+    "build": "yarn clean && tsc",
+    "push": "jest && yarn build && zapier push",
     "clean": "rimraf ./lib ./build",
-    "watch": "npm run clean && tsc --watch"
+    "watch": "yarn clean && tsc --watch"
   },
   "dependencies": {
     "lodash": "^4.17.21",
