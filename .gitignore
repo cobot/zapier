@@ -64,3 +64,6 @@ lib
 
 # vscode
 .vscode
+
+# asdf
+.tool-versions

@@ -11,7 +11,9 @@ afterEach(() => nock.cleanAll());
 
 describe("triggerMembershipConfirmed", () => {
   it("creates new webhook upon through CM API upon subscribe", async () => {
-    const bundle = prepareMocksForWebhookSubscribeTest(triggerMembershipConfirmed.key)
+    const bundle = prepareMocksForWebhookSubscribeTest(
+      triggerMembershipConfirmed.key,
+    );
     const subscribe =
       App.triggers[triggerMembershipConfirmed.key].operation.performSubscribe;
 
@@ -22,5 +24,5 @@ describe("triggerMembershipConfirmed", () => {
   "url": "https://trial.cobot.me/api/event/callback",
 }
 `);
-  })
-})
+  });
+});

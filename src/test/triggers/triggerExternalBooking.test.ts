@@ -11,7 +11,7 @@ afterEach(() => nock.cleanAll());
 
 describe("triggerExternalBooking", () => {
   it("creates new webhook upon through CM API upon subscribe", async () => {
-    const bundle = prepareMocksForWebhookSubscribeTest('created_booking')
+    const bundle = prepareMocksForWebhookSubscribeTest("created_booking");
     const subscribe =
       App.triggers[triggerExternalBooking.key].operation.performSubscribe;
 
@@ -22,5 +22,5 @@ describe("triggerExternalBooking", () => {
   "url": "https://trial.cobot.me/api/event/callback",
 }
 `);
-  })
-})
+  });
+});

@@ -11,7 +11,9 @@ afterEach(() => nock.cleanAll());
 
 describe("triggerBookingWillBegin", () => {
   it("creates new webhook upon through CM API upon subscribe", async () => {
-    const bundle = prepareMocksForWebhookSubscribeTest(triggerBookingWillBegin.key)
+    const bundle = prepareMocksForWebhookSubscribeTest(
+      triggerBookingWillBegin.key,
+    );
     const subscribe =
       App.triggers[triggerBookingWillBegin.key].operation.performSubscribe;
 
@@ -22,5 +24,5 @@ describe("triggerBookingWillBegin", () => {
   "url": "https://trial.cobot.me/api/event/callback",
 }
 `);
-  })
-})
+  });
+});
