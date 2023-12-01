@@ -30,3 +30,4 @@ jobs:
         run: |
           yarn build
           yarn test
+          yarn validate
