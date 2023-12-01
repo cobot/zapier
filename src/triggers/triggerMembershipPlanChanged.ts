@@ -47,7 +47,7 @@ export default {
   noun: hookLabel,
   display: {
     label: hookLabel,
-    description: "Triggers on the day a member's new plan becomes active.",
+    description: "Triggers when a member's new plan becomes active.",
   },
   operation: {
     type: "hook",
