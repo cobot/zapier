@@ -1576,10 +1576,12 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-15.14.9.tgz#bc43c990c3c9be7281868bbc7b8fdd6e2b57adfa"
   integrity sha512-qjd88DrCxupx/kJD5yQgZdcYKZKSIGBVDIBE1/LTGcNm3d2Np/jxojkdePDdfnBHJc5W7vSMpbJ1aB7p/Py69A==
 
-"@types/node@^18.11.18":
-  version "18.18.3"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.18.3.tgz#e5188135fc2909b46530c798ef49be65083be3fd"
-  integrity sha512-0OVfGupTl3NBFr8+iXpfZ8NR7jfFO+P1Q+IO/q0wbo02wYkP5gy36phojeYWpLQ6WAMjl+VfmqUk2YbUfp0irA==
+"@types/node@^20.3.1":
+  version "20.10.1"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.10.1.tgz#d2c96f356c3125fedc983d74c424910c3767141c"
+  integrity sha512-T2qwhjWwGH81vUEx4EXmBKsTJRXFXNZTL4v0gi01+zyBmCwzE6TyHszqX01m+QHTEq+EZNo13NeJIdEqf+Myrg==
+  dependencies:
+    undici-types "~5.26.4"
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.4"
@@ -1618,10 +1620,10 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@zapier/secret-scrubber@^1.0.7":
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/@zapier/secret-scrubber/-/secret-scrubber-1.0.7.tgz#afb85623a630b297b92ecc6bdc31714869d5c2e9"
-  integrity sha512-NfqHsMLhjebSsIXOpn6oumkbj0fdViLPNxaQDicj0RTTUEc6LjCzCIj31imI/gVtXcd5oI1fmDJ/M9SQosuH0w==
+"@zapier/secret-scrubber@^1.0.8":
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/@zapier/secret-scrubber/-/secret-scrubber-1.0.8.tgz#f757ea475243c408789803b99f6c5fc0a5465187"
+  integrity sha512-6vVhOwlwfbETEhLCS+eY/OzXLANzf71O1XnfPpKAx29JMxZV4S1Sefp9F5jBQGTmL0BVYu34rNS7Uej1x/rcsQ==
   dependencies:
     lodash.isplainobject "^4.0.6"
 
@@ -5851,10 +5853,10 @@ nock@^13.3.4:
     lodash "^4.17.21"
     propagate "^2.0.0"
 
-node-abort-controller@3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/node-abort-controller/-/node-abort-controller-3.0.1.tgz#f91fa50b1dee3f909afabb7e261b1e1d6b0cb74e"
-  integrity sha512-/ujIVxthRs+7q6hsdjHMaj8hRG9NuWmwrz+JdRwZ14jdFoKSkm+vDsCbF9PLpnSqjaWQJuTmVtcWHNLr+vrOFw==
+node-abort-controller@3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/node-abort-controller/-/node-abort-controller-3.1.1.tgz#a94377e964a9a37ac3976d848cb5c765833b8548"
+  integrity sha512-AGK2yQKIjRuqnc6VkX2Xj5d+QW8xZ87pa1UK6yA6ouUyuxfHuMP6umE5QK7UmTeOAymo+Zx1Fxiuw9rVx8taHQ==
 
 node-dir@^0.1.17:
   version "0.1.17"
@@ -7074,13 +7076,6 @@ semver-diff@^3.1.1:
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.7.2.tgz#48d55db737c3287cd4835e17fa13feace1c41ef8"
   integrity sha512-cBznnQ9KjJqU67B52RMC65CMarK2600WFnbkcaiwWq3xy/5haFJlshgnpjovMVJ+Hff49d8GEn0b87C5pDQ10g==
 
-semver@7.3.5:
-  version "7.3.5"
-  resolved "https://registry.yarnpkg.com/semver/-/semver-7.3.5.tgz#0b621c879348d8998e4b0e4be94b3f12e6018ef7"
-  integrity sha512-PoeGJYh8HK4BTO/a9Tf6ZG3veo/A7ZVsYrSA6J8ny9nb3B1VrpkuN+z9OE5wfE5p6H4LchYZsegiQgbJD94ZFQ==
-  dependencies:
-    lru-cache "^6.0.0"
-
 semver@7.5.2:
   version "7.5.2"
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.5.2.tgz#5b851e66d1be07c1cdaf37dfc856f543325a2beb"
@@ -7890,6 +7885,11 @@ undeclared-identifiers@^1.1.2:
     simple-concat "^1.0.0"
     xtend "^4.0.1"
 
+undici-types@~5.26.4:
+  version "5.26.5"
+  resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-5.26.5.tgz#bcd539893d00b56e964fd2657a4866b221a65617"
+  integrity sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==
+
 unique-filename@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/unique-filename/-/unique-filename-1.1.1.tgz#1d69769369ada0583103a1e6ae87681b56573230"
@@ -8416,30 +8416,30 @@ zapier-platform-cli@^15.5.1:
     yeoman-environment "3.3.0"
     yeoman-generator "5.9.0"
 
-zapier-platform-core@13.0.0:
-  version "13.0.0"
-  resolved "https://registry.yarnpkg.com/zapier-platform-core/-/zapier-platform-core-13.0.0.tgz#714a2b94bf679a852263bf40bb6ad7bba6dc96fd"
-  integrity sha512-gYicR3Nq4plwYHCG59EQIvVtwgrxUrgURzsn8mfT6vP1CJ2J/syTf9Z/MjzyN0O9SiJVO0O2oeYczXqTxh+eUA==
+zapier-platform-core@15.5.1:
+  version "15.5.1"
+  resolved "https://registry.yarnpkg.com/zapier-platform-core/-/zapier-platform-core-15.5.1.tgz#7b29c14b1bc707803cfe967c72e1e9620994c03b"
+  integrity sha512-aUejMJZt+JKNksknxMTFP59VsYyIFwswCDpmshRb1dJfZqYPqD9lG/zjBPIcpNg31zS1gDxzItqqQXBaopzn2Q==
   dependencies:
-    "@zapier/secret-scrubber" "^1.0.7"
+    "@zapier/secret-scrubber" "^1.0.8"
     bluebird "3.7.2"
     content-disposition "0.5.4"
     dotenv "12.0.4 "
     form-data "4.0.0"
     lodash "4.17.21"
     mime-types "2.1.35"
-    node-abort-controller "3.0.1"
+    node-abort-controller "3.1.1"
     node-fetch "2.6.7"
     oauth-sign "0.9.0"
-    semver "7.3.5"
-    zapier-platform-schema "13.0.0"
+    semver "7.5.2"
+    zapier-platform-schema "15.5.1"
   optionalDependencies:
-    "@types/node" "^18.11.18"
+    "@types/node" "^20.3.1"
 
-zapier-platform-schema@13.0.0:
-  version "13.0.0"
-  resolved "https://registry.yarnpkg.com/zapier-platform-schema/-/zapier-platform-schema-13.0.0.tgz#1cfc22c6a3c57c6a74018551f3b93943aca85e10"
-  integrity sha512-K8NKLlA48FTM1nSvoUnj7OeeVffhAatl/j8SWLi2JFZLPOjiyby627K9cZ3U/lv0OPzLVbVb/3Ny5F0CtDaJOA==
+zapier-platform-schema@15.5.1:
+  version "15.5.1"
+  resolved "https://registry.yarnpkg.com/zapier-platform-schema/-/zapier-platform-schema-15.5.1.tgz#f7530ab1b641a24b73872424ecf9f4c2598c0303"
+  integrity sha512-uunpH46JCNjVeoNKdyVvD8QB6XPSM42ZPTxhkGC8El3ht31fyENz86KRfhHbYp0oabAopJu0yc/+wWXvhKjdcQ==
   dependencies:
     jsonschema "1.2.2"
     lodash "4.17.21"
