@@ -5,7 +5,7 @@ export const getSubdomainField = (extras?: Partial<Field>): Field => ({
   key: "subdomain",
   type: "string",
   required: true,
-  helpText: "Please select a space admin of your spaces",
+  helpText: "Please select one of your spaces",
   dynamic: "get_subdomains.id.name",
   ...extras,
 });

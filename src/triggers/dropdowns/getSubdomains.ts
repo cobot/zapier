@@ -4,9 +4,11 @@ import { OutputField } from "../../fields/output/outputField";
 import { OutputFromOutputFields } from "../../fields/output/outputFromOutputFields";
 
 const execute = (z: ZObject, bundle: KontentBundle<{}>): Output => {
-  return bundle.authData.adminOf.map((space) => {
-    return { id: space.subdomain, name: space.name };
-  });
+  return bundle.authData.adminOf
+    .map((space) => {
+      return { id: space.subdomain, name: space.name };
+    })
+    .sort((a, b) => a.name.localeCompare(b.name));
 };
 
 const outputFields = [
