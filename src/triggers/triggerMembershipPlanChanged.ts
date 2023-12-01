@@ -46,7 +46,6 @@ export default {
   key: event,
   noun: hookLabel,
   display: {
-    important: true,
     label: hookLabel,
     description: "Triggers on the day a member's new plan becomes active.",
   },

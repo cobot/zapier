@@ -46,7 +46,6 @@ export default {
   key: `${event}_external`,
   noun: hookLabel,
   display: {
-    important: true,
     label: hookLabel,
     description: "Triggers when an external booking is created.",
   },
