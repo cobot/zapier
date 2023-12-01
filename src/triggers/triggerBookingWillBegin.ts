@@ -47,7 +47,7 @@ export default {
   noun: hookLabel,
   display: {
     label: hookLabel,
-    description: "Triggers before a booking begins.",
+    description: "Triggers when a booking is about to begin.",
   },
   operation: {
     type: "hook",
