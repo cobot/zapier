@@ -1,4 +1,4 @@
-import { OutputField } from './outputField';
+import { OutputField } from "./outputField";
 
 /**
  * Iterates over the fields and creates a type of expected output object build up from the fields.
@@ -22,25 +22,45 @@ import { OutputField } from './outputField';
  *  OutputFromOutputFields<[{ key: 'a__b'; label: ''; type: 'string' }, { key: 'a__c'; label: ''; type: 'number' }]> =>
  *    { a: { b: string } } & { a: { c: number } } === { a: { b: string; c: number } }
  */
-export type OutputFromOutputFields<Fields extends ReadonlyArray<OutputField>, Acc = {}> =
-  Fields extends readonly []
-    ? Acc
-    : Fields extends readonly [infer Field extends OutputField, ...infer RestFields extends ReadonlyArray<OutputField>]
-      ? OutputFromOutputFields<RestFields, Acc & CreateObjectFromField<Field>>
-      : never;
+export type OutputFromOutputFields<
+  Fields extends ReadonlyArray<OutputField>,
+  Acc = {},
+> = Fields extends readonly []
+  ? Acc
+  : Fields extends readonly [
+        infer Field extends OutputField,
+        ...infer RestFields extends ReadonlyArray<OutputField>,
+      ]
+    ? OutputFromOutputFields<RestFields, Acc & CreateObjectFromField<Field>>
+    : never;
 
 /**
  * Create an object from a single {@link OutputField}. The result will be used in an intersection of all fields to build up the resulting object type.
  */
 type CreateObjectFromField<Field extends OutputField> =
-  Field['key'] extends `${infer ObjectParentKey}__${infer ObjectChildKey}`
+  Field["key"] extends `${infer ObjectParentKey}__${infer ObjectChildKey}`
     ? ObjectParentKey extends `${infer ArrayParentKey}[]${infer ArrayChildPart}`
-      ? { readonly [key in ArrayParentKey]: ReadonlyArray<CreateObjectFromField<Omit<Field, 'key'> & { key: `${ArrayChildPart}__${ObjectChildKey}` }>> }
-      : { readonly [key in ObjectParentKey]: CreateObjectFromField<Omit<Field, 'key'> & { key: ObjectChildKey }> }
-    : Field['key'] extends `${infer ArrayParentKey}[]${infer ArrayChildKey}`
-      ? { readonly [key in ArrayParentKey]: ReadonlyArray<CreateObjectFromField<Omit<Field, 'key'> & { key: ArrayChildKey }>> }
-      : { readonly [key in Field['key']]: FieldType<Field> }
-
+      ? {
+          readonly [key in ArrayParentKey]: ReadonlyArray<
+            CreateObjectFromField<
+              Omit<Field, "key"> & {
+                key: `${ArrayChildPart}__${ObjectChildKey}`;
+              }
+            >
+          >;
+        }
+      : {
+          readonly [key in ObjectParentKey]: CreateObjectFromField<
+            Omit<Field, "key"> & { key: ObjectChildKey }
+          >;
+        }
+    : Field["key"] extends `${infer ArrayParentKey}[]${infer ArrayChildKey}`
+      ? {
+          readonly [key in ArrayParentKey]: ReadonlyArray<
+            CreateObjectFromField<Omit<Field, "key"> & { key: ArrayChildKey }>
+          >;
+        }
+      : { readonly [key in Field["key"]]: FieldType<Field> };
 
 /**
  * Map from possible values of property 'type' on {@link OutputField} to their representation in TS.
@@ -58,11 +78,20 @@ type FieldTypeToTSType = {
  * - The Lookup parameter is not supposed to be used outside (always the default value should be used).
  *    It is meant to check (using its restriction) that the {@link FieldTypeToTSType} contains a binding for every possible value of property 'type' of the {@link OutputField} type.
  */
-type FieldType<Field extends OutputField, Lookup extends Record<OutputField['type'], unknown> = FieldTypeToTSType> =
-  MakeListIfNeeded<Field, MakeOptionalIfNeeded<Field, FieldTypeToTSType[Field['type']]>>;
+type FieldType<
+  Field extends OutputField,
+  Lookup extends Record<OutputField["type"], unknown> = FieldTypeToTSType,
+> = MakeListIfNeeded<
+  Field,
+  MakeOptionalIfNeeded<Field, FieldTypeToTSType[Field["type"]]>
+>;
 
-type MakeOptionalIfNeeded<Field extends OutputField, Type> =
-  Field['required'] extends true ? Type : Type | undefined;
+type MakeOptionalIfNeeded<
+  Field extends OutputField,
+  Type,
+> = Field["required"] extends true ? Type : Type | undefined;
 
-type MakeListIfNeeded<Field extends OutputField, Type> =
-  Field['list'] extends true ? ReadonlyArray<Type> : Type;
+type MakeListIfNeeded<
+  Field extends OutputField,
+  Type,
+> = Field["list"] extends true ? ReadonlyArray<Type> : Type;

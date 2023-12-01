@@ -16,7 +16,7 @@ describe("createActivity", () => {
   it("changes workflow step", async () => {
     const bundle: KontentBundle<ActivityInputData> = addInputData(
       mockBundle,
-      rawVariant
+      rawVariant,
     );
 
     const url = `https://${bundle.inputData.subdomain}.cobot.me/api/activities`;

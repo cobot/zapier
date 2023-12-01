@@ -14,7 +14,7 @@ const event = "confirmed_membership";
 
 async function subscribeHookExecute(
   z: ZObject,
-  bundle: KontentBundle<SubscribeBundleInputType>
+  bundle: KontentBundle<SubscribeBundleInputType>,
 ) {
   return subscribeHook(z, bundle, {
     event,
@@ -24,7 +24,7 @@ async function subscribeHookExecute(
 
 async function unsubscribeHookExecute(
   z: ZObject,
-  bundle: KontentBundle<SubscribeBundleInputType>
+  bundle: KontentBundle<SubscribeBundleInputType>,
 ) {
   const webhook = bundle.subscribeData;
   return unsubscribeHook(z, bundle, webhook?.id ?? "");
@@ -61,7 +61,7 @@ export default {
     perform: parsePayload,
     performList: (
       z: ZObject,
-      bundle: KontentBundle<SubscribeBundleInputType>
+      bundle: KontentBundle<SubscribeBundleInputType>,
     ) => listRecentBookings(z, bundle),
 
     sample: {

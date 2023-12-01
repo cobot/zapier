@@ -28,10 +28,10 @@ type AnyReadonlyRecord = Readonly<Record<string, unknown>>;
 
 export const addInputData = <
   InitialInputData extends AnyReadonlyRecord,
-  AddedInputData extends AnyReadonlyRecord
+  AddedInputData extends AnyReadonlyRecord,
 >(
   bundle: KontentBundle<InitialInputData>,
-  toAdd: AddedInputData
+  toAdd: AddedInputData,
 ): KontentBundle<InitialInputData & AddedInputData> => ({
   ...bundle,
   inputData: {

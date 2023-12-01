@@ -11,7 +11,7 @@ const scopes =
 
 const getAccessToken = async (
   z: ZObject,
-  bundle: Bundle
+  bundle: Bundle,
 ): Promise<AuthData> => {
   const response = await z.request({
     url: ACCESS_TOKEN_URL,
@@ -37,7 +37,7 @@ const getAccessToken = async (
     (x: { space_subdomain: string; space_name: string }) => ({
       subdomain: x.space_subdomain,
       name: x.space_name,
-    })
+    }),
   );
 
   return {
@@ -49,7 +49,7 @@ const getAccessToken = async (
 const includeBearerToken = (
   request: HttpRequestOptions,
   z: ZObject,
-  bundle: Bundle
+  bundle: Bundle,
 ) => {
   if (bundle.authData.access_token && request.headers) {
     request.headers.Authorization = `Bearer ${bundle.authData.access_token}`;

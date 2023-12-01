@@ -10,7 +10,7 @@ import { get } from "lodash";
 export const subscribeHook = async (
   z: ZObject,
   bundle: KontentBundle<SubscribeBundleInputType>,
-  data: SubscribePayloadType
+  data: SubscribePayloadType,
 ) => {
   const url = `https://${bundle.inputData.subdomain}.cobot.me/api/subscriptions`;
   const response = await z.request({
@@ -25,7 +25,7 @@ export const subscribeHook = async (
 export const unsubscribeHook = async (
   z: ZObject,
   bundle: KontentBundle<SubscribeBundleInputType>,
-  subscribeId: string
+  subscribeId: string,
 ) => {
   const url = `https://${bundle.inputData.subdomain}.cobot.me/api/subscriptions/${subscribeId}`;
   return await z.request({
@@ -48,7 +48,7 @@ export const apiCallUrl = async (z: ZObject, url: string) => {
 
 export const listRecentBookings = async (
   z: ZObject,
-  bundle: KontentBundle<SubscribeBundleInputType>
+  bundle: KontentBundle<SubscribeBundleInputType>,
 ) => {
   const url = `https://${bundle.inputData.subdomain}.cobot.me/api/membership/bookings/recent`;
   try {
@@ -85,13 +85,13 @@ export const getUserDetailV2 = async (z: ZObject) => {
 
 export const listRecentExternalBookings = async (
   z: ZObject,
-  bundle: KontentBundle<SubscribeBundleInputType>
+  bundle: KontentBundle<SubscribeBundleInputType>,
 ) => {
   try {
     const subdomain = bundle.inputData.subdomain;
     const userV2 = await getUserDetailV2(z);
     var admin = userV2.included.find(
-      (x) => get(x, "attributes.subdomain", "") === subdomain
+      (x) => get(x, "attributes.subdomain", "") === subdomain,
     );
     if (admin) {
       var spaceId = admin.id;
@@ -135,7 +135,7 @@ export const getExternalBookings = async (z: ZObject, id: string) => {
     });
     const booking = get(
       response.data,
-      "data.relationships.externalBooking.data"
+      "data.relationships.externalBooking.data",
     );
     if (booking) {
       const response = await z.request({
@@ -158,7 +158,7 @@ export const getExternalBookings = async (z: ZObject, id: string) => {
 
 export const createActivity = async (
   z: ZObject,
-  bundle: KontentBundle<ActivityInputData>
+  bundle: KontentBundle<ActivityInputData>,
 ) => {
   const response = await z.request({
     method: "POST",
@@ -177,10 +177,10 @@ export const createActivity = async (
 export const getDateRange = () => {
   var now = new Date();
   var lastMonth = new Date(
-    new Date(now).setMonth(now.getMonth() - 1)
+    new Date(now).setMonth(now.getMonth() - 1),
   ).toISOString();
   var nextWeek = new Date(
-    new Date(now).setDate(now.getDate() + 7)
+    new Date(now).setDate(now.getDate() + 7),
   ).toISOString();
 
   return [lastMonth, nextWeek];
