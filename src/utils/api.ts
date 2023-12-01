@@ -6,6 +6,7 @@ import {
 } from "../types/subscribeType";
 import { InputData as ActivityInputData } from "../creates/activity";
 import { get } from "lodash";
+import { DateTime } from "luxon";
 
 export const subscribeHook = async (
   z: ZObject,
@@ -50,11 +51,17 @@ export const listRecentBookings = async (
   z: ZObject,
   bundle: KontentBundle<SubscribeBundleInputType>,
 ) => {
-  const url = `https://${bundle.inputData.subdomain}.cobot.me/api/membership/bookings/recent`;
+  const url = `https://${bundle.inputData.subdomain}.cobot.me/api/bookings`;
+  const [from, to] = getDateRange();
   try {
     const response = await z.request({
       url,
       method: "GET",
+      params: {
+        from,
+        to,
+        limit: 1,
+      },
     });
     return response.data.map((booking) => {
       booking.from = new Date(booking.from).toISOString();
@@ -174,14 +181,10 @@ export const createActivity = async (
   return object;
 };
 
-export const getDateRange = () => {
-  var now = new Date();
-  var lastMonth = new Date(
-    new Date(now).setMonth(now.getMonth() - 1),
-  ).toISOString();
-  var nextWeek = new Date(
-    new Date(now).setDate(now.getDate() + 7),
-  ).toISOString();
+const getDateRange = (): [string, string] => {
+  const now = DateTime.now();
+  const lastMonth = now.minus({ months: 1 }).toISO();
+  const nextMonth = now.plus({ months: 1 }).toISO();
 
-  return [lastMonth, nextWeek];
+  return [lastMonth, nextMonth];
 };
