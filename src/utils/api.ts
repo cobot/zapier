@@ -75,6 +75,44 @@ export const listRecentBookings = async (
   }
 };
 
+export type MembershipApiResponse = {
+  id: string;
+  name: string;
+  email: string | null;
+  phone: string | null;
+  picture: string;
+  address: {
+    company: string | null;
+    name: string | null;
+    full_address: string | null;
+  };
+  customer_number: string | null;
+  plan: {
+    name: string;
+  };
+  payment_method: {
+    name: string;
+  } | null;
+  starts_at: string;
+  canceled_at: string | null;
+};
+
+export const listMemberships = async (
+  z: ZObject,
+  bundle: KontentBundle<SubscribeBundleInputType>,
+): Promise<MembershipApiResponse[]> => {
+  const url = `https://${bundle.inputData.subdomain}.cobot.me/api/memberships`;
+  try {
+    const response = await z.request({
+      url,
+      method: "GET",
+    });
+    return response.data;
+  } catch (error) {
+    return [];
+  }
+};
+
 export const getUserDetailV2 = async (z: ZObject) => {
   try {
     const response = await z.request({

@@ -1,8 +1,9 @@
 import { ZObject } from "zapier-platform-core";
 import { KontentBundle } from "../types/kontentBundle";
 import {
+  MembershipApiResponse,
   apiCallUrl,
-  listRecentBookings,
+  listMemberships,
   subscribeHook,
   unsubscribeHook,
 } from "../utils/api";
@@ -30,17 +31,49 @@ async function unsubscribeHookExecute(
   return unsubscribeHook(z, bundle, webhook?.id ?? "");
 }
 
-async function parsePayload(z: ZObject, bundle: KontentBundle<{}>) {
-  var membership;
-  if (bundle.cleanedRequest) {
-    membership = await apiCallUrl(z, bundle.cleanedRequest.url);
-    membership.from = new Date(membership.from).toISOString();
-    membership.to = new Date(membership.to).toISOString();
-    membership.created_at = new Date(membership.created_at).toISOString();
-    membership.updated_at = new Date(membership.updated_at).toISOString();
-  }
-  return [membership];
+type Output = {
+  id: string;
+  name: string | null;
+  company: string | null;
+  email: string | null;
+  customer_number: string | null;
+  plan_name: string;
+  payment_method_name: string | null;
+};
+
+function apiResponseToOutput(membership: MembershipApiResponse): Output {
+  return {
+    id: membership.id,
+    name: membership.name,
+    email: membership.email,
+    company: membership.address.company,
+    customer_number: membership.customer_number,
+    plan_name: membership.plan.name,
+    payment_method_name: membership.payment_method?.name ?? null,
+  };
 }
+
+async function parsePayload(
+  z: ZObject,
+  bundle: KontentBundle<{}>,
+): Promise<Output[]> {
+  if (bundle.cleanedRequest) {
+    const membership = await apiCallUrl(z, bundle.cleanedRequest.url);
+    return [apiResponseToOutput(membership)];
+  } else {
+    return [];
+  }
+}
+
+const sample: Output = {
+  id: "003b37a3-f205-5d9e-9caf-c4ca612075d4",
+  name: "Sam Duncan",
+  company: "",
+  email: "sig@rauwekug.kr",
+  customer_number: "123",
+  plan_name: "Full Time",
+  payment_method_name: "Credit Card",
+};
 
 export default {
   key: event,
@@ -58,13 +91,14 @@ export default {
     performUnsubscribe: unsubscribeHookExecute,
 
     perform: parsePayload,
-    performList: (
+    performList: async (
       z: ZObject,
       bundle: KontentBundle<SubscribeBundleInputType>,
-    ) => listRecentBookings(z, bundle),
-
-    sample: {
-      url: "https://co-up.cobot.me/api/memberships/93207605",
+    ): Promise<Output[]> => {
+      const apiMemberships = await listMemberships(z, bundle);
+      return apiMemberships.map((m) => apiResponseToOutput(m));
     },
+
+    sample,
   },
 } as const;
