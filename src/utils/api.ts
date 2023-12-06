@@ -7,7 +7,10 @@ import {
 import { InputData as ActivityInputData } from "../creates/activity";
 import { get } from "lodash";
 import { DateTime } from "luxon";
-import { MembershipApiResponse } from "../types/api-responses";
+import {
+  BookingApiResponse,
+  MembershipApiResponse,
+} from "../types/api-responses";
 
 export const subscribeHook = async (
   z: ZObject,
@@ -51,7 +54,7 @@ export const apiCallUrl = async (z: ZObject, url: string) => {
 export const listRecentBookings = async (
   z: ZObject,
   bundle: KontentBundle<SubscribeBundleInputType>,
-) => {
+): Promise<BookingApiResponse[]> => {
   const url = `https://${bundle.inputData.subdomain}.cobot.me/api/bookings`;
   const [from, to] = getDateRange();
   try {
@@ -64,13 +67,7 @@ export const listRecentBookings = async (
         limit: 1,
       },
     });
-    return response.data.map((booking) => {
-      booking.from = new Date(booking.from).toISOString();
-      booking.to = new Date(booking.to).toISOString();
-      booking.created_at = new Date(booking.created_at).toISOString();
-      booking.updated_at = new Date(booking.updated_at).toISOString();
-      return booking;
-    });
+    return response.data;
   } catch (error) {
     return [];
   }

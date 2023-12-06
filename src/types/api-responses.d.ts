@@ -19,3 +19,22 @@ export type MembershipApiResponse = {
   starts_at: string;
   canceled_at: string | null;
 };
+
+export type BookingApiResponse = {
+  id: string;
+  from: string;
+  to: string;
+  title: string | null;
+  resource: {
+    name: string;
+    id: string;
+  };
+  membership: {
+    id: string;
+    name: string;
+  } | null;
+  comments: string | null;
+  price: number;
+  currency: string;
+  units: number;
+};
