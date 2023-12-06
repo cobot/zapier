@@ -7,6 +7,7 @@ import {
 import { InputData as ActivityInputData } from "../creates/activity";
 import { get } from "lodash";
 import { DateTime } from "luxon";
+import { MembershipApiResponse } from "../types/api-responses";
 
 export const subscribeHook = async (
   z: ZObject,
@@ -73,28 +74,6 @@ export const listRecentBookings = async (
   } catch (error) {
     return [];
   }
-};
-
-export type MembershipApiResponse = {
-  id: string;
-  name: string;
-  email: string | null;
-  phone: string | null;
-  picture: string;
-  address: {
-    company: string | null;
-    name: string | null;
-    full_address: string | null;
-  };
-  customer_number: string | null;
-  plan: {
-    name: string;
-  };
-  payment_method: {
-    name: string;
-  } | null;
-  starts_at: string;
-  canceled_at: string | null;
 };
 
 export const listMemberships = async (

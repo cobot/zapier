@@ -2,12 +2,15 @@ import { ZObject } from "zapier-platform-core";
 import { KontentBundle } from "../types/kontentBundle";
 import {
   apiCallUrl,
-  listRecentBookings,
+  listMemberships,
   subscribeHook,
   unsubscribeHook,
 } from "../utils/api";
 import { SubscribeBundleInputType } from "../types/subscribeType";
 import { getSubdomainField } from "../fields/getSudomainsField";
+import { MembershipOutput } from "../types/outputs";
+import { apiResponseToMembershipOutput } from "../utils/api-to-output";
+import { membershipSample } from "../utils/samples";
 
 const hookLabel = "Membership Plan Change Date Reached";
 const event = "membership_plan_change_date_reached";
@@ -30,16 +33,16 @@ async function unsubscribeHookExecute(
   return unsubscribeHook(z, bundle, webhook?.id ?? "");
 }
 
-async function parsePayload(z: ZObject, bundle: KontentBundle<{}>) {
-  var membership;
+async function parsePayload(
+  z: ZObject,
+  bundle: KontentBundle<{}>,
+): Promise<MembershipOutput[]> {
   if (bundle.cleanedRequest) {
-    membership = await apiCallUrl(z, bundle.cleanedRequest.url);
-    membership.from = new Date(membership.from).toISOString();
-    membership.to = new Date(membership.to).toISOString();
-    membership.created_at = new Date(membership.created_at).toISOString();
-    membership.updated_at = new Date(membership.updated_at).toISOString();
+    const membership = await apiCallUrl(z, bundle.cleanedRequest.url);
+    return [apiResponseToMembershipOutput(membership)];
+  } else {
+    return [];
   }
-  return [membership];
 }
 
 export default {
@@ -58,13 +61,14 @@ export default {
     performUnsubscribe: unsubscribeHookExecute,
 
     perform: parsePayload,
-    performList: (
+    performList: async (
       z: ZObject,
       bundle: KontentBundle<SubscribeBundleInputType>,
-    ) => listRecentBookings(z, bundle),
-
-    sample: {
-      url: "https://co-up.cobot.me/api/memberships/93207605",
+    ): Promise<MembershipOutput[]> => {
+      const apiMemberships = await listMemberships(z, bundle);
+      return apiMemberships.map((m) => apiResponseToMembershipOutput(m));
     },
+
+    sample: membershipSample,
   },
 } as const;

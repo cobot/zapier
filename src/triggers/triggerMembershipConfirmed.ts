@@ -1,7 +1,6 @@
 import { ZObject } from "zapier-platform-core";
 import { KontentBundle } from "../types/kontentBundle";
 import {
-  MembershipApiResponse,
   apiCallUrl,
   listMemberships,
   subscribeHook,
@@ -9,6 +8,9 @@ import {
 } from "../utils/api";
 import { SubscribeBundleInputType } from "../types/subscribeType";
 import { getSubdomainField } from "../fields/getSudomainsField";
+import { MembershipOutput } from "../types/outputs";
+import { apiResponseToMembershipOutput } from "../utils/api-to-output";
+import { membershipSample } from "../utils/samples";
 
 const hookLabel = "Membership Confirmed";
 const event = "confirmed_membership";
@@ -31,49 +33,17 @@ async function unsubscribeHookExecute(
   return unsubscribeHook(z, bundle, webhook?.id ?? "");
 }
 
-type Output = {
-  id: string;
-  name: string | null;
-  company: string | null;
-  email: string | null;
-  customer_number: string | null;
-  plan_name: string;
-  payment_method_name: string | null;
-};
-
-function apiResponseToOutput(membership: MembershipApiResponse): Output {
-  return {
-    id: membership.id,
-    name: membership.name,
-    email: membership.email,
-    company: membership.address.company,
-    customer_number: membership.customer_number,
-    plan_name: membership.plan.name,
-    payment_method_name: membership.payment_method?.name ?? null,
-  };
-}
-
 async function parsePayload(
   z: ZObject,
   bundle: KontentBundle<{}>,
-): Promise<Output[]> {
+): Promise<MembershipOutput[]> {
   if (bundle.cleanedRequest) {
     const membership = await apiCallUrl(z, bundle.cleanedRequest.url);
-    return [apiResponseToOutput(membership)];
+    return [apiResponseToMembershipOutput(membership)];
   } else {
     return [];
   }
 }
-
-const sample: Output = {
-  id: "003b37a3-f205-5d9e-9caf-c4ca612075d4",
-  name: "Sam Duncan",
-  company: "",
-  email: "sig@rauwekug.kr",
-  customer_number: "123",
-  plan_name: "Full Time",
-  payment_method_name: "Credit Card",
-};
 
 export default {
   key: event,
@@ -94,11 +64,11 @@ export default {
     performList: async (
       z: ZObject,
       bundle: KontentBundle<SubscribeBundleInputType>,
-    ): Promise<Output[]> => {
+    ): Promise<MembershipOutput[]> => {
       const apiMemberships = await listMemberships(z, bundle);
-      return apiMemberships.map((m) => apiResponseToOutput(m));
+      return apiMemberships.map((m) => apiResponseToMembershipOutput(m));
     },
 
-    sample,
+    sample: membershipSample,
   },
 } as const;
