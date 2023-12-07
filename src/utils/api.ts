@@ -66,7 +66,7 @@ export const listRecentBookings = async (
       params: {
         from,
         to,
-        limit: 1,
+        limit: 3,
       },
     });
     return response.data;
