@@ -59,20 +59,16 @@ export const listRecentBookings = async (
 ): Promise<BookingApiResponse[]> => {
   const url = `https://${bundle.inputData.subdomain}.cobot.me/api/bookings`;
   const [from, to] = getDateRange();
-  try {
-    const response = await z.request({
-      url,
-      method: "GET",
-      params: {
-        from,
-        to,
-        limit: 3,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    return [];
-  }
+  const response = await z.request({
+    url,
+    method: "GET",
+    params: {
+      from,
+      to,
+      limit: 3,
+    },
+  });
+  return response.data;
 };
 
 export const listMemberships = async (
@@ -80,84 +76,72 @@ export const listMemberships = async (
   bundle: KontentBundle<SubscribeBundleInputType>,
 ): Promise<MembershipApiResponse[]> => {
   const url = `https://${bundle.inputData.subdomain}.cobot.me/api/memberships`;
-  try {
-    const response = await z.request({
-      url,
-      method: "GET",
-    });
-    return response.data;
-  } catch (error) {
-    return [];
-  }
+  const response = await z.request({
+    url,
+    method: "GET",
+  });
+  return response.data;
 };
 
 export const getUserDetailV2 = async (z: ZObject) => {
-  try {
-    const response = await z.request({
-      url: "https://api.cobot.me/user?include=adminOf",
-      method: "GET",
-      headers: {
-        Accept: "application/vnd.api+json",
-      },
-    });
-    return response.data;
-  } catch (error) {
-    return [];
-  }
+  const response = await z.request({
+    url: "https://api.cobot.me/user?include=adminOf",
+    method: "GET",
+    headers: {
+      Accept: "application/vnd.api+json",
+    },
+  });
+  return response.data;
 };
 
 export const listRecentExternalBookings = async (
   z: ZObject,
   bundle: KontentBundle<SubscribeBundleInputType>,
 ): Promise<ExternalBookingWithResourceApiResponse[]> => {
-  try {
-    const subdomain = bundle.inputData.subdomain;
-    const userV2 = await getUserDetailV2(z);
-    var space = userV2.included.find(
-      (x) => get(x, "attributes.subdomain", "") === subdomain,
-    );
-    if (space) {
-      var spaceId = space.id;
+  const subdomain = bundle.inputData.subdomain;
+  const userV2 = await getUserDetailV2(z);
+  var space = userV2.included.find(
+    (x) => get(x, "attributes.subdomain", "") === subdomain,
+  );
+  if (space) {
+    var spaceId = space.id;
 
-      var [from, to] = getDateRange();
-      const response = await z.request({
-        url: `https://api.cobot.me/spaces/${spaceId}/external_bookings`,
+    var [from, to] = getDateRange();
+    const response = await z.request({
+      url: `https://api.cobot.me/spaces/${spaceId}/external_bookings`,
+      method: "GET",
+      headers: {
+        Accept: "application/vnd.api+json",
+      },
+      params: {
+        "filter[from]": from,
+        "filter[to]": to,
+        "filter[sortOrder]": "desc",
+      },
+    });
+    const bookings = response.data.data as ExternalBookingApiResponse[];
+    const resourcesResponse = (
+      await z.request({
+        url: `https://api.cobot.me/spaces/${spaceId}/resources`,
         method: "GET",
         headers: {
           Accept: "application/vnd.api+json",
         },
-        params: {
-          "filter[from]": from,
-          "filter[to]": to,
-          "filter[sortOrder]": "desc",
-        },
-      });
-      const bookings = response.data.data as ExternalBookingApiResponse[];
-      const resourcesResponse = (
-        await z.request({
-          url: `https://api.cobot.me/spaces/${spaceId}/resources`,
-          method: "GET",
-          headers: {
-            Accept: "application/vnd.api+json",
-          },
-        })
-      ).data.data as ResourceApiResponse[];
-      const resourcesById = resourcesResponse.reduce(
-        (acc, resource) => ({
-          ...acc,
-          [resource.id]: resource,
-        }),
-        {},
-      );
-      return bookings.map((booking) => ({
-        ...booking,
-        resource: resourcesById[booking.relationships.resource.data.id],
-      }));
-    }
-    return [];
-  } catch (error) {
-    return [];
+      })
+    ).data.data as ResourceApiResponse[];
+    const resourcesById = resourcesResponse.reduce(
+      (acc, resource) => ({
+        ...acc,
+        [resource.id]: resource,
+      }),
+      {},
+    );
+    return bookings.map((booking) => ({
+      ...booking,
+      resource: resourcesById[booking.relationships.resource.data.id],
+    }));
   }
+  return [];
 };
 
 export type ExternalBookingWithResourceApiResponse =
@@ -168,43 +152,48 @@ export const getExternalBooking = async (
   bookingId: string,
 ): Promise<ExternalBookingWithResourceApiResponse | null> => {
   const url = `https://api.cobot.me/bookings/${bookingId}`;
-  try {
-    const bookingResponse = await z.request({
-      url,
+  const bookingResponse = await z.request({
+    url,
+    method: "GET",
+    headers: {
+      Accept: "application/vnd.api+json",
+    },
+  });
+  if (bookingResponse.status !== 200) {
+    return null;
+  }
+  const externalBookingId = get(
+    bookingResponse.data,
+    "data.relationships.externalBooking.data.id",
+  );
+  if (externalBookingId) {
+    const externalBookingResponse = await z.request({
+      url: `https://api.cobot.me/external_bookings/${externalBookingId}`,
       method: "GET",
       headers: {
         Accept: "application/vnd.api+json",
       },
     });
-    const externalBookingId = get(
-      bookingResponse.data,
-      "data.relationships.externalBooking.data.id",
-    );
-    if (externalBookingId) {
-      const externalBookingResponse = (
-        await z.request({
-          url: `https://api.cobot.me/external_bookings/${externalBookingId}`,
-          method: "GET",
-          headers: {
-            Accept: "application/vnd.api+json",
-          },
-        })
-      ).data.data as ExternalBookingApiResponse;
-      const resourceResponse = (
-        await z.request({
-          url: `https://api.cobot.me/resources/${externalBookingResponse.relationships.resource.data.id}`,
-          method: "GET",
-          headers: {
-            Accept: "application/vnd.api+json",
-          },
-        })
-      ).data.data as ResourceApiResponse;
-      return { ...externalBookingResponse, resource: resourceResponse };
+    if (externalBookingResponse.status !== 200) {
+      return null;
     }
-    return null;
-  } catch (error) {
-    return null;
+
+    const externalBooking = externalBookingResponse.data
+      .data as ExternalBookingApiResponse;
+    const resourceResponse = await z.request({
+      url: `https://api.cobot.me/resources/${externalBooking.relationships.resource.data.id}`,
+      method: "GET",
+      headers: {
+        Accept: "application/vnd.api+json",
+      },
+    });
+    if (resourceResponse.status !== 200) {
+      return null;
+    }
+    const resource = resourceResponse.data.data as ResourceApiResponse;
+    return { ...externalBooking, resource };
   }
+  return null;
 };
 
 export const createActivity = async (
