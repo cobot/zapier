@@ -7,7 +7,7 @@ const AUTHORIZE_URL = `${BASE_URL}/oauth/authorize`;
 const ACCESS_TOKEN_URL = `${BASE_URL}/oauth/access_token`;
 const TEST_AUTH_URL = `${BASE_URL}/api/user`;
 const scopes =
-  "read read_admins read_bookings read_external_bookings read_memberships read_spaces read_user write_activities write_subscriptions";
+  "read read_admins read_bookings read_external_bookings read_memberships read_resources read_spaces read_user write_activities write_subscriptions";
 
 const getAccessToken = async (
   z: ZObject,
