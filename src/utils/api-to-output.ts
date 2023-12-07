@@ -2,7 +2,12 @@ import {
   BookingApiResponse,
   MembershipApiResponse,
 } from "../types/api-responses";
-import { BookingOutput, MembershipOutput } from "../types/outputs";
+import {
+  BookingOutput,
+  ExternalBookingOutput,
+  MembershipOutput,
+} from "../types/outputs";
+import { ExternalBookingWithResourceApiResponse } from "./api";
 
 export function apiResponseToMembershipOutput(
   membership: MembershipApiResponse,
@@ -32,6 +37,31 @@ export function apiResponseToBookingOutput(
     comments: booking.comments,
     units: booking.units,
     member_name: booking.membership?.name ?? null,
+  };
+}
+
+export function apiResponseToExternalBookingOutput(
+  booking: ExternalBookingWithResourceApiResponse,
+): ExternalBookingOutput {
+  const atts = booking.attributes;
+  return {
+    id: booking.id,
+    from: atts.from,
+    to: atts.to,
+    title: atts.title,
+    resource_name: booking.resource.attributes.name,
+    net_price: atts.totalPrice.net,
+    gross_price: atts.totalPrice.gross,
+    currency: atts.totalPrice.currency,
+    comments: atts.comments,
+    number_of_visitors: atts.numberOfVisitors,
+    name: atts.name,
+    company: atts.company,
+    email: atts.email,
+    phone: atts.phone,
+    billing_address: atts.billingAddress,
+    status: atts.status,
+    extra_names: atts.bookingExtras.map((extra) => extra.name).join(", "),
   };
 }
 

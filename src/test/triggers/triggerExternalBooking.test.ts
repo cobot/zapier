@@ -2,7 +2,7 @@ import { createAppTester } from "zapier-platform-core";
 import * as nock from "nock";
 import App from "../../index";
 import { prepareMocksForWebhookSubscribeTest } from "../utils/prepareMocksForWebhookSubscribeTest";
-import triggerExternalBooking from "../../triggers/triggerExternalBooking";
+import triggerExternalBooking from "../../triggers/triggerExternalBookingCreated";
 
 const appTester = createAppTester(App);
 nock.disableNetConnect();

@@ -7,7 +7,7 @@ import triggerBookingCreated from "./triggers/triggerBookingCreated";
 import triggerBookingWillBegin from "./triggers/triggerBookingWillBegin";
 import triggerMembershipConfirmed from "./triggers/triggerMembershipConfirmed";
 import triggerMembershipPlanChanged from "./triggers/triggerMembershipPlanChanged";
-import triggerExternalBooking from "./triggers/triggerExternalBooking";
+import triggerExternalBooking from "./triggers/triggerExternalBookingCreated";
 import getSubdomains from "./triggers/dropdowns/getSubdomains";
 
 const { version } = require("../package.json");

@@ -1,3 +1,71 @@
+export type BookingApiResponse = {
+  id: string;
+  from: string;
+  to: string;
+  title: string | null;
+  resource: {
+    name: string;
+    id: string;
+  };
+  membership: {
+    id: string;
+    name: string;
+  } | null;
+  comments: string | null;
+  price: number;
+  currency: string;
+  units: number;
+};
+
+type Amount = {
+  net: string;
+  gross: string;
+  currency: string;
+  taxes: {
+    name: string;
+    amount: string;
+    rate: string;
+  }[];
+};
+
+export type ExternalBookingStatus = "approved" | "pending" | "canceled";
+
+export type ExternalBookingApiResponse = {
+  id: string;
+  attributes: {
+    from: string;
+    to: string;
+    title: string | null;
+    price: Amount;
+    totalPrice: Amount;
+    numberOfVisitors: number;
+    name: string | null;
+    company: string | null;
+    billingAddress: string;
+    phone: string | null;
+    email: string;
+    comments: string | null;
+    status: ExternalBookingStatus;
+    bookingExtras: {
+      name: string;
+      description: string;
+      pricing: {
+        amount: Amount;
+        toalAmount: Amount;
+        quantity: string;
+        unit: string;
+      };
+    }[];
+  };
+  relationships: {
+    resource: {
+      data: {
+        id: string;
+      };
+    };
+  };
+};
+
 export type MembershipApiResponse = {
   id: string;
   name: string;
@@ -20,21 +88,9 @@ export type MembershipApiResponse = {
   canceled_at: string | null;
 };
 
-export type BookingApiResponse = {
+type ResourceApiResponse = {
   id: string;
-  from: string;
-  to: string;
-  title: string | null;
-  resource: {
+  attributes: {
     name: string;
-    id: string;
   };
-  membership: {
-    id: string;
-    name: string;
-  } | null;
-  comments: string | null;
-  price: number;
-  currency: string;
-  units: number;
 };

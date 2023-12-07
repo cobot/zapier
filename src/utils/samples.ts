@@ -1,5 +1,8 @@
-import exp = require("constants");
-import { BookingOutput, MembershipOutput } from "../types/outputs";
+import {
+  BookingOutput,
+  ExternalBookingOutput,
+  MembershipOutput,
+} from "../types/outputs";
 
 export const bookingSample: BookingOutput = {
   id: "d58b612aaa62619aae546dd336587eb2",
@@ -12,6 +15,26 @@ export const bookingSample: BookingOutput = {
   member_name: "John Doe",
   comments: "coffee please",
   units: 1,
+};
+
+export const externalBookingSample: ExternalBookingOutput = {
+  id: "d58b612aaa62619aae546dd336587eb2",
+  from: "2012-04-12T12:00:00.000Z",
+  to: "2012-04-12T18:00:00.000Z",
+  title: "test booking",
+  resource_name: "Meeting Room",
+  net_price: "10.0",
+  gross_price: "12.0",
+  currency: "EUR",
+  name: "John Doe",
+  company: "ACME",
+  email: "kofi@jemzahif.gf",
+  phone: "(304) 862-4378",
+  status: "approved",
+  comments: "coffee please",
+  number_of_visitors: 3,
+  billing_address: "123 Main St",
+  extra_names: "Coffee, Tea",
 };
 
 export const membershipSample: MembershipOutput = {

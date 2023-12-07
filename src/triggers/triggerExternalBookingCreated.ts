@@ -1,8 +1,7 @@
 import { ZObject } from "zapier-platform-core";
 import { KontentBundle } from "../types/kontentBundle";
 import {
-  getExternalBookings,
-  listRecentBookings,
+  getExternalBooking,
   listRecentExternalBookings,
   subscribeHook,
   unsubscribeHook,
@@ -10,6 +9,9 @@ import {
 import { get } from "lodash";
 import { SubscribeBundleInputType } from "../types/subscribeType";
 import { getSubdomainField } from "../fields/getSudomainsField";
+import { externalBookingSample } from "../utils/samples";
+import { ExternalBookingOutput } from "../types/outputs";
+import { apiResponseToExternalBookingOutput } from "../utils/api-to-output";
 
 const hookLabel = "External Booking Created";
 const event = "created_booking";
@@ -32,11 +34,14 @@ async function unsubscribeHookExecute(
   return unsubscribeHook(z, bundle, webhook?.id ?? "");
 }
 
-async function parsePayload(z: ZObject, bundle: KontentBundle<{}>) {
+async function parsePayload(
+  z: ZObject,
+  bundle: KontentBundle<{}>,
+): Promise<ExternalBookingOutput[]> {
   const bookingId = get(bundle.cleanedRequest, "id");
-  const response = await getExternalBookings(z, bookingId);
+  const response = await getExternalBooking(z, bookingId);
   if (response) {
-    return [response];
+    return [apiResponseToExternalBookingOutput(response)];
   } else {
     return [];
   }
@@ -58,35 +63,14 @@ export default {
     performUnsubscribe: unsubscribeHookExecute,
 
     perform: parsePayload,
-    performList: (
+    performList: async (
       z: ZObject,
       bundle: KontentBundle<SubscribeBundleInputType>,
-    ) => listRecentExternalBookings(z, bundle),
-
-    sample: {
-      id: "d58b612aaa62619aae546dd336587eb2",
-      from: "2012-04-12T12:00:00.000Z",
-      to: "2012-04-12T12:00:00.000Z",
-      tax_rate: "20.0",
-      title: "test booking",
-      resource: {
-        name: "Meeting Room",
-        id: "12345",
-      },
-      price: 10.0,
-      has_custom_price: false,
-      currency: "EUR",
-      accounting_code: "B1",
-      membership: {
-        id: "123498y452346",
-        name: "John Doe",
-      },
-      url: "https://co-up.cobot.me/api/bookings/20723075",
-      can_change: true,
-      comments: "coffee please",
-      units: 1,
-      created_at: "2012-04-12T12:00:00.000Z",
-      updated_at: "2012-04-12T12:00:00.000Z",
+    ): Promise<ExternalBookingOutput[]> => {
+      const bookings = await listRecentExternalBookings(z, bundle);
+      return bookings.map(apiResponseToExternalBookingOutput);
     },
+
+    sample: externalBookingSample,
   },
 } as const;
