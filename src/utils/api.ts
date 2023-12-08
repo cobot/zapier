@@ -104,9 +104,9 @@ export const listRecentExternalBookings = async (
     (x) => get(x, "attributes.subdomain", "") === subdomain,
   );
   if (space) {
-    var spaceId = space.id;
+    const spaceId = space.id;
 
-    var [from, to] = getDateRange();
+    const [from, to] = getDateRange();
     const response = await z.request({
       url: `https://api.cobot.me/spaces/${spaceId}/external_bookings`,
       method: "GET",
@@ -159,7 +159,7 @@ export const getExternalBooking = async (
       Accept: "application/vnd.api+json",
     },
   });
-  if (bookingResponse.status !== 200) {
+  if (bookingResponse.status === 404) {
     return null;
   }
   const externalBookingId = get(
@@ -174,7 +174,7 @@ export const getExternalBooking = async (
         Accept: "application/vnd.api+json",
       },
     });
-    if (externalBookingResponse.status !== 200) {
+    if (externalBookingResponse.status === 404) {
       return null;
     }
 
@@ -187,7 +187,7 @@ export const getExternalBooking = async (
         Accept: "application/vnd.api+json",
       },
     });
-    if (resourceResponse.status !== 200) {
+    if (resourceResponse.status === 404) {
       return null;
     }
     const resource = resourceResponse.data.data as ResourceApiResponse;
