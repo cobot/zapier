@@ -11,6 +11,7 @@ import { SubscribeBundleInputType } from "../types/subscribeType";
 import { bookingSample } from "../utils/samples";
 import { BookingOutput } from "../types/outputs";
 import { apiResponseToBookingOutput } from "../utils/api-to-output";
+import { BookingApiResponse } from "../types/api-responses";
 
 const hookLabel = "Booking Created";
 const event = "created_booking";
@@ -38,7 +39,10 @@ async function parsePayload(
   bundle: KontentBundle<{}>,
 ): Promise<BookingOutput[]> {
   if (bundle.cleanedRequest) {
-    const booking = await apiCallUrl(z, bundle.cleanedRequest.url);
+    const booking = (await apiCallUrl(
+      z,
+      bundle.cleanedRequest.url,
+    )) as BookingApiResponse;
     return [apiResponseToBookingOutput(booking)];
   } else {
     return [];

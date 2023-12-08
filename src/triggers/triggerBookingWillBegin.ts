@@ -11,6 +11,7 @@ import { getSubdomainField } from "../fields/getSudomainsField";
 import { apiResponseToBookingOutput } from "../utils/api-to-output";
 import { BookingOutput } from "../types/outputs";
 import { bookingSample } from "../utils/samples";
+import { BookingApiResponse } from "../types/api-responses";
 
 const hookLabel = "Booking Will Begin";
 const event = "booking_will_begin";
@@ -38,7 +39,10 @@ async function parsePayload(
   bundle: KontentBundle<{}>,
 ): Promise<BookingOutput[]> {
   if (bundle.cleanedRequest) {
-    const booking = await apiCallUrl(z, bundle.cleanedRequest.url);
+    const booking = (await apiCallUrl(
+      z,
+      bundle.cleanedRequest.url,
+    )) as BookingApiResponse;
     return [apiResponseToBookingOutput(booking)];
   } else {
     return [];
