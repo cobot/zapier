@@ -12,6 +12,7 @@ import {
   ExternalBookingApiResponse,
   MembershipApiResponse,
   ResourceApiResponse,
+  UserApiResponse,
 } from "../types/api-responses";
 
 export const subscribeHook = async (
@@ -83,7 +84,7 @@ export const listMemberships = async (
   return response.data;
 };
 
-export const getUserDetailV2 = async (z: ZObject) => {
+export const getUserDetailV2 = async (z: ZObject): Promise<UserApiResponse> => {
   const response = await z.request({
     url: "https://api.cobot.me/user?include=adminOf",
     method: "GET",
@@ -136,10 +137,19 @@ export const listRecentExternalBookings = async (
       }),
       {},
     );
-    return bookings.map((booking) => ({
-      ...booking,
-      resource: resourcesById[booking.relationships.resource.data.id],
-    }));
+
+    return bookings
+      .map((booking) => {
+        const resource = resourcesById[booking.relationships.resource.data.id];
+        if (!resource) {
+          return null;
+        }
+        return {
+          ...booking,
+          resource,
+        };
+      })
+      .filter((x) => x);
   }
   return [];
 };

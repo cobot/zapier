@@ -94,3 +94,7 @@ type ResourceApiResponse = {
     name: string;
   };
 };
+
+type UserApiResponse = {
+  included: { id: string; attributes: { subdomain: string } }[];
+};
