@@ -2,6 +2,7 @@ import { ZObject } from "zapier-platform-core";
 import { KontentBundle } from "../../types/kontentBundle";
 import { OutputField } from "../../fields/output/outputField";
 import { OutputFromOutputFields } from "../../fields/output/outputFromOutputFields";
+import { PollingTrigger } from "../../types/trigger";
 
 const execute = (z: ZObject, bundle: KontentBundle<{}>): Output => {
   return bundle.authData.adminOf
@@ -26,7 +27,7 @@ const outputFields = [
 
 type Output = ReadonlyArray<OutputFromOutputFields<typeof outputFields>>;
 
-export default {
+const trigger: PollingTrigger = {
   key: "get_subdomains",
   noun: "Subdomain choice",
   display: {
@@ -43,4 +44,5 @@ export default {
     },
     outputFields,
   },
-} as const;
+};
+export default trigger;

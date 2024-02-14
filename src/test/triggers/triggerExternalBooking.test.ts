@@ -11,17 +11,18 @@ import {
   ResourceApiResponse,
   UserApiResponse,
 } from "../../types/api-responses";
+import { HookTrigger } from "../../types/trigger";
 
 const appTester = createAppTester(App);
 nock.disableNetConnect();
+const trigger = App.triggers[triggerExternalBooking.key] as HookTrigger;
 
 afterEach(() => nock.cleanAll());
 
 describe("triggerExternalBooking", () => {
-  it("creates new webhook upon through CM API upon subscribe", async () => {
+  it("creates new webhook through CM API upon subscribe", async () => {
     const bundle = prepareMocksForWebhookSubscribeTest("created_booking");
-    const subscribe =
-      App.triggers[triggerExternalBooking.key].operation.performSubscribe;
+    const subscribe = trigger.operation.performSubscribe;
 
     const result = await appTester(subscribe as any, bundle as any);
 
@@ -89,8 +90,7 @@ describe("triggerExternalBooking", () => {
       .get(/\/spaces\/space-1\/resources/)
       .reply(200, { data: [resourceResponse] });
 
-    const listRecentExternalBookings =
-      App.triggers[triggerExternalBooking.key].operation.performList;
+    const listRecentExternalBookings = trigger.operation.performList;
 
     const results = await appTester(
       listRecentExternalBookings as any,
@@ -120,7 +120,7 @@ describe("triggerExternalBooking", () => {
     ]);
   });
 
-  it("returns no booking if no matcyhing resource is found", async () => {
+  it("returns no booking if no matching resource is found", async () => {
     const bundle = prepareBundle();
     const userResponse: UserApiResponse = {
       included: [{ id: "space-1", attributes: { subdomain: "trial" } }],
@@ -177,8 +177,7 @@ describe("triggerExternalBooking", () => {
       .get(/\/spaces\/space-1\/resources/)
       .reply(200, { data: [resourceResponse] });
 
-    const listRecentExternalBookings =
-      App.triggers[triggerExternalBooking.key].operation.performList;
+    const listRecentExternalBookings = trigger.operation.performList;
 
     const results = await appTester(
       listRecentExternalBookings as any,

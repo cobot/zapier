@@ -7,7 +7,6 @@
     "lib": ["esnext", "DOM"],
     "outDir": "./lib",
     "rootDir": "./src",
-    "strict": false,
-    "noUncheckedIndexedAccess": true
+    "strict": true
   }
 }
