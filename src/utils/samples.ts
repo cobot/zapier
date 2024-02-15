@@ -1,5 +1,6 @@
 import {
   BookingOutput,
+  EventOutput,
   ExternalBookingOutput,
   MembershipOutput,
 } from "../types/outputs";
@@ -15,6 +16,21 @@ export const bookingSample: BookingOutput = {
   member_name: "John Doe",
   comments: "coffee please",
   units: 1,
+};
+
+export const eventSample: EventOutput = {
+  id: "d58b612aaa62619aae546dd336587eb2",
+  title: "test event",
+  description: "test event description",
+  from: "2012-04-12T12:00:00.000Z",
+  to: "2012-04-12T18:00:00.000Z",
+  tags: ["tag1", "tag2"],
+  video_url: "https://us06web.zoom.us/j/8582118861",
+  image_url: "https://www.example.com/image.jpg",
+  capacity: 10,
+  public_url: "https://example.cobot.me/event/example-event",
+  audience: "membersOnly",
+  color: "#ff0000",
 };
 
 export const externalBookingSample: ExternalBookingOutput = {

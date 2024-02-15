@@ -12,6 +12,7 @@ import { getSubdomainField } from "../fields/getSudomainsField";
 import { externalBookingSample } from "../utils/samples";
 import { ExternalBookingOutput } from "../types/outputs";
 import { apiResponseToExternalBookingOutput } from "../utils/api-to-output";
+import { HookTrigger } from "../types/trigger";
 
 const hookLabel = "External Booking Created";
 const event = "created_booking";
@@ -47,7 +48,7 @@ async function parsePayload(
   }
 }
 
-export default {
+const trigger: HookTrigger = {
   key: `${event}_external`,
   noun: hookLabel,
   display: {
@@ -73,4 +74,5 @@ export default {
 
     sample: externalBookingSample,
   },
-} as const;
+};
+export default trigger;

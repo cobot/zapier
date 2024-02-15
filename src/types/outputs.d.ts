@@ -13,6 +13,21 @@ export type BookingOutput = {
   member_name: string | null;
 };
 
+export type EventOutput = {
+  id: string;
+  title: string;
+  from: string;
+  to: string;
+  description: string | null;
+  tags: string[];
+  video_url: string | null;
+  capacity: number | null;
+  public_url: string | null;
+  audience: "membersOnly" | "public";
+  color: string;
+  image_url: string | null;
+};
+
 export type ExternalBookingOutput = {
   id: string;
   from: string;

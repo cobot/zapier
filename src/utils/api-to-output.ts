@@ -1,9 +1,11 @@
 import {
   BookingApiResponse,
+  EventApiResponse,
   MembershipApiResponse,
 } from "../types/api-responses";
 import {
   BookingOutput,
+  EventOutput,
   ExternalBookingOutput,
   MembershipOutput,
 } from "../types/outputs";
@@ -20,6 +22,24 @@ export function apiResponseToMembershipOutput(
     customer_number: membership.customer_number,
     plan_name: membership.plan.name,
     payment_method_name: membership.payment_method?.name ?? null,
+  };
+}
+
+export function apiResponseToEventOutput(event: EventApiResponse): EventOutput {
+  const attributes = event.attributes;
+  return {
+    id: event.id,
+    title: attributes.title,
+    from: timeToIso8601(attributes.from),
+    to: timeToIso8601(attributes.to),
+    description: attributes.description,
+    tags: attributes.tags,
+    video_url: attributes.videoUrl,
+    capacity: attributes.capacity,
+    public_url: attributes.publicUrl,
+    audience: attributes.audience,
+    color: attributes.color,
+    image_url: attributes.image?.default.url || null,
   };
 }
 

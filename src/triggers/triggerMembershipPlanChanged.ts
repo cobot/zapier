@@ -11,6 +11,7 @@ import { getSubdomainField } from "../fields/getSudomainsField";
 import { MembershipOutput } from "../types/outputs";
 import { apiResponseToMembershipOutput } from "../utils/api-to-output";
 import { membershipSample } from "../utils/samples";
+import { HookTrigger } from "../types/trigger";
 
 const hookLabel = "Membership Plan Change Date Reached";
 const event = "membership_plan_change_date_reached";
@@ -45,7 +46,7 @@ async function parsePayload(
   }
 }
 
-export default {
+const trigger: HookTrigger = {
   key: event,
   noun: hookLabel,
   display: {
@@ -71,4 +72,5 @@ export default {
 
     sample: membershipSample,
   },
-} as const;
+};
+export default trigger;

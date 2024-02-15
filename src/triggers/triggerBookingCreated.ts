@@ -12,6 +12,7 @@ import { bookingSample } from "../utils/samples";
 import { BookingOutput } from "../types/outputs";
 import { apiResponseToBookingOutput } from "../utils/api-to-output";
 import { BookingApiResponse } from "../types/api-responses";
+import { HookTrigger } from "../types/trigger";
 
 const hookLabel = "Booking Created";
 const event = "created_booking";
@@ -49,7 +50,7 @@ async function parsePayload(
   }
 }
 
-export default {
+const trigger: HookTrigger = {
   key: event,
   noun: hookLabel,
   display: {
@@ -74,4 +75,5 @@ export default {
     },
     sample: bookingSample,
   },
-} as const;
+};
+export default trigger;

@@ -9,17 +9,36 @@ import { get } from "lodash";
 import { DateTime } from "luxon";
 import {
   BookingApiResponse,
+  EventApiResponse,
   ExternalBookingApiResponse,
   MembershipApiResponse,
   ResourceApiResponse,
   UserApiResponse,
 } from "../types/api-responses";
 
+type Space = {
+  id: string;
+  attributes: {
+    subdomain: string;
+  };
+};
+
+const spaceForSubdomain = async (
+  z: ZObject,
+  subdomain: string,
+): Promise<Space | undefined> => {
+  const userV2 = await getUserDetailV2(z);
+  var space = userV2.included.find(
+    (x) => get(x, "attributes.subdomain", "") === subdomain,
+  );
+  return space;
+};
+
 export const subscribeHook = async (
   z: ZObject,
   bundle: KontentBundle<SubscribeBundleInputType>,
   data: SubscribePayloadType,
-) => {
+): Promise<any> => {
   const url = `https://${bundle.inputData.subdomain}.cobot.me/api/subscriptions`;
   const response = await z.request({
     url,
@@ -34,7 +53,7 @@ export const unsubscribeHook = async (
   z: ZObject,
   bundle: KontentBundle<SubscribeBundleInputType>,
   subscribeId: string,
-) => {
+): Promise<any> => {
   const url = `https://${bundle.inputData.subdomain}.cobot.me/api/subscriptions/${subscribeId}`;
   return await z.request({
     url,
@@ -72,6 +91,34 @@ export const listRecentBookings = async (
   return response.data;
 };
 
+export const listRecentEvents = async (
+  z: ZObject,
+  bundle: KontentBundle<SubscribeBundleInputType>,
+): Promise<EventApiResponse[]> => {
+  const subdomain = bundle.inputData.subdomain;
+  const space = await spaceForSubdomain(z, subdomain);
+  if (space) {
+    const spaceId = space.id;
+
+    const [from, to] = getDateRange();
+    const response = await z.request({
+      url: `https://api.cobot.me/spaces/${spaceId}/events`,
+      method: "GET",
+      headers: {
+        Accept: "application/vnd.api+json",
+      },
+      params: {
+        "filter[from]": from,
+        "filter[to]": to,
+        "filter[sortOrder]": "desc",
+        "filter[publishedState]": "published",
+      },
+    });
+    return response.data.data as EventApiResponse[];
+  }
+  return [];
+};
+
 export const listMemberships = async (
   z: ZObject,
   bundle: KontentBundle<SubscribeBundleInputType>,
@@ -100,10 +147,7 @@ export const listRecentExternalBookings = async (
   bundle: KontentBundle<SubscribeBundleInputType>,
 ): Promise<ExternalBookingWithResourceApiResponse[]> => {
   const subdomain = bundle.inputData.subdomain;
-  const userV2 = await getUserDetailV2(z);
-  var space = userV2.included.find(
-    (x) => get(x, "attributes.subdomain", "") === subdomain,
-  );
+  const space = await spaceForSubdomain(z, subdomain);
   if (space) {
     const spaceId = space.id;
 
@@ -130,13 +174,14 @@ export const listRecentExternalBookings = async (
         },
       })
     ).data.data as ResourceApiResponse[];
-    const resourcesById = resourcesResponse.reduce(
-      (acc, resource) => ({
-        ...acc,
-        [resource.id]: resource,
-      }),
-      {},
-    );
+    const resourcesById: { [propName: string]: ResourceApiResponse | null } =
+      resourcesResponse.reduce(
+        (acc, resource) => ({
+          ...acc,
+          [resource.id]: resource,
+        }),
+        {},
+      );
 
     return bookings
       .map((booking) => {
@@ -149,10 +194,14 @@ export const listRecentExternalBookings = async (
           resource,
         };
       })
-      .filter((x) => x);
+      .filter(notEmpty);
   }
   return [];
 };
+
+function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
+  return value !== null && value !== undefined;
+}
 
 export type ExternalBookingWithResourceApiResponse =
   ExternalBookingApiResponse & { resource: ResourceApiResponse };

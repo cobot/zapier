@@ -3,6 +3,7 @@ import * as nock from "nock";
 import App from "../../index";
 import { prepareMocksForWebhookSubscribeTest } from "../utils/prepareMocksForWebhookSubscribeTest";
 import triggerMembershipConfirmed from "../../triggers/triggerMembershipConfirmed";
+import { HookTrigger } from "../../types/trigger";
 
 const appTester = createAppTester(App);
 nock.disableNetConnect();
@@ -10,12 +11,13 @@ nock.disableNetConnect();
 afterEach(() => nock.cleanAll());
 
 describe("triggerMembershipConfirmed", () => {
-  it("creates new webhook upon through CM API upon subscribe", async () => {
+  it("creates new webhook through CM API upon subscribe", async () => {
     const bundle = prepareMocksForWebhookSubscribeTest(
       triggerMembershipConfirmed.key,
     );
-    const subscribe =
-      App.triggers[triggerMembershipConfirmed.key].operation.performSubscribe;
+    const subscribe = (
+      App.triggers[triggerMembershipConfirmed.key] as HookTrigger
+    ).operation.performSubscribe;
 
     const result = await appTester(subscribe as any, bundle as any);
 

@@ -2,19 +2,20 @@ import { ZObject } from "zapier-platform-core";
 import { KontentBundle } from "../types/kontentBundle";
 import {
   apiCallUrl,
-  listMemberships,
+  listRecentEvents,
   subscribeHook,
   unsubscribeHook,
 } from "../utils/api";
 import { SubscribeBundleInputType } from "../types/subscribeType";
 import { getSubdomainField } from "../fields/getSudomainsField";
-import { MembershipOutput } from "../types/outputs";
-import { apiResponseToMembershipOutput } from "../utils/api-to-output";
-import { membershipSample } from "../utils/samples";
-import { HookTrigger } from "../types/trigger";
+import { EventOutput } from "../types/outputs";
+import { EventApiResponse } from "../types/api-responses";
+import { apiResponseToEventOutput } from "../utils/api-to-output";
+import { eventSample } from "../utils/samples";
+import { HookTrigger, Trigger } from "../types/trigger";
 
-const hookLabel = "Membership Confirmed";
-const event = "confirmed_membership";
+const hookLabel = "Event Published";
+const event = "published_event";
 
 async function subscribeHookExecute(
   z: ZObject,
@@ -37,10 +38,13 @@ async function unsubscribeHookExecute(
 async function parsePayload(
   z: ZObject,
   bundle: KontentBundle<{}>,
-): Promise<MembershipOutput[]> {
+): Promise<EventOutput[]> {
   if (bundle.cleanedRequest) {
-    const membership = await apiCallUrl(z, bundle.cleanedRequest.url);
-    return [apiResponseToMembershipOutput(membership)];
+    const event = (await apiCallUrl(
+      z,
+      bundle.cleanedRequest.url,
+    )) as EventApiResponse;
+    return [apiResponseToEventOutput(event)];
   } else {
     return [];
   }
@@ -51,7 +55,7 @@ const trigger: HookTrigger = {
   noun: hookLabel,
   display: {
     label: hookLabel,
-    description: "Triggers when a membership is confirmed.",
+    description: "Triggers when an admin publishes an event.",
   },
   operation: {
     type: "hook",
@@ -65,12 +69,13 @@ const trigger: HookTrigger = {
     performList: async (
       z: ZObject,
       bundle: KontentBundle<SubscribeBundleInputType>,
-    ): Promise<MembershipOutput[]> => {
-      const apiMemberships = await listMemberships(z, bundle);
-      return apiMemberships.map((m) => apiResponseToMembershipOutput(m));
+    ): Promise<EventOutput[]> => {
+      const apiEvents = await listRecentEvents(z, bundle);
+      return apiEvents.map((e: EventApiResponse) =>
+        apiResponseToEventOutput(e),
+      );
     },
-
-    sample: membershipSample,
+    sample: eventSample,
   },
 };
 export default trigger;

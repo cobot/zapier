@@ -28,6 +28,37 @@ type Amount = {
   }[];
 };
 
+type PhotoItem = {
+  url: string;
+  width: number;
+  height: number;
+};
+
+type Photo = {
+  icon: PhotoItem;
+  default: PhotoItem;
+  small: PhotoItem;
+  medium: PhotoItem;
+  large: PhotoItem;
+};
+
+export type EventApiResponse = {
+  id: string;
+  attributes: {
+    title: string;
+    from: string;
+    to: string;
+    description: string | null;
+    tags: string[];
+    videoUrl: string | null;
+    capacity: number | null;
+    publicUrl: string | null;
+    audience: "membersOnly" | "public";
+    color: string;
+    image: Photo | null;
+  };
+};
+
 export type ExternalBookingStatus = "approved" | "pending" | "canceled";
 
 export type ExternalBookingApiResponse = {
