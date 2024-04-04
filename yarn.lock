@@ -8298,10 +8298,10 @@ yocto-queue@^0.1.0:
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
-zapier-platform-cli@^15.5.3:
-  version "15.5.3"
-  resolved "https://registry.yarnpkg.com/zapier-platform-cli/-/zapier-platform-cli-15.5.3.tgz#3b33c0b7acd0eb2ffb777a9bc318bc794ede8f2e"
-  integrity sha512-utqvhui4p2hkPVxyixqV2HfJ7VJ0+AKgtJBMikCY9RqjOzy5ce8FXMv/vlneziaI7vnnX/VEQKnE3Q1Eoce0GA==
+zapier-platform-cli@^15.6.2:
+  version "15.6.2"
+  resolved "https://registry.yarnpkg.com/zapier-platform-cli/-/zapier-platform-cli-15.6.2.tgz#356a2af57d2a443f93c26385705499f17501533c"
+  integrity sha512-4tsjYRFIP/2wwrc+DXowtyRESgRm521sq8MZr4qricIhMIO9Eoz4AcxsVzD3WsSFf/4Lc38j9eRhGKFIu/B2jQ==
   dependencies:
     "@oclif/command" "1.8.27"
     "@oclif/config" "1.18.10"
