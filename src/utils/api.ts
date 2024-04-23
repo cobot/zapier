@@ -14,6 +14,7 @@ import {
   MembershipApiResponse,
   ResourceApiResponse,
   UserApiResponse,
+  InvoiceApiResponse,
 } from "../types/api-responses";
 
 type Space = {
@@ -140,6 +141,29 @@ export const getUserDetailV2 = async (z: ZObject): Promise<UserApiResponse> => {
     },
   });
   return response.data;
+};
+
+export const listRecentInvoices = async (
+  z: ZObject,
+  bundle: KontentBundle<SubscribeBundleInputType>,
+): Promise<InvoiceApiResponse[]> => {
+  const subdomain = bundle.inputData.subdomain;
+  const space = await spaceForSubdomain(z, subdomain);
+  if (!space) return [];
+  const spaceId = space.id;
+  const [from, to] = getDateRange();
+  const response = await z.request({
+    url: `https://api.cobot.me/spaces/${spaceId}/invoices`,
+    method: "GET",
+    headers: {
+      Accept: "application/vnd.api+json",
+    },
+    params: {
+      "filter[from]": from,
+      "filter[to]": to,
+    },
+  });
+  return response.data.data;
 };
 
 export const listRecentExternalBookings = async (

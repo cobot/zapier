@@ -1,4 +1,4 @@
-import { ExternalBookingStatus } from "./api-responses";
+import { ExternalBookingStatus, BaseInvoiceProperties } from "./api-responses";
 
 export type BookingOutput = {
   id: string;
@@ -56,4 +56,9 @@ export type MembershipOutput = {
   customer_number: string | null;
   plan_name: string;
   payment_method_name: string | null;
+};
+
+export type InvoiceOutput = BaseInvoiceProperties & {
+  membershipId: string;
+  id: string;
 };
