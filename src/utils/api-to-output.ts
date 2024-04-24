@@ -34,7 +34,7 @@ export function apiResponseToInvoiceOutput(
   return {
     ...attributes,
     id: invoice.id,
-    membershipId: invoice.relationships.membership?.data?.id,
+    membershipId: invoice.relationships?.membership?.data?.id ?? undefined,
   };
 }
 

@@ -230,6 +230,23 @@ function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
 export type ExternalBookingWithResourceApiResponse =
   ExternalBookingApiResponse & { resource: ResourceApiResponse };
 
+export const getInvoiceFromApi2 = async (
+  z: ZObject,
+  invoiceId: string,
+): Promise<InvoiceApiResponse | null> => {
+  const response = await z.request({
+    url: `https://api.cobot.me/invoices/${invoiceId}`,
+    method: "GET",
+    headers: {
+      Accept: "application/vnd.api+json",
+    },
+  });
+  if (response.status === 404) {
+    return null;
+  }
+  return response.data.data as InvoiceApiResponse;
+};
+
 export const getExternalBooking = async (
   z: ZObject,
   bookingId: string,

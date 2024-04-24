@@ -1,10 +1,10 @@
 import { ZObject } from "zapier-platform-core";
 import { KontentBundle } from "../types/kontentBundle";
 import {
-  apiCallUrl,
   listRecentInvoices,
   subscribeHook,
   unsubscribeHook,
+  getInvoiceFromApi2,
 } from "../utils/api";
 import { SubscribeBundleInputType } from "../types/subscribeType";
 import { getSubdomainField } from "../fields/getSudomainsField";
@@ -39,12 +39,10 @@ async function parsePayload(
   z: ZObject,
   bundle: KontentBundle<{}>,
 ): Promise<InvoiceOutput[]> {
-  if (bundle.cleanedRequest) {
-    const invoice = (await apiCallUrl(
-      z,
-      bundle.cleanedRequest.url,
-    )) as InvoiceApiResponse;
-    return [apiResponseToInvoiceOutput(invoice)];
+  const invoiceId = bundle.cleanedRequest.url.split("/").pop();
+  const response = await getInvoiceFromApi2(z, invoiceId);
+  if (response) {
+    return [apiResponseToInvoiceOutput(response)];
   } else {
     return [];
   }

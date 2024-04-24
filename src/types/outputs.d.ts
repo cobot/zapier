@@ -59,6 +59,6 @@ export type MembershipOutput = {
 };
 
 export type InvoiceOutput = BaseInvoiceProperties & {
-  membershipId: string;
+  membershipId?: string;
   id: string;
 };
