@@ -123,4 +123,90 @@ describe("triggerInvoiceCreated", () => {
       },
     ]);
   });
+
+  it("triggers on new invoice", async () => {
+    const bundle = prepareBundle();
+    const attributes: BaseInvoiceProperties = {
+      invoiceDate: "2024-12-20T06:22:29+01:00",
+      paidStatus: "paid",
+      dueDate: "2024-12-30T08:22:29+01:00",
+      number: "1",
+      sentStatus: "sent",
+      taxIdName: "taxIdName",
+      canCharge: true,
+      recipientAddress: {
+        company: "company",
+        name: "name",
+        fullAddress: "fullAddress",
+      },
+      senderAddress: {
+        company: "company",
+        name: "name",
+        fullAddress: "fullAddress",
+      },
+      items: [
+        {
+          description: "item 1",
+          quantity: "1",
+          paid: true,
+          accountingCode: null,
+          amount: {
+            net: "100",
+            gross: "100",
+            currency: "EUR",
+            taxes: [],
+          },
+          totalAmount: {
+            net: "100",
+            gross: "100",
+            currency: "EUR",
+            taxes: [],
+          },
+        },
+      ],
+      payableAmount: "100",
+      paidAmount: "100",
+      totalAmount: {
+        net: "100",
+        gross: "100",
+        currency: "EUR",
+        taxes: [],
+      },
+      invoiceText: "invoiceText",
+      paidDate: "2024-12-22T06:22:29+01:00",
+      taxId: null,
+      chargeAt: null,
+      customerNumber: null,
+      notes: null,
+    };
+    const invoiceResponse: InvoiceApiResponse = {
+      id: "1",
+      attributes,
+      relationships: {
+        membership: {
+          data: {
+            id: "membership-1",
+          },
+        },
+      },
+    };
+
+    const scope = nock("https://api.cobot.me");
+    scope.get("/invoices/12345").reply(200, { data: invoiceResponse });
+
+    const results = await appTester(
+      triggerInvoiceCreated.operation.perform as any,
+      bundle as any,
+    );
+
+    expect(nock.isDone()).toBe(true);
+
+    expect(results).toStrictEqual([
+      {
+        ...attributes,
+        id: "1",
+        membershipId: "membership-1",
+      },
+    ]);
+  });
 });

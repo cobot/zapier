@@ -20,6 +20,9 @@ export const prepareBundle = (): KontentBundle<SubscribeBundleInputType> => {
       ...mockBundle.inputData,
       subdomain: "trial",
     },
+    cleanedRequest: {
+      url: "https://trial.cobot.me/api/event/12345",
+    },
     targetUrl: "https://test-url.test",
   };
 

@@ -65,7 +65,7 @@ type Address = {
   fullAddress: string | null;
 };
 
-type InvoiceItems = {
+type InvoiceItem = {
   description: string;
   paid: boolean;
   quantity: string;
@@ -96,7 +96,7 @@ export type BaseInvoiceProperties = {
   recipientAddress: Address;
   senderAddress: Address;
   notes: string | null;
-  items: InvoiceItems[];
+  items: InvoiceItem[];
   payableAmount: string;
   paidAmount: string;
   totalAmount: Amount;

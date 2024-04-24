@@ -151,7 +151,7 @@ export const listRecentInvoices = async (
   const space = await spaceForSubdomain(z, subdomain);
   if (!space) return [];
   const spaceId = space.id;
-  const [from, to] = getDateRange("yyyy-MM-dd");
+  const [from, to] = getDateRange(true);
   const response = await z.request({
     url: `https://api.cobot.me/spaces/${spaceId}/invoices`,
     method: "GET",
@@ -314,12 +314,12 @@ export const createActivity = async (
   return object;
 };
 
-const getDateRange = (format?: string): [string, string] => {
+const getDateRange = (useISODate = false): [string, string] => {
   const now = DateTime.now();
   const lastMonth = now.minus({ months: 1 });
   const nextMonth = now.plus({ months: 1 });
-  if (!format) {
+  if (!useISODate) {
     return [lastMonth.toISO(), nextMonth.toISO()];
   }
-  return [lastMonth.toFormat(format), nextMonth.toFormat(format)];
+  return [lastMonth.toISODate(), nextMonth.toISODate()];
 };
