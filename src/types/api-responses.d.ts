@@ -59,6 +59,57 @@ export type EventApiResponse = {
   };
 };
 
+type Address = {
+  company: string | null;
+  name: string | null;
+  fullAddress: string | null;
+};
+
+type InvoiceItem = {
+  description: string;
+  paid: boolean;
+  quantity: string;
+  accountingCode: string | null;
+  amount: Amount;
+  totalAmount: Amount;
+};
+
+type Relationship = {
+  data: {
+    id: string;
+  };
+};
+
+export type BaseInvoiceProperties = {
+  invoiceText: string | null;
+  invoiceDate: string;
+  paidDate: string | null;
+  paidStatus: "unpaid" | "paid" | "pending" | "canceled" | "writtenOff";
+  dueDate: string;
+  number: string;
+  sentStatus: "sent" | "sending" | "unsent" | "failedToSend";
+  taxId: string | null;
+  taxIdName: string;
+  chargeAt: string | null;
+  canCharge: boolean;
+  customerNumber: string | null;
+  recipientAddress: Address;
+  senderAddress: Address;
+  notes: string | null;
+  items: InvoiceItem[];
+  payableAmount: string;
+  paidAmount: string;
+  totalAmount: Amount;
+};
+
+export type InvoiceApiResponse = {
+  id: string;
+  attributes: BaseInvoiceProperties;
+  relationships: {
+    membership: Relationship;
+  };
+};
+
 export type ExternalBookingStatus = "approved" | "pending" | "canceled";
 
 export type ExternalBookingApiResponse = {

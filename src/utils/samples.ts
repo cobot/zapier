@@ -3,6 +3,7 @@ import {
   EventOutput,
   ExternalBookingOutput,
   MembershipOutput,
+  InvoiceOutput,
 } from "../types/outputs";
 
 export const bookingSample: BookingOutput = {
@@ -61,4 +62,78 @@ export const membershipSample: MembershipOutput = {
   customer_number: "123",
   plan_name: "Full Time",
   payment_method_name: "Credit Card",
+};
+
+export const invoiceSample: InvoiceOutput = {
+  id: "14c12f62ac8df98d29de357180d673e1",
+  invoiceText: "Thanks for your business!",
+  invoiceDate: "2019-01-10",
+  paidDate: null,
+  dueDate: "2019-01-10",
+  number: "CW-2019-100",
+  taxId: "DE12345",
+  taxIdName: "UID",
+  customerNumber: "100",
+  membershipId: "c9a99a71ac8df98d29de357180d273d3",
+  recipientAddress: {
+    name: "Jane Smith",
+    company: "Acme Inc.",
+    fullAddress: "2 Coworking Road",
+  },
+  senderAddress: {
+    name: null,
+    company: "Coworking Ltd.",
+    fullAddress: "1 Coworking Road",
+  },
+  notes: "Customer will pay later.",
+  items: [
+    {
+      description: "2h meeting room",
+      quantity: "2.0",
+      accountingCode: "MTR-200",
+      paid: false,
+      amount: {
+        net: "20.0",
+        gross: "22.0",
+        currency: "EUR",
+        taxes: [
+          {
+            name: "VAT",
+            rate: "10.0",
+            amount: "2.0",
+          },
+        ],
+      },
+      totalAmount: {
+        net: "40.0",
+        gross: "44.0",
+        currency: "EUR",
+        taxes: [
+          {
+            name: "VAT",
+            rate: "10.0",
+            amount: "4.0",
+          },
+        ],
+      },
+    },
+  ],
+  payableAmount: "44.0",
+  paidAmount: "0.0",
+  paidStatus: "unpaid",
+  chargeAt: "2019-01-02T11:00:00Z",
+  canCharge: true,
+  sentStatus: "unsent",
+  totalAmount: {
+    net: "40.0",
+    gross: "44.0",
+    currency: "EUR",
+    taxes: [
+      {
+        name: "VAT",
+        rate: "10.0",
+        amount: "4.0",
+      },
+    ],
+  },
 };

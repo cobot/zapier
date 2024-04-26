@@ -2,12 +2,14 @@ import {
   BookingApiResponse,
   EventApiResponse,
   MembershipApiResponse,
+  InvoiceApiResponse,
 } from "../types/api-responses";
 import {
   BookingOutput,
   EventOutput,
   ExternalBookingOutput,
   MembershipOutput,
+  InvoiceOutput,
 } from "../types/outputs";
 import { ExternalBookingWithResourceApiResponse } from "./api";
 
@@ -22,6 +24,17 @@ export function apiResponseToMembershipOutput(
     customer_number: membership.customer_number,
     plan_name: membership.plan.name,
     payment_method_name: membership.payment_method?.name ?? null,
+  };
+}
+
+export function apiResponseToInvoiceOutput(
+  invoice: InvoiceApiResponse,
+): InvoiceOutput {
+  const attributes = invoice.attributes;
+  return {
+    ...attributes,
+    id: invoice.id,
+    membershipId: invoice.relationships?.membership?.data?.id ?? undefined,
   };
 }
 
