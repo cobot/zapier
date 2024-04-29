@@ -163,7 +163,40 @@ export const listRecentInvoices = async (
       "filter[to]": to,
     },
   });
-  return response.data.data;
+  const invoices = response.data.data as InvoiceApiResponse[];
+  const membershipPromises: Promise<InvoiceApiResponse>[] = [];
+  const api1MembershipUrl = `https://${subdomain}.cobot.me/api/memberships`;
+  invoices.forEach((invoice) => {
+    membershipPromises.push(
+      loadMembershipEmailOnInvoice(z, api1MembershipUrl, invoice),
+    );
+  });
+  await Promise.all(membershipPromises);
+  return invoices;
+};
+
+const loadMembershipEmailOnInvoice = async (
+  z: ZObject,
+  api1MembershipUrl: string,
+  invoice: InvoiceApiResponse,
+): Promise<InvoiceApiResponse> => {
+  const membershipId = get(invoice, "relationships.membership.data.id");
+  if (!membershipId) {
+    return invoice;
+  }
+  const response = await z.request({
+    url: `${api1MembershipUrl}/${membershipId}`,
+    method: "GET",
+    headers: {
+      Accept: "application/vnd.api+json",
+    },
+  });
+  const email = response.data.email;
+  const membership = {
+    email,
+  };
+  invoice.attributes = { ...invoice.attributes, membership };
+  return invoice;
 };
 
 export const listRecentExternalBookings = async (
@@ -233,6 +266,7 @@ export type ExternalBookingWithResourceApiResponse =
 export const getInvoiceFromApi2 = async (
   z: ZObject,
   invoiceId: string,
+  api1MembershipUrl: string,
 ): Promise<InvoiceApiResponse | null> => {
   const response = await z.request({
     url: `https://api.cobot.me/invoices/${invoiceId}`,
@@ -244,7 +278,9 @@ export const getInvoiceFromApi2 = async (
   if (response.status === 404) {
     return null;
   }
-  return response.data.data as InvoiceApiResponse;
+  const invoice = response.data.data as InvoiceApiResponse;
+  await loadMembershipEmailOnInvoice(z, api1MembershipUrl, invoice);
+  return invoice;
 };
 
 export const getExternalBooking = async (

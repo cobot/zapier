@@ -79,6 +79,11 @@ const invoiceResponse: InvoiceApiResponse = {
   },
 };
 
+const membershipProfile = {
+  id: "membership-1",
+  email: "test@best.com",
+};
+
 const appTester = createAppTester(App);
 nock.disableNetConnect();
 const trigger = App.triggers[triggerInvoiceCreated.key] as HookTrigger;
@@ -106,30 +111,40 @@ describe("triggerInvoiceCreated", () => {
     const userResponse: UserApiResponse = {
       included: [{ id: "space-1", attributes: { subdomain: "trial" } }],
     };
-    const scope = nock("https://api.cobot.me");
-    scope.get("/user?include=adminOf").reply(200, userResponse);
-    scope
+    const api2Scope = nock("https://api.cobot.me");
+    const api1Scope = nock("https://trial.cobot.me");
+    api2Scope.get("/user?include=adminOf").reply(200, userResponse);
+    api1Scope
+      .get("/api/memberships/membership-1")
+      .reply(200, membershipProfile);
+    api2Scope
       .get(/\/spaces\/space-1\/invoices/)
       .reply(200, { data: [invoiceResponse] });
 
     const listRecentEvents = trigger.operation.performList;
 
     const results = await appTester(listRecentEvents as any, bundle as any);
-
+    expect(nock.isDone()).toBe(true);
     expect(results).toStrictEqual([
       {
         ...attributes,
         id: "1",
         membershipId: "membership-1",
+        membership: {
+          email: "test@best.com",
+        },
       },
     ]);
   });
 
   it("triggers on new invoice", async () => {
     const bundle = prepareBundle();
-    const scope = nock("https://api.cobot.me");
-    scope.get("/invoices/12345").reply(200, { data: invoiceResponse });
-
+    const api1Scope = nock("https://trial.cobot.me");
+    const api2Scope = nock("https://api.cobot.me");
+    api2Scope.get("/invoices/12345").reply(200, { data: invoiceResponse });
+    api1Scope
+      .get("/api/memberships/membership-1")
+      .reply(200, membershipProfile);
     const results = await appTester(
       triggerInvoiceCreated.operation.perform as any,
       bundle as any,
@@ -141,6 +156,9 @@ describe("triggerInvoiceCreated", () => {
       {
         ...attributes,
         id: "1",
+        membership: {
+          email: "test@best.com",
+        },
         membershipId: "membership-1",
       },
     ]);

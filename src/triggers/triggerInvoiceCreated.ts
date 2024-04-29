@@ -40,7 +40,9 @@ async function parsePayload(
   bundle: KontentBundle<{}>,
 ): Promise<InvoiceOutput[]> {
   const invoiceId = bundle.cleanedRequest.url.split("/").pop();
-  const response = await getInvoiceFromApi2(z, invoiceId);
+  const api1MembershipUrl =
+    new URL(bundle.cleanedRequest.url).origin + "/api/memberships";
+  const response = await getInvoiceFromApi2(z, invoiceId, api1MembershipUrl);
   if (response) {
     return [apiResponseToInvoiceOutput(response)];
   } else {
