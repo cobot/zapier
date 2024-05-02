@@ -58,7 +58,12 @@ export type MembershipOutput = {
   payment_method_name: string | null;
 };
 
+export type InvoiceMembershipOutput = {
+  membershipId: string;
+  email: string | null;
+};
+
 export type InvoiceOutput = BaseInvoiceProperties & {
-  membershipId?: string;
   id: string;
+  membership?: InvoiceMembershipOutput;
 };

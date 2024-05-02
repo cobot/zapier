@@ -79,7 +79,7 @@ const invoiceResponse: InvoiceApiResponse = {
   },
 };
 
-const membershipProfile = {
+const membership = {
   id: "membership-1",
   email: "test@best.com",
 };
@@ -114,9 +114,7 @@ describe("triggerInvoiceCreated", () => {
     const api2Scope = nock("https://api.cobot.me");
     const api1Scope = nock("https://trial.cobot.me");
     api2Scope.get("/user?include=adminOf").reply(200, userResponse);
-    api1Scope
-      .get("/api/memberships/membership-1")
-      .reply(200, membershipProfile);
+    api1Scope.get("/api/memberships/membership-1").reply(200, membership);
     api2Scope
       .get(/\/spaces\/space-1\/invoices/)
       .reply(200, { data: [invoiceResponse] });
@@ -129,8 +127,8 @@ describe("triggerInvoiceCreated", () => {
       {
         ...attributes,
         id: "1",
-        membershipId: "membership-1",
         membership: {
+          membershipId: "membership-1",
           email: "test@best.com",
         },
       },
@@ -142,9 +140,7 @@ describe("triggerInvoiceCreated", () => {
     const api1Scope = nock("https://trial.cobot.me");
     const api2Scope = nock("https://api.cobot.me");
     api2Scope.get("/invoices/12345").reply(200, { data: invoiceResponse });
-    api1Scope
-      .get("/api/memberships/membership-1")
-      .reply(200, membershipProfile);
+    api1Scope.get("/api/memberships/membership-1").reply(200, membership);
     const results = await appTester(
       triggerInvoiceCreated.operation.perform as any,
       bundle as any,
@@ -157,9 +153,9 @@ describe("triggerInvoiceCreated", () => {
         ...attributes,
         id: "1",
         membership: {
+          membershipId: "membership-1",
           email: "test@best.com",
         },
-        membershipId: "membership-1",
       },
     ]);
   });

@@ -100,9 +100,6 @@ export type BaseInvoiceProperties = {
   payableAmount: string;
   paidAmount: string;
   totalAmount: Amount;
-  membership?: {
-    email: string;
-  };
 };
 
 export type InvoiceApiResponse = {
