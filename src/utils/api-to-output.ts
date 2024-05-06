@@ -11,7 +11,9 @@ import {
   MembershipOutput,
   InvoiceOutput,
 } from "../types/outputs";
-import { ExternalBookingWithResourceApiResponse } from "./api";
+import { ZObject } from "zapier-platform-core";
+import { get } from "lodash";
+import { ExternalBookingWithResourceApiResponse, apiCallUrl } from "./api";
 
 export function apiResponseToMembershipOutput(
   membership: MembershipApiResponse,
@@ -27,14 +29,28 @@ export function apiResponseToMembershipOutput(
   };
 }
 
-export function apiResponseToInvoiceOutput(
+export async function apiResponseToInvoiceOutput(
+  z: ZObject,
   invoice: InvoiceApiResponse,
-): InvoiceOutput {
+  api1MembershipsUrl: string,
+): Promise<InvoiceOutput> {
   const attributes = invoice.attributes;
+  const membershipId = get(invoice, "relationships.membership.data.id");
+  if (!membershipId) {
+    return {
+      ...attributes,
+      id: invoice.id,
+    };
+  }
+  const url = `${api1MembershipsUrl}/${membershipId}`;
+  const membership: MembershipApiResponse = await apiCallUrl(z, url);
   return {
     ...attributes,
     id: invoice.id,
-    membershipId: invoice.relationships?.membership?.data?.id ?? undefined,
+    membership: {
+      id: membershipId,
+      email: membership.email,
+    },
   };
 }
 

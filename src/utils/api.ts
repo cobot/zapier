@@ -16,6 +16,7 @@ import {
   UserApiResponse,
   InvoiceApiResponse,
 } from "../types/api-responses";
+import { InvoiceMembershipOutput } from "../types/outputs";
 
 type Space = {
   id: string;
@@ -244,7 +245,7 @@ export const getInvoiceFromApi2 = async (
   if (response.status === 404) {
     return null;
   }
-  return response.data.data as InvoiceApiResponse;
+  return response.data.data;
 };
 
 export const getExternalBooking = async (
