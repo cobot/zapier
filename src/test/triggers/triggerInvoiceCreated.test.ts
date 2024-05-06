@@ -128,7 +128,7 @@ describe("triggerInvoiceCreated", () => {
         ...attributes,
         id: "1",
         membership: {
-          membershipId: "membership-1",
+          id: "membership-1",
           email: "test@best.com",
         },
       },
@@ -153,7 +153,7 @@ describe("triggerInvoiceCreated", () => {
         ...attributes,
         id: "1",
         membership: {
-          membershipId: "membership-1",
+          id: "membership-1",
           email: "test@best.com",
         },
       },

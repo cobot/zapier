@@ -167,25 +167,6 @@ export const listRecentInvoices = async (
   return response.data.data;
 };
 
-export const loadMembershipEmailOnInvoice = async (
-  z: ZObject,
-  membershipUrl: string,
-  membershipId: string,
-): Promise<InvoiceMembershipOutput> => {
-  const response = await z.request({
-    url: membershipUrl,
-    method: "GET",
-    headers: {
-      Accept: "application/vnd.api+json",
-    },
-  });
-  const email = response.data.email;
-  return {
-    email,
-    membershipId,
-  };
-};
-
 export const listRecentExternalBookings = async (
   z: ZObject,
   bundle: KontentBundle<SubscribeBundleInputType>,

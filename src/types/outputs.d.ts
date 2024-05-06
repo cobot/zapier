@@ -59,7 +59,7 @@ export type MembershipOutput = {
 };
 
 export type InvoiceMembershipOutput = {
-  membershipId: string;
+  id: string;
   email: string | null;
 };
 

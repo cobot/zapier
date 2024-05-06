@@ -75,7 +75,7 @@ export const invoiceSample: InvoiceOutput = {
   taxIdName: "UID",
   customerNumber: "100",
   membership: {
-    membershipId: "14c12f62ac8df98d29de357180d673e1",
+    id: "14c12f62ac8df98d29de357180d673e1",
     email: "joe@doe.com",
   },
   recipientAddress: {

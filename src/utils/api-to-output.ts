@@ -13,10 +13,7 @@ import {
 } from "../types/outputs";
 import { ZObject } from "zapier-platform-core";
 import { get } from "lodash";
-import {
-  ExternalBookingWithResourceApiResponse,
-  loadMembershipEmailOnInvoice,
-} from "./api";
+import { ExternalBookingWithResourceApiResponse, apiCallUrl } from "./api";
 
 export function apiResponseToMembershipOutput(
   membership: MembershipApiResponse,
@@ -46,11 +43,14 @@ export async function apiResponseToInvoiceOutput(
     };
   }
   const url = `${api1MembershipsUrl}/${membershipId}`;
-  const membership = await loadMembershipEmailOnInvoice(z, url, membershipId);
+  const membership: MembershipApiResponse = await apiCallUrl(z, url);
   return {
     ...attributes,
     id: invoice.id,
-    membership,
+    membership: {
+      id: membershipId,
+      email: membership.email,
+    },
   };
 }
 
