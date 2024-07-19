@@ -17,6 +17,19 @@ export type BookingApiResponse = {
   units: number;
 };
 
+export type BookingApi2Response = {
+  id: string;
+  type: "bookings";
+  relationships: {
+    externalBooking: {
+      data: {
+        id: string;
+        type: "externalBookings";
+      } | null;
+    };
+  };
+};
+
 type Amount = {
   net: string;
   gross: string;
