@@ -15,6 +15,7 @@ import {
   ResourceApiResponse,
   UserApiResponse,
   InvoiceApiResponse,
+  BookingApi2Response,
 } from "../types/api-responses";
 import { InvoiceMembershipOutput } from "../types/outputs";
 
@@ -263,8 +264,9 @@ export const getExternalBooking = async (
   if (bookingResponse.status === 404) {
     return null;
   }
+  const bookingData = bookingResponse.data as BookingApi2Response;
   const externalBookingId = get(
-    bookingResponse.data,
+    bookingData,
     "data.relationships.externalBooking.data.id",
   );
   if (externalBookingId) {

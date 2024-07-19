@@ -7,15 +7,80 @@ import {
 } from "../utils/prepareMocksForWebhookSubscribeTest";
 import triggerExternalBooking from "../../triggers/triggerExternalBookingCreated";
 import {
+  BookingApi2Response,
   ExternalBookingApiResponse,
   ResourceApiResponse,
   UserApiResponse,
 } from "../../types/api-responses";
 import { HookTrigger } from "../../types/trigger";
+import { ExternalBookingOutput } from "../../types/outputs";
 
 const appTester = createAppTester(App);
 nock.disableNetConnect();
 const trigger = App.triggers[triggerExternalBooking.key] as HookTrigger;
+
+const externalBookingResponse: ExternalBookingApiResponse = {
+  id: "eb1",
+  attributes: {
+    name: "Booking 1",
+    company: "Company 1",
+    billingAddress: "Billing Address",
+    phone: "123456789",
+    email: "",
+    from: "2021-01-01T00:00:00.000Z",
+    to: "2021-01-01T10:00:00.000Z",
+    title: null,
+    price: {
+      net: "100",
+      gross: "100",
+      currency: "EUR",
+      taxes: [],
+    },
+    totalPrice: {
+      net: "100",
+      gross: "100",
+      currency: "EUR",
+      taxes: [],
+    },
+    numberOfVisitors: 1,
+    comments: null,
+    status: "approved",
+    bookingExtras: [],
+  },
+  relationships: {
+    resource: {
+      data: {
+        id: "resource-1",
+      },
+    },
+  },
+};
+const resourceResponse: ResourceApiResponse = {
+  id: "resource-1",
+  attributes: {
+    name: "Resource 1",
+  },
+};
+
+const externalBookingOutput: ExternalBookingOutput = {
+  id: "eb1",
+  from: "2021-01-01T00:00:00.000Z",
+  to: "2021-01-01T10:00:00.000Z",
+  title: null,
+  resource_name: "Resource 1",
+  net_price: "100",
+  gross_price: "100",
+  currency: "EUR",
+  comments: null,
+  number_of_visitors: 1,
+  name: "Booking 1",
+  company: "Company 1",
+  email: "",
+  phone: "123456789",
+  billing_address: "Billing Address",
+  status: "approved",
+  extra_names: "",
+};
 
 afterEach(() => nock.cleanAll());
 
@@ -38,48 +103,6 @@ describe("triggerExternalBooking", () => {
     const userResponse: UserApiResponse = {
       included: [{ id: "space-1", attributes: { subdomain: "trial" } }],
     };
-    const externalBookingResponse: ExternalBookingApiResponse = {
-      id: "booking-1",
-      attributes: {
-        name: "Booking 1",
-        company: "Company 1",
-        billingAddress: "Billing Address",
-        phone: "123456789",
-        email: "",
-        from: "2021-01-01T00:00:00.000Z",
-        to: "2021-01-01T10:00:00.000Z",
-        title: null,
-        price: {
-          net: "100",
-          gross: "100",
-          currency: "EUR",
-          taxes: [],
-        },
-        totalPrice: {
-          net: "100",
-          gross: "100",
-          currency: "EUR",
-          taxes: [],
-        },
-        numberOfVisitors: 1,
-        comments: null,
-        status: "approved",
-        bookingExtras: [],
-      },
-      relationships: {
-        resource: {
-          data: {
-            id: "resource-1",
-          },
-        },
-      },
-    };
-    const resourceResponse: ResourceApiResponse = {
-      id: "resource-1",
-      attributes: {
-        name: "Resource 1",
-      },
-    };
 
     const scope = nock("https://api.cobot.me");
     scope.get("/user?include=adminOf").reply(200, userResponse);
@@ -97,27 +120,7 @@ describe("triggerExternalBooking", () => {
       bundle as any,
     );
 
-    expect(results).toStrictEqual([
-      {
-        id: "booking-1",
-        from: "2021-01-01T00:00:00.000Z",
-        to: "2021-01-01T10:00:00.000Z",
-        title: null,
-        resource_name: "Resource 1",
-        net_price: "100",
-        gross_price: "100",
-        currency: "EUR",
-        comments: null,
-        number_of_visitors: 1,
-        name: "Booking 1",
-        company: "Company 1",
-        email: "",
-        phone: "123456789",
-        billing_address: "Billing Address",
-        status: "approved",
-        extra_names: "",
-      },
-    ]);
+    expect(results).toStrictEqual([externalBookingOutput]);
   });
 
   it("returns no booking if no matching resource is found", async () => {
@@ -126,7 +129,7 @@ describe("triggerExternalBooking", () => {
       included: [{ id: "space-1", attributes: { subdomain: "trial" } }],
     };
     const externalBookingResponse: ExternalBookingApiResponse = {
-      id: "booking-1",
+      id: "eb1",
       attributes: {
         name: "Booking 1",
         company: "Company 1",
@@ -185,5 +188,39 @@ describe("triggerExternalBooking", () => {
     );
 
     expect(results).toStrictEqual([]);
+  });
+
+  it("triggers on new external booking", async () => {
+    const bundle = prepareBundle({
+      url: "https://api.cobot.me/bookings/b1",
+    });
+    const bookingResponse: BookingApi2Response = {
+      id: "b1",
+      type: "bookings",
+      relationships: {
+        externalBooking: {
+          data: {
+            id: "eb1",
+            type: "externalBookings",
+          },
+        },
+      },
+    };
+    const api2Scope = nock("https://api.cobot.me");
+    api2Scope
+      .get("/external_bookings/eb1")
+      .reply(200, { data: externalBookingResponse });
+    api2Scope.get("/bookings/b1").reply(200, { data: bookingResponse });
+    api2Scope
+      .get("/resources/resource-1")
+      .reply(200, { data: resourceResponse });
+    const results = await appTester(
+      triggerExternalBooking.operation.perform as any,
+      bundle as any,
+    );
+
+    expect(nock.isDone()).toBe(true);
+
+    expect(results).toStrictEqual([externalBookingOutput]);
   });
 });

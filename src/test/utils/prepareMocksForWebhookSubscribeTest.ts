@@ -13,7 +13,9 @@ export const prepareMocksForWebhookSubscribeTest = (event: string) => {
   return bundle;
 };
 
-export const prepareBundle = (): KontentBundle<SubscribeBundleInputType> => {
+export const prepareBundle = (options?: {
+  url?: string;
+}): KontentBundle<SubscribeBundleInputType> => {
   const bundle: KontentBundle<SubscribeBundleInputType> = {
     ...mockBundle,
     inputData: {
@@ -21,7 +23,7 @@ export const prepareBundle = (): KontentBundle<SubscribeBundleInputType> => {
       subdomain: "trial",
     },
     cleanedRequest: {
-      url: "https://trial.cobot.me/api/event/12345",
+      url: options?.url ?? "https://trial.cobot.me/api/event/12345",
     },
     targetUrl: "https://test-url.test",
   };

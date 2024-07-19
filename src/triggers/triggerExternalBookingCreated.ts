@@ -6,7 +6,6 @@ import {
   subscribeHook,
   unsubscribeHook,
 } from "../utils/api";
-import { get } from "lodash";
 import { SubscribeBundleInputType } from "../types/subscribeType";
 import { getSubdomainField } from "../fields/getSudomainsField";
 import { externalBookingSample } from "../utils/samples";
@@ -39,7 +38,7 @@ async function parsePayload(
   z: ZObject,
   bundle: KontentBundle<{}>,
 ): Promise<ExternalBookingOutput[]> {
-  const bookingId = get(bundle.cleanedRequest, "id");
+  const bookingId = bundle.cleanedRequest.url.split("/").pop();
   const response = await getExternalBooking(z, bookingId);
   if (response) {
     return [apiResponseToExternalBookingOutput(response)];
