@@ -166,7 +166,6 @@ export type MembershipApiResponse = {
   name: string;
   email: string | null;
   phone: string | null;
-  picture: string;
   address: {
     company: string | null;
     name: string | null;
@@ -179,8 +178,7 @@ export type MembershipApiResponse = {
   payment_method: {
     name: string;
   } | null;
-  starts_at: string;
-  canceled_at: string | null;
+  confirmed_at: string | null;
 };
 
 type ResourceApiResponse = {

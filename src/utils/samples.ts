@@ -62,6 +62,7 @@ export const membershipSample: MembershipOutput = {
   customer_number: "123",
   plan_name: "Full Time",
   payment_method_name: "Credit Card",
+  confirmed_at: "2012-04-12",
 };
 
 export const invoiceSample: InvoiceOutput = {

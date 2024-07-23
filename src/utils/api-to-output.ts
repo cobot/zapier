@@ -26,6 +26,8 @@ export function apiResponseToMembershipOutput(
     customer_number: membership.customer_number,
     plan_name: membership.plan.name,
     payment_method_name: membership.payment_method?.name ?? null,
+    confirmed_at:
+      membership.confirmed_at?.replaceAll("/", "-").substring(0, 10) ?? null,
   };
 }
 
