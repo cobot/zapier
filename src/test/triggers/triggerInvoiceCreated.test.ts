@@ -67,7 +67,7 @@ const attributes: BaseInvoiceProperties = {
   notes: null,
 };
 
-const invoiceResponse: InvoiceApiResponse = {
+const invoiceResponseWithMembership: InvoiceApiResponse = {
   id: "1",
   attributes,
   relationships: {
@@ -79,9 +79,33 @@ const invoiceResponse: InvoiceApiResponse = {
   },
 };
 
+const invoiceResponseWithContact: InvoiceApiResponse = {
+  id: "1",
+  attributes,
+  relationships: {
+    contact: {
+      data: {
+        id: "contact-1",
+      },
+    },
+  },
+};
+
 const membership = {
   id: "membership-1",
   email: "test@best.com",
+};
+
+const contact = {
+  data: {
+    id: "contact-1",
+    attributes: {
+      email: "contact@best.com",
+      address: {
+        name: "Joe Doe",
+      },
+    },
+  },
 };
 
 const appTester = createAppTester(App);
@@ -117,7 +141,7 @@ describe("triggerInvoiceCreated", () => {
     api1Scope.get("/api/memberships/membership-1").reply(200, membership);
     api2Scope
       .get(/\/spaces\/space-1\/invoices/)
-      .reply(200, { data: [invoiceResponse] });
+      .reply(200, { data: [invoiceResponseWithMembership] });
 
     const listRecentEvents = trigger.operation.performList;
 
@@ -139,8 +163,10 @@ describe("triggerInvoiceCreated", () => {
     const bundle = prepareBundle();
     const api1Scope = nock("https://trial.cobot.me");
     const api2Scope = nock("https://api.cobot.me");
-    api2Scope.get("/invoices/12345").reply(200, { data: invoiceResponse });
-    api1Scope.get("/api/memberships/membership-1").reply(200, membership);
+    api2Scope
+      .get("/invoices/12345")
+      .reply(200, { data: invoiceResponseWithContact });
+    api2Scope.get("/contacts/contact-1").reply(200, contact);
     const results = await appTester(
       triggerInvoiceCreated.operation.perform as any,
       bundle as any,
@@ -152,9 +178,10 @@ describe("triggerInvoiceCreated", () => {
       {
         ...attributes,
         id: "1",
-        membership: {
-          id: "membership-1",
-          email: "test@best.com",
+        contact: {
+          id: "contact-1",
+          email: "contact@best.com",
+          name: "Joe Doe",
         },
       },
     ]);

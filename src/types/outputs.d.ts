@@ -64,7 +64,14 @@ export type InvoiceMembershipOutput = {
   email: string | null;
 };
 
+export type InvoiceContactOutput = {
+  id: string;
+  email: string | null;
+  name: string | null;
+};
+
 export type InvoiceOutput = BaseInvoiceProperties & {
   id: string;
   membership?: InvoiceMembershipOutput;
+  contact?: InvoiceContactOutput;
 };

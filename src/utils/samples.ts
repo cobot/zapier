@@ -79,6 +79,11 @@ export const invoiceSample: InvoiceOutput = {
     id: "14c12f62ac8df98d29de357180d673e1",
     email: "joe@doe.com",
   },
+  contact: {
+    id: "213",
+    email: "joe@contact.com",
+    name: "Joe Doe",
+  },
   recipientAddress: {
     name: "Jane Smith",
     company: "Acme Inc.",
