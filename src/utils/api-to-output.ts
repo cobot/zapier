@@ -2,6 +2,7 @@ import {
   BookingApiResponse,
   EventApiResponse,
   MembershipApiResponse,
+  ContactApiResponse,
   InvoiceApiResponse,
 } from "../types/api-responses";
 import {
@@ -38,21 +39,37 @@ export async function apiResponseToInvoiceOutput(
 ): Promise<InvoiceOutput> {
   const attributes = invoice.attributes;
   const membershipId = get(invoice, "relationships.membership.data.id");
-  if (!membershipId) {
+  const contactId = get(invoice, "relationships.contact.data.id");
+  if (membershipId) {
+    const url = `${api1MembershipsUrl}/${membershipId}`;
+    const membership: MembershipApiResponse = await apiCallUrl(z, url);
     return {
       ...attributes,
       id: invoice.id,
+      membership: {
+        id: membershipId,
+        email: membership.email,
+      },
     };
   }
-  const url = `${api1MembershipsUrl}/${membershipId}`;
-  const membership: MembershipApiResponse = await apiCallUrl(z, url);
+  if (contactId) {
+    const url = `https://api.cobot.me/contacts/${contactId}`;
+    const contact: ContactApiResponse = await apiCallUrl(z, url, {
+      Accept: "application/vnd.api+json",
+    });
+    return {
+      ...attributes,
+      id: invoice.id,
+      contact: {
+        id: contactId,
+        email: contact.data.attributes.email,
+        name: contact.data.attributes.address.name,
+      },
+    };
+  }
   return {
     ...attributes,
     id: invoice.id,
-    membership: {
-      id: membershipId,
-      email: membership.email,
-    },
   };
 }
 

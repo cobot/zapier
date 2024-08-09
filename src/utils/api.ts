@@ -64,11 +64,16 @@ export const unsubscribeHook = async (
   });
 };
 
-export const apiCallUrl = async (z: ZObject, url: string) => {
+export const apiCallUrl = async (
+  z: ZObject,
+  url: string,
+  headers?: { [name: string]: string },
+) => {
   try {
     const response = await z.request({
       url,
       method: "GET",
+      headers,
     });
     return response.data;
   } catch (error) {

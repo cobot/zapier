@@ -119,7 +119,8 @@ export type InvoiceApiResponse = {
   id: string;
   attributes: BaseInvoiceProperties;
   relationships: {
-    membership: Relationship;
+    membership?: Relationship;
+    contact?: Relationship;
   };
 };
 
@@ -179,6 +180,16 @@ export type MembershipApiResponse = {
     name: string;
   } | null;
   confirmed_at: string | null;
+};
+
+export type ContactApiResponse = {
+  data: {
+    id: string;
+    attributes: {
+      email: string;
+      address: Address;
+    };
+  };
 };
 
 type ResourceApiResponse = {
