@@ -11,6 +11,7 @@ import triggerExternalBooking from "./triggers/triggerExternalBookingCreated";
 import getSubdomains from "./triggers/dropdowns/getSubdomains";
 import triggerEventPublished from "./triggers/triggerEventPublished";
 import triggerInvoiceCreated from "./triggers/triggerInvoiceCreated";
+import triggerMembershipCancelled from "./triggers/triggerMembershipCancelled";
 
 const { version } = require("../package.json");
 
@@ -31,6 +32,7 @@ export default {
     [triggerBookingCreated.key]: triggerBookingCreated,
     [triggerBookingWillBegin.key]: triggerBookingWillBegin,
     [triggerMembershipConfirmed.key]: triggerMembershipConfirmed,
+    [triggerMembershipCancelled.key]: triggerMembershipCancelled,
     [triggerMembershipPlanChanged.key]: triggerMembershipPlanChanged,
     [triggerEventPublished.key]: triggerEventPublished,
     [triggerInvoiceCreated.key]: triggerInvoiceCreated,
