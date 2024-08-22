@@ -139,6 +139,19 @@ export const listMemberships = async (
   return response.data;
 };
 
+export const listCancelledMemberships = async (
+  z: ZObject,
+  bundle: KontentBundle<SubscribeBundleInputType>,
+): Promise<MembershipApiResponse[]> => {
+  const [from, to] = getDateRange(true);
+  const url = `https://${bundle.inputData.subdomain}.cobot.me/api/memberships/cancellations?from=${from}&to=${to}`;
+  const response = await z.request({
+    url,
+    method: "GET",
+  });
+  return response.data;
+};
+
 export const getUserDetailV2 = async (z: ZObject): Promise<UserApiResponse> => {
   const response = await z.request({
     url: "https://api.cobot.me/user?include=adminOf",
@@ -322,7 +335,7 @@ export const createActivity = async (
   return object;
 };
 
-const getDateRange = (useISODate = false): [string, string] => {
+export const getDateRange = (useISODate = false): [string, string] => {
   const now = DateTime.now();
   const lastMonth = now.minus({ months: 1 });
   const nextMonth = now.plus({ months: 1 });
