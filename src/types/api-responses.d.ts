@@ -180,6 +180,7 @@ export type MembershipApiResponse = {
     name: string;
   } | null;
   confirmed_at: string | null;
+  canceled_to?: string;
 };
 
 export type ContactApiResponse = {

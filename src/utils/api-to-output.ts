@@ -19,7 +19,7 @@ import { ExternalBookingWithResourceApiResponse, apiCallUrl } from "./api";
 export function apiResponseToMembershipOutput(
   membership: MembershipApiResponse,
 ): MembershipOutput {
-  return {
+  const output: MembershipOutput = {
     id: membership.id,
     name: membership.name,
     email: membership.email,
@@ -30,6 +30,10 @@ export function apiResponseToMembershipOutput(
     confirmed_at:
       membership.confirmed_at?.replaceAll("/", "-").substring(0, 10) ?? null,
   };
+  if (membership.canceled_to) {
+    output.canceled_to = membership.canceled_to.replaceAll("/", "-");
+  }
+  return output;
 }
 
 export async function apiResponseToInvoiceOutput(

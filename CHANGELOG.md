@@ -14,3 +14,7 @@ Added associated `contact` to the invoice on trigger/created_invoice.
 ## 2.3.0
 
 Added trigger/cancelled_membership
+
+## 2.3.1
+
+Added `canceled_to` field to trigger on trigger/cancelled_membership which gives the date of cancellation
