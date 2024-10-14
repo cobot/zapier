@@ -1596,11 +1596,12 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@zapier/secret-scrubber@^1.0.8":
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/@zapier/secret-scrubber/-/secret-scrubber-1.0.8.tgz#f757ea475243c408789803b99f6c5fc0a5465187"
-  integrity sha512-6vVhOwlwfbETEhLCS+eY/OzXLANzf71O1XnfPpKAx29JMxZV4S1Sefp9F5jBQGTmL0BVYu34rNS7Uej1x/rcsQ==
+"@zapier/secret-scrubber@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@zapier/secret-scrubber/-/secret-scrubber-1.1.1.tgz#ccb7b75e320d5662efd2ff23eb66cf7fea764a39"
+  integrity sha512-4w0lsz8lpsl/+c1u8h5LDNioCdLloPobryH7voawgO6hoPkwJxYhXB1xZYLAxycFSZmCXajRmzZyzma26pdIOQ==
   dependencies:
+    create-hash "^1.2.0"
     lodash.isplainobject "^4.0.6"
 
 JSONStream@^1.0.3:
@@ -8436,12 +8437,12 @@ zapier-platform-cli@^15.11.1:
     yeoman-environment "3.3.0"
     yeoman-generator "5.9.0"
 
-zapier-platform-core@15.5.1:
-  version "15.5.1"
-  resolved "https://registry.yarnpkg.com/zapier-platform-core/-/zapier-platform-core-15.5.1.tgz#7b29c14b1bc707803cfe967c72e1e9620994c03b"
-  integrity sha512-aUejMJZt+JKNksknxMTFP59VsYyIFwswCDpmshRb1dJfZqYPqD9lG/zjBPIcpNg31zS1gDxzItqqQXBaopzn2Q==
+zapier-platform-core@15.17.0:
+  version "15.17.0"
+  resolved "https://registry.yarnpkg.com/zapier-platform-core/-/zapier-platform-core-15.17.0.tgz#910993abc1ee00ddd07f45b32f462f08dec2fde7"
+  integrity sha512-is2AHj5p+gfZluk6VSfUUKgoPe0xj+4Uf/onZ4qB8GAf3V+XnzBv9s+9eh7xD721FSqvD8hOfb+37ltrXs5HZQ==
   dependencies:
-    "@zapier/secret-scrubber" "^1.0.8"
+    "@zapier/secret-scrubber" "^1.1.1"
     bluebird "3.7.2"
     content-disposition "0.5.4"
     dotenv "12.0.4 "
@@ -8452,14 +8453,14 @@ zapier-platform-core@15.5.1:
     node-fetch "2.6.7"
     oauth-sign "0.9.0"
     semver "7.5.2"
-    zapier-platform-schema "15.5.1"
+    zapier-platform-schema "15.17.0"
   optionalDependencies:
     "@types/node" "^20.3.1"
 
-zapier-platform-schema@15.5.1:
-  version "15.5.1"
-  resolved "https://registry.yarnpkg.com/zapier-platform-schema/-/zapier-platform-schema-15.5.1.tgz#f7530ab1b641a24b73872424ecf9f4c2598c0303"
-  integrity sha512-uunpH46JCNjVeoNKdyVvD8QB6XPSM42ZPTxhkGC8El3ht31fyENz86KRfhHbYp0oabAopJu0yc/+wWXvhKjdcQ==
+zapier-platform-schema@15.17.0:
+  version "15.17.0"
+  resolved "https://registry.yarnpkg.com/zapier-platform-schema/-/zapier-platform-schema-15.17.0.tgz#b35e91c9ed9d9aa453330f35992fc1128bd7a54f"
+  integrity sha512-Iq46vum7ugOmzcByjuzmc02E2f1hLpV8qpgC0HFOMqdtnRqyZxSsLT7YEf/2+Rkk9XxZh37L98LUMTQ1orRnNA==
   dependencies:
     jsonschema "1.2.2"
     lodash "4.17.21"
