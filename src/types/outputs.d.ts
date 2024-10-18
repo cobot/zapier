@@ -57,6 +57,7 @@ export type MembershipOutput = {
   plan_name: string;
   payment_method_name: string | null;
   confirmed_at: string | null;
+  canceled_to?: string;
 };
 
 export type InvoiceMembershipOutput = {
