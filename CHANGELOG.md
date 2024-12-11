@@ -18,3 +18,9 @@ Added trigger/cancelled_membership
 ## 2.3.1
 
 Added `canceled_to` field to trigger on trigger/cancelled_membership which gives the date of cancellation
+
+## 2.4.0
+
+Added trigger/membership_cancellation_date_reached
+
+- This trigger fires on the day a membership cancellation applies
