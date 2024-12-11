@@ -38,7 +38,8 @@ export default {
     [triggerEventPublished.key]: triggerEventPublished,
     [triggerInvoiceCreated.key]: triggerInvoiceCreated,
     [triggerExternalBooking.key]: triggerExternalBooking,
-    [triggerMembershipCancellationDateReached.key]: triggerMembershipCancellationDateReached,
+    [triggerMembershipCancellationDateReached.key]:
+      triggerMembershipCancellationDateReached,
     // Lists for dropdowns
     [getSubdomains.key]: getSubdomains,
   },
