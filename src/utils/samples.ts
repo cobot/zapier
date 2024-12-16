@@ -52,6 +52,7 @@ export const externalBookingSample: ExternalBookingOutput = {
   number_of_visitors: 3,
   billing_address: "123 Main St",
   extra_names: "Coffee, Tea",
+  accounting_code: "MTR-200",
 };
 
 export const membershipSample: MembershipOutput = {

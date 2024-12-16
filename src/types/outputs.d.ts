@@ -46,6 +46,7 @@ export type ExternalBookingOutput = {
   status: ExternalBookingStatus;
   billing_address: string;
   extra_names: string | null;
+  accounting_code: string | null;
 };
 
 export type MembershipOutput = {
