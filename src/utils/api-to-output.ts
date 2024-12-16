@@ -134,6 +134,7 @@ export function apiResponseToExternalBookingOutput(
     billing_address: atts.billingAddress,
     status: atts.status,
     extra_names: atts.bookingExtras.map((extra) => extra.name).join(", "),
+    accounting_code: atts.accountingCode,
   };
 }
 

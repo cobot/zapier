@@ -30,6 +30,7 @@ const externalBookingResponse: ExternalBookingApiResponse = {
     from: "2021-01-01T00:00:00.000Z",
     to: "2021-01-01T10:00:00.000Z",
     title: null,
+    accountingCode: "MTR-200",
     price: {
       net: "100",
       gross: "100",
@@ -80,6 +81,7 @@ const externalBookingOutput: ExternalBookingOutput = {
   billing_address: "Billing Address",
   status: "approved",
   extra_names: "",
+  accounting_code: "MTR-200",
 };
 
 afterEach(() => nock.cleanAll());
@@ -155,6 +157,7 @@ describe("triggerExternalBooking", () => {
         comments: null,
         status: "approved",
         bookingExtras: [],
+        accountingCode: "MTR-200",
       },
       relationships: {
         resource: {

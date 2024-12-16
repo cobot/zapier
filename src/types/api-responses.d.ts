@@ -142,6 +142,7 @@ export type ExternalBookingApiResponse = {
     email: string;
     comments: string | null;
     status: ExternalBookingStatus;
+    accountingCode: string | null;
     bookingExtras: {
       name: string;
       description: string;

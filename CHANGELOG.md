@@ -24,3 +24,7 @@ Added `canceled_to` field to trigger on trigger/cancelled_membership which gives
 Added trigger/membership_cancellation_date_reached
 
 - This trigger fires on the day a membership cancellation applies
+
+## 2.4.1
+
+Added `accounting_code` field to trigger/created_booking
