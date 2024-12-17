@@ -29,4 +29,4 @@ Minor changes to associated `membership` to the invoice on trigger/created_invoi
 
 ## 2.4.2
 
-- Added membership `address` and `plan` fields
+- Added membership `phone`, `address`, and `plan` fields
