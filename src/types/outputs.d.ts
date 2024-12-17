@@ -52,10 +52,26 @@ export type ExternalBookingOutput = {
 export type MembershipOutput = {
   id: string;
   name: string | null;
+  phone: string | null;
   company: string | null;
+  address: {
+    full_address: string | null;
+    address: string | null;
+    city: string | null;
+    post_code: string | null;
+    state: string | null;
+    country: string | null;
+  };
   email: string | null;
   customer_number: string | null;
   plan_name: string;
+  plan: {
+    description: string | null;
+    total_price_per_cycle: string;
+    cycle_duration: number;
+    currency: string | null;
+    cancellation_period: number | null;
+  };
   payment_method_name: string | null;
   confirmed_at: string | null;
   canceled_to?: string;
