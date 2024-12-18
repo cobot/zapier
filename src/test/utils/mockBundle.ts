@@ -13,6 +13,7 @@ export const mockBundle: KontentBundle<{}> = {
   },
   inputData: {},
   inputDataRaw: {},
+  // https://docs.zapier.com/platform/build-cli/core#bundle-meta
   meta: {
     isBulkRead: false,
     page: 0,

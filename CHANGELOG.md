@@ -7,24 +7,26 @@ Minor changes to associated `membership` to the invoice on trigger/created_invoi
 
 ## 2.2.4
 
-Added associated `contact` to the invoice on trigger/created_invoice.
-
+- Added associated `contact` to the invoice on trigger/created_invoice.
 - Added `contact email` and `contact name` fields to the Invoice creation trigger.
 
 ## 2.3.0
 
-Added trigger/cancelled_membership
+- Added trigger/cancelled_membership
 
 ## 2.3.1
 
-Added `canceled_to` field to trigger on trigger/cancelled_membership which gives the date of cancellation
+- Added `canceled_to` field to trigger on trigger/cancelled_membership which gives the date of cancellation
 
 ## 2.4.0
 
-Added trigger/membership_cancellation_date_reached
-
+- Added trigger/membership_cancellation_date_reached
 - This trigger fires on the day a membership cancellation applies
 
 ## 2.4.1
 
-Added `accounting_code` field to trigger/created_booking
+- Added `accounting_code` field to trigger/created_booking
+
+## 2.4.2
+
+- Added membership `phone`, `address`, and `plan` fields

@@ -72,6 +72,7 @@ export type EventApiResponse = {
   };
 };
 
+// Note: APIv2 address
 type Address = {
   company: string | null;
   name: string | null;
@@ -172,10 +173,20 @@ export type MembershipApiResponse = {
     company: string | null;
     name: string | null;
     full_address: string | null;
+    address: string | null;
+    post_code: string | null;
+    city: string | null;
+    state: string | null;
+    country: string | null;
   };
   customer_number: string | null;
   plan: {
     name: string;
+    description: string | null;
+    total_price_per_cycle: string;
+    currency: string | null;
+    cycle_duration: number;
+    cancellation_period: number | null;
   };
   payment_method: {
     name: string;
