@@ -13,6 +13,7 @@ export const mockBundle: KontentBundle<{}> = {
   },
   inputData: {},
   inputDataRaw: {},
+  // https://docs.zapier.com/platform/build-cli/core#bundle-meta
   meta: {
     isBulkRead: false,
     page: 0,
@@ -21,6 +22,8 @@ export const mockBundle: KontentBundle<{}> = {
     limit: 10,
     isPopulatingDedupe: false,
     isTestingAuth: false,
+    timezone: null,
+    inputFields: {},
   },
 };
 
