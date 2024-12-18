@@ -21,6 +21,8 @@ export const mockBundle: KontentBundle<{}> = {
     limit: 10,
     isPopulatingDedupe: false,
     isTestingAuth: false,
+    timezone: null,
+    inputFields: {},
   },
 };
 
