@@ -23,7 +23,7 @@
     "zapier-platform-core": "16.0.0"
   },
   "devDependencies": {
-    "@types/jest": "^29.5.12",
+    "@types/jest": "^29.5.14",
     "@types/lodash": "^4.17.13",
     "@types/luxon": "^3.4.2",
     "@types/node": "^22",
