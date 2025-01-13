@@ -13,6 +13,7 @@ import triggerEventPublished from "./triggers/triggerEventPublished";
 import triggerInvoiceCreated from "./triggers/triggerInvoiceCreated";
 import triggerMembershipCancelled from "./triggers/triggerMembershipCancelled";
 import triggerMembershipCancellationDateReached from "./triggers/triggerMembershipCancellationDateReached";
+import triggerDropInPassPurchased from "./triggers/triggerDropInPassPurchased";
 
 const { version } = require("../package.json");
 
@@ -38,6 +39,7 @@ export default {
     [triggerEventPublished.key]: triggerEventPublished,
     [triggerInvoiceCreated.key]: triggerInvoiceCreated,
     [triggerExternalBooking.key]: triggerExternalBooking,
+    [triggerDropInPassPurchased.key]: triggerDropInPassPurchased,
     [triggerMembershipCancellationDateReached.key]:
       triggerMembershipCancellationDateReached,
     // Lists for dropdowns

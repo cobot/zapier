@@ -215,3 +215,23 @@ type ResourceApiResponse = {
 type UserApiResponse = {
   included: { id: string; attributes: { subdomain: string } }[];
 };
+
+export type DropInPassApiResponse = {
+  id: string;
+  attributes: {
+    name: string;
+    validOn: string;
+    email: string;
+    phone: string;
+    onboardingInstructions: string;
+    taxId: string;
+    price: Amount;
+    comments: string;
+    billingAddress: Address;
+    timeAvailability: {
+      from: string;
+      to: string;
+      weekdays: number[];
+    }[];
+  };
+};

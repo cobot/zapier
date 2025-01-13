@@ -30,3 +30,8 @@ Minor changes to associated `membership` to the invoice on trigger/created_invoi
 ## 2.4.2
 
 - Added membership `phone`, `address`, and `plan` fields
+
+## 2.5.0
+
+- Added trigger/drop_in_pass_purchased
+- This trigger fires when a visitor purchases a drop in pass
