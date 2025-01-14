@@ -336,10 +336,16 @@ export const createActivity = async (
   return object;
 };
 
-export const getDateRange = (useISODate = false): [string, string] => {
+export const getDateRange = (
+  useISODate = false,
+  format?: string,
+): [string, string] => {
   const now = DateTime.now();
   const lastMonth = now.minus({ months: 1 });
   const nextMonth = now.plus({ months: 1 });
+  if (format) {
+    return [lastMonth.toFormat(format), nextMonth.toFormat(format)];
+  }
   if (!useISODate) {
     return [lastMonth.toISO(), nextMonth.toISO()];
   }
@@ -354,7 +360,7 @@ export const listRecentDropInPasses = async (
   const space = await spaceForSubdomain(z, subdomain);
   if (!space) return [];
   const url = `https://api.cobot.me/spaces/${space.id}/drop_in_passes`;
-  const [from, to] = getDateRange();
+  const [from, to] = getDateRange(false, "yyyy-MM-dd");
   const response = await z.request({
     url,
     method: "GET",

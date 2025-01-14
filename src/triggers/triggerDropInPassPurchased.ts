@@ -40,8 +40,11 @@ async function parsePayload(
   bundle: KontentBundle<{}>,
 ): Promise<DropInPassOutput[]> {
   if (bundle.cleanedRequest) {
-    const dropInPass = (await apiCallUrl(z, bundle.cleanedRequest.url))
-      .data as DropInPassApiResponse;
+    const dropInPass = (
+      await apiCallUrl(z, bundle.cleanedRequest.url, {
+        Accept: "application/vnd.api+json",
+      })
+    ).data as DropInPassApiResponse;
     return [apiResponseToDropInPassOutput(dropInPass)];
   } else {
     return [];
