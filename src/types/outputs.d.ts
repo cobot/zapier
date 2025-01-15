@@ -93,3 +93,20 @@ export type InvoiceOutput = BaseInvoiceProperties & {
   membership?: InvoiceMembershipOutput;
   contact?: InvoiceContactOutput;
 };
+
+export type DropInPassOutput = {
+  id: string;
+  dropInPassName: string;
+  validOn: string;
+  email: string;
+  phone: string;
+  taxId: string;
+  grossPrice: string;
+  netPrice: string;
+  comments: string;
+  billingAddress: {
+    name: string | null;
+    company: string | null;
+    fullAddress: string | null;
+  };
+};

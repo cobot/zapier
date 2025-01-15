@@ -4,6 +4,7 @@ import {
   MembershipApiResponse,
   ContactApiResponse,
   InvoiceApiResponse,
+  DropInPassApiResponse,
 } from "../types/api-responses";
 import {
   BookingOutput,
@@ -11,6 +12,7 @@ import {
   ExternalBookingOutput,
   MembershipOutput,
   InvoiceOutput,
+  DropInPassOutput,
 } from "../types/outputs";
 import { ZObject } from "zapier-platform-core";
 import { get } from "lodash";
@@ -157,3 +159,23 @@ export function apiResponseToExternalBookingOutput(
 const timeToIso8601 = (time: string): string => {
   return new Date(time).toISOString();
 };
+
+export function apiResponseToDropInPassOutput(
+  dropInPass: DropInPassApiResponse,
+): DropInPassOutput {
+  const attrs = dropInPass.attributes;
+  const grossPrice = `${attrs.price.gross} ${attrs.price.currency}`;
+  const netPrice = `${attrs.price.net} ${attrs.price.currency}`;
+  return {
+    id: dropInPass.id,
+    dropInPassName: attrs.name,
+    validOn: attrs.validOn,
+    email: attrs.email,
+    phone: attrs.phone,
+    taxId: attrs.taxId,
+    grossPrice,
+    netPrice,
+    comments: attrs.comments,
+    billingAddress: attrs.billingAddress,
+  };
+}

@@ -4,6 +4,7 @@ import {
   ExternalBookingOutput,
   MembershipOutput,
   InvoiceOutput,
+  DropInPassOutput,
 } from "../types/outputs";
 
 export const bookingSample: BookingOutput = {
@@ -162,5 +163,22 @@ export const invoiceSample: InvoiceOutput = {
         amount: "4.0",
       },
     ],
+  },
+};
+
+export const dropInPassSample: DropInPassOutput = {
+  id: "14c12f62ac8df98d29de357180d673e1",
+  dropInPassName: "Day Pass",
+  validOn: "2012-04-12",
+  email: "joe@doe.com",
+  phone: "+1 555 683 4463",
+  taxId: "DE12345",
+  grossPrice: "10.0 EUR",
+  netPrice: "8.4 EUR",
+  comments: "coffee please",
+  billingAddress: {
+    name: "Joe Doe",
+    company: "Acme Inc.",
+    fullAddress: "2 Coworking Road",
   },
 };
