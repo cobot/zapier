@@ -16,6 +16,7 @@ import {
   UserApiResponse,
   InvoiceApiResponse,
   BookingApi2Response,
+  DropInPassApiResponse,
 } from "../types/api-responses";
 import { InvoiceMembershipOutput } from "../types/outputs";
 
@@ -343,4 +344,28 @@ export const getDateRange = (useISODate = false): [string, string] => {
     return [lastMonth.toISO(), nextMonth.toISO()];
   }
   return [lastMonth.toISODate(), nextMonth.toISODate()];
+};
+
+export const listRecentDropInPasses = async (
+  z: ZObject,
+  bundle: KontentBundle<SubscribeBundleInputType>,
+): Promise<DropInPassApiResponse[]> => {
+  const subdomain = bundle.inputData.subdomain;
+  const space = await spaceForSubdomain(z, subdomain);
+  if (!space) return [];
+  const url = `https://api.cobot.me/spaces/${space.id}/drop_in_passes`;
+  const [from, to] = getDateRange(true);
+  const response = await z.request({
+    url,
+    method: "GET",
+    headers: {
+      Accept: "application/vnd.api+json",
+    },
+    params: {
+      "filter[valid_on_from]": from,
+      "filter[valid_on_to]": to,
+      "filter[sortOrder]": "desc",
+    },
+  });
+  return response.data.data as DropInPassApiResponse[];
 };
