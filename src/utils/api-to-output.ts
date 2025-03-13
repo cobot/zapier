@@ -43,6 +43,7 @@ export function apiResponseToMembershipOutput(
       cycle_duration: membership.plan.cycle_duration,
       currency: membership.plan.currency,
       cancellation_period: membership.plan.cancellation_period,
+      accounting_code: membership.plan.accounting_code,
     },
     payment_method_name: membership.payment_method?.name ?? null,
     confirmed_at:
@@ -68,10 +69,7 @@ export async function apiResponseToInvoiceOutput(
     return {
       ...attributes,
       id: invoice.id,
-      membership: {
-        id: membershipId,
-        email: membership.email,
-      },
+      membership: { id: membershipId, email: membership.email },
     };
   }
   if (contactId) {
@@ -89,10 +87,7 @@ export async function apiResponseToInvoiceOutput(
       },
     };
   }
-  return {
-    ...attributes,
-    id: invoice.id,
-  };
+  return { ...attributes, id: invoice.id };
 }
 
 export function apiResponseToEventOutput(event: EventApiResponse): EventOutput {

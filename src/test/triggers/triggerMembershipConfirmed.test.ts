@@ -29,9 +29,7 @@ const membershipResponse: MembershipApiResponse = {
     state: "AK",
     country: "US",
   },
-  payment_method: {
-    name: "Credit Card",
-  },
+  payment_method: { name: "Credit Card" },
   plan: {
     name: "Full Time",
     description: "Enjoy the stability of a Full Time membership",
@@ -39,6 +37,7 @@ const membershipResponse: MembershipApiResponse = {
     currency: "USD",
     cycle_duration: 1,
     cancellation_period: 14,
+    accounting_code: null,
   },
   customer_number: "123",
   confirmed_at: "2012/04/12 12:00:00 +0000",
@@ -66,6 +65,7 @@ const membershipOutput: MembershipOutput = {
     currency: "USD",
     cycle_duration: 1,
     cancellation_period: 14,
+    accounting_code: null,
   },
   payment_method_name: "Credit Card",
   confirmed_at: "2012-04-12",

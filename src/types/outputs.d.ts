@@ -71,16 +71,14 @@ export type MembershipOutput = {
     cycle_duration: number;
     currency: string | null;
     cancellation_period: number | null;
+    accounting_code: string | null;
   };
   payment_method_name: string | null;
   confirmed_at: string | null;
   canceled_to?: string;
 };
 
-export type InvoiceMembershipOutput = {
-  id: string;
-  email: string | null;
-};
+export type InvoiceMembershipOutput = { id: string; email: string | null };
 
 export type InvoiceContactOutput = {
   id: string;

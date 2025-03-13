@@ -3,14 +3,8 @@ export type BookingApiResponse = {
   from: string;
   to: string;
   title: string | null;
-  resource: {
-    name: string;
-    id: string;
-  };
-  membership: {
-    id: string;
-    name: string;
-  } | null;
+  resource: { name: string; id: string };
+  membership: { id: string; name: string } | null;
   comments: string | null;
   price: number;
   currency: string;
@@ -21,12 +15,7 @@ export type BookingApi2Response = {
   id: string;
   type: "bookings";
   relationships: {
-    externalBooking: {
-      data: {
-        id: string;
-        type: "externalBookings";
-      } | null;
-    };
+    externalBooking: { data: { id: string; type: "externalBookings" } | null };
   };
 };
 
@@ -34,18 +23,10 @@ type Amount = {
   net: string;
   gross: string;
   currency: string;
-  taxes: {
-    name: string;
-    amount: string;
-    rate: string;
-  }[];
+  taxes: { name: string; amount: string; rate: string }[];
 };
 
-type PhotoItem = {
-  url: string;
-  width: number;
-  height: number;
-};
+type PhotoItem = { url: string; width: number; height: number };
 
 type Photo = {
   icon: PhotoItem;
@@ -88,11 +69,7 @@ type InvoiceItem = {
   totalAmount: Amount;
 };
 
-type Relationship = {
-  data: {
-    id: string;
-  };
-};
+type Relationship = { data: { id: string } };
 
 export type BaseInvoiceProperties = {
   invoiceText: string | null;
@@ -119,10 +96,7 @@ export type BaseInvoiceProperties = {
 export type InvoiceApiResponse = {
   id: string;
   attributes: BaseInvoiceProperties;
-  relationships: {
-    membership?: Relationship;
-    contact?: Relationship;
-  };
+  relationships: { membership?: Relationship; contact?: Relationship };
 };
 
 export type ExternalBookingStatus = "approved" | "pending" | "canceled";
@@ -155,13 +129,7 @@ export type ExternalBookingApiResponse = {
       };
     }[];
   };
-  relationships: {
-    resource: {
-      data: {
-        id: string;
-      };
-    };
-  };
+  relationships: { resource: { data: { id: string } } };
 };
 
 export type MembershipApiResponse = {
@@ -187,30 +155,18 @@ export type MembershipApiResponse = {
     currency: string | null;
     cycle_duration: number;
     cancellation_period: number | null;
+    accounting_code: string | null;
   };
-  payment_method: {
-    name: string;
-  } | null;
+  payment_method: { name: string } | null;
   confirmed_at: string | null;
   canceled_to?: string;
 };
 
 export type ContactApiResponse = {
-  data: {
-    id: string;
-    attributes: {
-      email: string;
-      address: Address;
-    };
-  };
+  data: { id: string; attributes: { email: string; address: Address } };
 };
 
-type ResourceApiResponse = {
-  id: string;
-  attributes: {
-    name: string;
-  };
-};
+type ResourceApiResponse = { id: string; attributes: { name: string } };
 
 type UserApiResponse = {
   included: { id: string; attributes: { subdomain: string } }[];
@@ -228,10 +184,6 @@ export type DropInPassApiResponse = {
     price: Amount;
     comments: string;
     billingAddress: Address;
-    timeAvailability: {
-      from: string;
-      to: string;
-      weekdays: number[];
-    }[];
+    timeAvailability: { from: string; to: string; weekdays: number[] }[];
   };
 };
