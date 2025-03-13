@@ -78,6 +78,7 @@ export const membershipSample: MembershipOutput = {
     currency: "USD",
     cycle_duration: 1,
     cancellation_period: 14,
+    accounting_code: "MTR-200",
   },
   payment_method_name: "Credit Card",
   confirmed_at: "2012-04-12",
@@ -94,15 +95,8 @@ export const invoiceSample: InvoiceOutput = {
   taxId: "DE12345",
   taxIdName: "UID",
   customerNumber: "100",
-  membership: {
-    id: "14c12f62ac8df98d29de357180d673e1",
-    email: "joe@doe.com",
-  },
-  contact: {
-    id: "213",
-    email: "joe@contact.com",
-    name: "Joe Doe",
-  },
+  membership: { id: "14c12f62ac8df98d29de357180d673e1", email: "joe@doe.com" },
+  contact: { id: "213", email: "joe@contact.com", name: "Joe Doe" },
   recipientAddress: {
     name: "Jane Smith",
     company: "Acme Inc.",
@@ -124,25 +118,13 @@ export const invoiceSample: InvoiceOutput = {
         net: "20.0",
         gross: "22.0",
         currency: "EUR",
-        taxes: [
-          {
-            name: "VAT",
-            rate: "10.0",
-            amount: "2.0",
-          },
-        ],
+        taxes: [{ name: "VAT", rate: "10.0", amount: "2.0" }],
       },
       totalAmount: {
         net: "40.0",
         gross: "44.0",
         currency: "EUR",
-        taxes: [
-          {
-            name: "VAT",
-            rate: "10.0",
-            amount: "4.0",
-          },
-        ],
+        taxes: [{ name: "VAT", rate: "10.0", amount: "4.0" }],
       },
     },
   ],
@@ -156,13 +138,7 @@ export const invoiceSample: InvoiceOutput = {
     net: "40.0",
     gross: "44.0",
     currency: "EUR",
-    taxes: [
-      {
-        name: "VAT",
-        rate: "10.0",
-        amount: "4.0",
-      },
-    ],
+    taxes: [{ name: "VAT", rate: "10.0", amount: "4.0" }],
   },
 };
 
