@@ -85,6 +85,7 @@ export type BaseInvoiceProperties = {
   canCharge: boolean;
   customerNumber: string | null;
   recipientAddress: Address;
+  billingEmails: string[];
   senderAddress: Address;
   notes: string | null;
   items: InvoiceItem[];

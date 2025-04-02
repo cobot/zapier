@@ -1,4 +1,9 @@
-import { ExternalBookingStatus, BaseInvoiceProperties } from "./api-responses";
+import {
+  ExternalBookingStatus,
+  Address,
+  InvoiceItem,
+  Amount,
+} from "./api-responses";
 
 export type BookingOutput = {
   id: string;
@@ -86,8 +91,28 @@ export type InvoiceContactOutput = {
   name: string | null;
 };
 
-export type InvoiceOutput = BaseInvoiceProperties & {
+export type InvoiceOutput = {
   id: string;
+  invoiceText: string | null;
+  invoiceDate: string;
+  paidDate: string | null;
+  paidStatus: "unpaid" | "paid" | "pending" | "canceled" | "writtenOff";
+  dueDate: string;
+  number: string;
+  sentStatus: "sent" | "sending" | "unsent" | "failedToSend";
+  taxId: string | null;
+  taxIdName: string;
+  chargeAt: string | null;
+  canCharge: boolean;
+  customerNumber: string | null;
+  recipientAddress: Address;
+  billingEmails: string | null;
+  senderAddress: Address;
+  notes: string | null;
+  items: InvoiceItem[];
+  payableAmount: string;
+  paidAmount: string;
+  totalAmount: Amount;
   membership?: InvoiceMembershipOutput;
   contact?: InvoiceContactOutput;
 };

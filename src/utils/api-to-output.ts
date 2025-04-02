@@ -15,7 +15,7 @@ import {
   DropInPassOutput,
 } from "../types/outputs";
 import { ZObject } from "zapier-platform-core";
-import { get } from "lodash";
+import { at, get } from "lodash";
 import { ExternalBookingWithResourceApiResponse, apiCallUrl } from "./api";
 
 export function apiResponseToMembershipOutput(
@@ -63,11 +63,15 @@ export async function apiResponseToInvoiceOutput(
   const attributes = invoice.attributes;
   const membershipId = get(invoice, "relationships.membership.data.id");
   const contactId = get(invoice, "relationships.contact.data.id");
+  const invoiceAttributes = {
+    ...attributes,
+    billingEmails: attributes.billingEmails.join(", "),
+  };
   if (membershipId) {
     const url = `${api1MembershipsUrl}/${membershipId}`;
     const membership: MembershipApiResponse = await apiCallUrl(z, url);
     return {
-      ...attributes,
+      ...invoiceAttributes,
       id: invoice.id,
       membership: { id: membershipId, email: membership.email },
     };
@@ -78,7 +82,7 @@ export async function apiResponseToInvoiceOutput(
       Accept: "application/vnd.api+json",
     });
     return {
-      ...attributes,
+      ...invoiceAttributes,
       id: invoice.id,
       contact: {
         id: contactId,
@@ -87,7 +91,7 @@ export async function apiResponseToInvoiceOutput(
       },
     };
   }
-  return { ...attributes, id: invoice.id };
+  return { ...invoiceAttributes, id: invoice.id };
 }
 
 export function apiResponseToEventOutput(event: EventApiResponse): EventOutput {
