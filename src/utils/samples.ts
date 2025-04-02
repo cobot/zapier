@@ -108,6 +108,7 @@ export const invoiceSample: InvoiceOutput = {
     fullAddress: "1 Coworking Road",
   },
   notes: "Customer will pay later.",
+  billingEmails: "pudobje@goufter.gf, tit@covru.kh",
   items: [
     {
       description: "2h meeting room",
