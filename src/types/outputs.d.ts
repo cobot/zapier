@@ -1,6 +1,5 @@
 import {
   ExternalBookingStatus,
-  BaseInvoiceProperties,
   Address,
   InvoiceItem,
   Amount,

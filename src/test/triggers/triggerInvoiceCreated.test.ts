@@ -31,7 +31,7 @@ const attributes: BaseInvoiceProperties = {
     name: "name",
     fullAddress: "fullAddress",
   },
-  billingEmails: ["kokpospi@fe.az"],
+  billingEmails: ["kokpospi@fe.az", "uzevomop@ac.kz"],
   items: [
     {
       description: "item 1",
@@ -151,7 +151,7 @@ describe("triggerInvoiceCreated", () => {
     expect(results).toStrictEqual([
       {
         ...attributes,
-        billingEmails: "kokpospi@fe.az",
+        billingEmails: "kokpospi@fe.az, uzevomop@ac.kz",
         id: "1",
         membership: {
           id: "membership-1",
@@ -179,7 +179,7 @@ describe("triggerInvoiceCreated", () => {
     expect(results).toStrictEqual([
       {
         ...attributes,
-        billingEmails: "kokpospi@fe.az",
+        billingEmails: "kokpospi@fe.az, uzevomop@ac.kz",
         id: "1",
         contact: {
           id: "contact-1",
