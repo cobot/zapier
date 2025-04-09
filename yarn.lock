@@ -9171,10 +9171,10 @@ zapier-platform-cli@^16.3.1:
     yeoman-environment "3.19.3"
     yeoman-generator "5.9.0"
 
-zapier-platform-core@16.3.1:
-  version "16.3.1"
-  resolved "https://registry.yarnpkg.com/zapier-platform-core/-/zapier-platform-core-16.3.1.tgz#5b8e9ef4869970b6725974acfa9b1abbeec756dd"
-  integrity sha512-s2akkN972hoxELufFk4K7vTjNU4CWAEqP7SgzEwXURM38Oh9QI/08JHmxrjD4qUZyezvj309wXG96E0V0Ngu5w==
+zapier-platform-core@16.4.0:
+  version "16.4.0"
+  resolved "https://registry.yarnpkg.com/zapier-platform-core/-/zapier-platform-core-16.4.0.tgz#8bbc3d4646ab8dd6167525bc3c1389caff8dadd4"
+  integrity sha512-q3KBEbGA1CfQ5FqNCIDiNwoniTcWy0USxfFNptTSAk63xkhqD4srp2RPbw1aSWB3n0KuKvhtX1iz9triefXZJQ==
   dependencies:
     "@zapier/secret-scrubber" "^1.1.2"
     bluebird "3.7.2"
@@ -9187,14 +9187,14 @@ zapier-platform-core@16.3.1:
     node-fetch "2.7.0"
     oauth-sign "0.9.0"
     semver "7.6.3"
-    zapier-platform-schema "16.3.1"
+    zapier-platform-schema "16.4.0"
   optionalDependencies:
     "@types/node" "^20.3.1"
 
-zapier-platform-schema@16.3.1:
-  version "16.3.1"
-  resolved "https://registry.yarnpkg.com/zapier-platform-schema/-/zapier-platform-schema-16.3.1.tgz#3da9bd5523a5d2ac0ccdedde4e721267920c5218"
-  integrity sha512-/71K04eoDEu/bcXm4E6GK0P+jhdZ3gMNuabCS/BLkjwrt9qVahnMY4U/nZEI+u/QqL7RPW0eTic9RnRkHu7rNA==
+zapier-platform-schema@16.4.0:
+  version "16.4.0"
+  resolved "https://registry.yarnpkg.com/zapier-platform-schema/-/zapier-platform-schema-16.4.0.tgz#08e42764883ab315dfdf8a137cc7abef2d301e17"
+  integrity sha512-wHAHaV5hXXul19YXXkWLoLUq65Q6YDRblg/JM7UQnQfYXcxgxDMNHqdDK+kvEQfgGdPWmIATWSTCVv3ztTJbaQ==
   dependencies:
     jsonschema "1.2.2"
     lodash "4.17.21"
