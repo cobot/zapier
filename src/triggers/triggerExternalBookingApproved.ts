@@ -1,7 +1,7 @@
 import { ZObject } from "zapier-platform-core";
 import { KontentBundle } from "../types/kontentBundle";
 import {
-  getExternalBookingFromBookingId,
+  getExternalBooking,
   listRecentExternalBookings,
   subscribeHook,
   unsubscribeHook,
@@ -13,8 +13,8 @@ import { ExternalBookingOutput } from "../types/outputs";
 import { apiResponseToExternalBookingOutput } from "../utils/api-to-output";
 import { HookTrigger } from "../types/trigger";
 
-const hookLabel = "External Booking Created";
-const event = "created_booking";
+const hookLabel = "External Booking Approved";
+const event = "approved_external_booking";
 
 async function subscribeHookExecute(
   z: ZObject,
@@ -39,7 +39,7 @@ async function parsePayload(
   bundle: KontentBundle<{}>,
 ): Promise<ExternalBookingOutput[]> {
   const bookingId = bundle.cleanedRequest.url.split("/").pop();
-  const response = await getExternalBookingFromBookingId(z, bookingId);
+  const response = await getExternalBooking(z, bookingId);
   if (response) {
     return [apiResponseToExternalBookingOutput(response)];
   } else {
@@ -48,11 +48,12 @@ async function parsePayload(
 }
 
 const trigger: HookTrigger = {
-  key: `${event}_external`,
+  key: event,
   noun: hookLabel,
   display: {
     label: hookLabel,
-    description: "Triggers when an external booking is created.",
+    description:
+      "Triggers when an external booking that was pending before is approved.",
   },
   operation: {
     type: "hook",

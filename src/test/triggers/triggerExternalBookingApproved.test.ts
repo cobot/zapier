@@ -5,9 +5,8 @@ import {
   prepareBundle,
   prepareMocksForWebhookSubscribeTest,
 } from "../utils/prepareMocksForWebhookSubscribeTest";
-import triggerExternalBooking from "../../triggers/triggerExternalBookingCreated";
+import triggerExternalBookingApproved from "../../triggers/triggerExternalBookingApproved";
 import {
-  BookingApi2Response,
   ExternalBookingApiResponse,
   ResourceApiResponse,
   UserApiResponse,
@@ -17,7 +16,7 @@ import { ExternalBookingOutput } from "../../types/outputs";
 
 const appTester = createAppTester(App);
 nock.disableNetConnect();
-const trigger = App.triggers[triggerExternalBooking.key] as HookTrigger;
+const trigger = App.triggers[triggerExternalBookingApproved.key] as HookTrigger;
 
 const externalBookingResponse: ExternalBookingApiResponse = {
   id: "eb1",
@@ -88,7 +87,9 @@ afterEach(() => nock.cleanAll());
 
 describe("triggerExternalBooking", () => {
   it("creates new webhook through CM API upon subscribe", async () => {
-    const bundle = prepareMocksForWebhookSubscribeTest("created_booking");
+    const bundle = prepareMocksForWebhookSubscribeTest(
+      "approved_external_booking",
+    );
     const subscribe = trigger.operation.performSubscribe;
 
     const result = await appTester(subscribe as any, bundle as any);
@@ -193,32 +194,19 @@ describe("triggerExternalBooking", () => {
     expect(results).toStrictEqual([]);
   });
 
-  it("triggers on new external booking", async () => {
+  it("triggers on external booking approval", async () => {
     const bundle = prepareBundle({
-      url: "https://api.cobot.me/bookings/b1",
+      url: "https://api.cobot.me/external_bookings/eb1",
     });
-    const bookingResponse: BookingApi2Response = {
-      id: "b1",
-      type: "bookings",
-      relationships: {
-        externalBooking: {
-          data: {
-            id: "eb1",
-            type: "externalBookings",
-          },
-        },
-      },
-    };
     const api2Scope = nock("https://api.cobot.me");
     api2Scope
       .get("/external_bookings/eb1")
       .reply(200, { data: externalBookingResponse });
-    api2Scope.get("/bookings/b1").reply(200, { data: bookingResponse });
     api2Scope
       .get("/resources/resource-1")
       .reply(200, { data: resourceResponse });
     const results = await appTester(
-      triggerExternalBooking.operation.perform as any,
+      triggerExternalBookingApproved.operation.perform as any,
       bundle as any,
     );
 
