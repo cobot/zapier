@@ -270,6 +270,37 @@ export const getInvoiceFromApi2 = async (
 
 export const getExternalBooking = async (
   z: ZObject,
+  externalBookingId: string,
+): Promise<ExternalBookingWithResourceApiResponse | null> => {
+  const externalBookingResponse = await z.request({
+    url: `https://api.cobot.me/external_bookings/${externalBookingId}`,
+    method: "GET",
+    headers: {
+      Accept: "application/vnd.api+json",
+    },
+  });
+  if (externalBookingResponse.status === 404) {
+    return null;
+  }
+
+  const externalBooking = externalBookingResponse.data
+    .data as ExternalBookingApiResponse;
+  const resourceResponse = await z.request({
+    url: `https://api.cobot.me/resources/${externalBooking.relationships.resource.data.id}`,
+    method: "GET",
+    headers: {
+      Accept: "application/vnd.api+json",
+    },
+  });
+  if (resourceResponse.status === 404) {
+    return null;
+  }
+  const resource = resourceResponse.data.data as ResourceApiResponse;
+  return { ...externalBooking, resource };
+};
+
+export const getExternalBookingFromBookingId = async (
+  z: ZObject,
   bookingId: string,
 ): Promise<ExternalBookingWithResourceApiResponse | null> => {
   const url = `https://api.cobot.me/bookings/${bookingId}`;
@@ -288,34 +319,10 @@ export const getExternalBooking = async (
     bookingData,
     "data.relationships.externalBooking.data.id",
   );
-  if (externalBookingId) {
-    const externalBookingResponse = await z.request({
-      url: `https://api.cobot.me/external_bookings/${externalBookingId}`,
-      method: "GET",
-      headers: {
-        Accept: "application/vnd.api+json",
-      },
-    });
-    if (externalBookingResponse.status === 404) {
-      return null;
-    }
-
-    const externalBooking = externalBookingResponse.data
-      .data as ExternalBookingApiResponse;
-    const resourceResponse = await z.request({
-      url: `https://api.cobot.me/resources/${externalBooking.relationships.resource.data.id}`,
-      method: "GET",
-      headers: {
-        Accept: "application/vnd.api+json",
-      },
-    });
-    if (resourceResponse.status === 404) {
-      return null;
-    }
-    const resource = resourceResponse.data.data as ResourceApiResponse;
-    return { ...externalBooking, resource };
+  if (!externalBookingId) {
+    return null;
   }
-  return null;
+  return getExternalBooking(z, externalBookingId);
 };
 
 export const createActivity = async (
