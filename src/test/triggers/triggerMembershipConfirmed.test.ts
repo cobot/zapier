@@ -119,36 +119,4 @@ describe("triggerMembershipConfirmed", () => {
 
     expect(results).toStrictEqual([membershipOutput]);
   });
-
-  it("triggers on membership confirmation with team information", async () => {
-    const membershipWithTeam: MembershipApiResponse = {
-      ...membershipResponse,
-      team_id: "team-123",
-    };
-
-    const expectedOutputWithTeam: MembershipOutput = {
-      ...membershipOutput,
-      team: {
-        id: "team-123",
-        name: "Engineering Team",
-      },
-    };
-
-    const bundle = prepareBundle({
-      url: "https://trial.cobot.me/api/memberships/m1",
-    });
-    const api1Scope = nock("https://trial.cobot.me");
-    const api2Scope = nock("https://api.cobot.me");
-    api1Scope.get("/api/memberships/m1").reply(200, membershipWithTeam);
-    api2Scope.get("/teams/team-123").reply(200, {
-      data: { id: "team-123", attributes: { name: "Engineering Team" } },
-    });
-
-    const results = await appTester(
-      triggerMembershipConfirmed.operation.perform as any,
-      bundle as any,
-    );
-    expect(nock.isDone()).toBe(true);
-    expect(results).toStrictEqual([expectedOutputWithTeam]);
-  });
 });

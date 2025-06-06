@@ -161,4 +161,26 @@ describe("triggerMembershipCancelled", () => {
     expect(nock.isDone()).toBe(true);
     expect(results).toStrictEqual([expectedOutputWithTeam]);
   });
+
+  it("triggers on membership cancellation when team API returns 404", async () => {
+    const membershipWithTeam: MembershipApiResponse = {
+      ...membershipResponse,
+      team_id: "team-123",
+    };
+
+    const bundle = prepareBundle({
+      url: "https://trial.cobot.me/api/memberships/m1",
+    });
+    const api1Scope = nock("https://trial.cobot.me");
+    const api2Scope = nock("https://api.cobot.me");
+    api1Scope.get("/api/memberships/m1").reply(200, membershipWithTeam);
+    api2Scope.get("/teams/team-123").reply(404);
+
+    const results = await appTester(
+      triggerMembershipCancelled.operation.perform as any,
+      bundle as any,
+    );
+    expect(nock.isDone()).toBe(true);
+    expect(results).toStrictEqual([membershipOutput]);
+  });
 });

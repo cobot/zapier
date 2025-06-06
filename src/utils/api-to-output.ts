@@ -54,14 +54,16 @@ export async function apiResponseToMembershipOutput(
     output.canceled_to = membership.canceled_to.replaceAll("/", "-");
   }
   if (membership.team_id) {
-    const teamsUrl = `https://api.cobot.me/teams/${membership.team_id}`;
-    const teamsResponse = await apiCallUrl(z, teamsUrl, {
-      Accept: "application/vnd.api+json",
-    });
-    output.team = {
-      id: membership.team_id,
-      name: teamsResponse.data.attributes.name,
-    };
+    const teamUrl = `https://api.cobot.me/teams/${membership.team_id}`;
+    try {
+      const teamsResponse = await apiCallUrl(z, teamUrl, {
+        Accept: "application/vnd.api+json",
+      });
+      output.team = {
+        id: membership.team_id,
+        name: teamsResponse.data.attributes.name,
+      };
+    } catch (error) {}
   }
   return output;
 }
