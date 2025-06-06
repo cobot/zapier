@@ -18,9 +18,10 @@ import { ZObject } from "zapier-platform-core";
 import { at, get } from "lodash";
 import { ExternalBookingWithResourceApiResponse, apiCallUrl } from "./api";
 
-export function apiResponseToMembershipOutput(
+export async function apiResponseToMembershipOutput(
   membership: MembershipApiResponse,
-): MembershipOutput {
+  z: ZObject,
+): Promise<MembershipOutput> {
   const output: MembershipOutput = {
     id: membership.id,
     name: membership.name,
@@ -51,6 +52,16 @@ export function apiResponseToMembershipOutput(
   };
   if (membership.canceled_to) {
     output.canceled_to = membership.canceled_to.replaceAll("/", "-");
+  }
+  if (membership.team_id) {
+    const teamsUrl = `https://api.cobot.me/teams/${membership.team_id}`;
+    const teamsResponse = await apiCallUrl(z, teamsUrl, {
+      Accept: "application/vnd.api+json",
+    });
+    output.team = {
+      id: membership.team_id,
+      name: teamsResponse.data.attributes.name,
+    };
   }
   return output;
 }

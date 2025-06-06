@@ -43,6 +43,7 @@ const membershipResponse: MembershipApiResponse = {
   customer_number: "123",
   confirmed_at: "2012/04/12 12:00:00 +0000",
   canceled_to: "2012/04/14",
+  team_id: null,
 };
 
 const membershipOutput: MembershipOutput = {
@@ -127,5 +128,37 @@ describe("triggerMembershipCancelled", () => {
     expect(nock.isDone()).toBe(true);
 
     expect(results).toStrictEqual([membershipOutput]);
+  });
+
+  it("triggers on membership cancellation with team information", async () => {
+    const membershipWithTeam: MembershipApiResponse = {
+      ...membershipResponse,
+      team_id: "team-123",
+    };
+
+    const expectedOutputWithTeam: MembershipOutput = {
+      ...membershipOutput,
+      team: {
+        id: "team-123",
+        name: "Engineering Team",
+      },
+    };
+
+    const bundle = prepareBundle({
+      url: "https://trial.cobot.me/api/memberships/m1",
+    });
+    const api1Scope = nock("https://trial.cobot.me");
+    const api2Scope = nock("https://api.cobot.me");
+    api1Scope.get("/api/memberships/m1").reply(200, membershipWithTeam);
+    api2Scope.get("/teams/team-123").reply(200, {
+      data: { id: "team-123", attributes: { name: "Engineering Team" } },
+    });
+
+    const results = await appTester(
+      triggerMembershipCancelled.operation.perform as any,
+      bundle as any,
+    );
+    expect(nock.isDone()).toBe(true);
+    expect(results).toStrictEqual([expectedOutputWithTeam]);
   });
 });

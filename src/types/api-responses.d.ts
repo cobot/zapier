@@ -161,6 +161,7 @@ export type MembershipApiResponse = {
   payment_method: { name: string } | null;
   confirmed_at: string | null;
   canceled_to?: string;
+  team_id: string | null;
 };
 
 export type ContactApiResponse = {
