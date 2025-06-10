@@ -40,7 +40,7 @@ async function parsePayload(
 ): Promise<MembershipOutput[]> {
   if (bundle.cleanedRequest) {
     const membership = await apiCallUrl(z, bundle.cleanedRequest.url);
-    return [apiResponseToMembershipOutput(membership)];
+    return [await apiResponseToMembershipOutput(membership, z)];
   } else {
     return [];
   }
@@ -67,7 +67,9 @@ const trigger: HookTrigger = {
       bundle: KontentBundle<SubscribeBundleInputType>,
     ): Promise<MembershipOutput[]> => {
       const apiMemberships = await listCancelledMemberships(z, bundle);
-      return apiMemberships.map((m) => apiResponseToMembershipOutput(m));
+      return Promise.all(
+        apiMemberships.map((m) => apiResponseToMembershipOutput(m, z)),
+      );
     },
 
     sample: membershipSample,

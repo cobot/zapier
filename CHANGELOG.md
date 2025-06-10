@@ -35,3 +35,7 @@ Minor changes to associated `membership` to the invoice on trigger/created_invoi
 
 - Added trigger/drop_in_pass_purchased
 - This trigger fires when a visitor purchases a drop in pass
+
+## 2.8.0
+
+- Added team id and name to membership details for trigger/canceled_membership, trigger/confirmed_membership, trigger/membership_cancellation_date_reached, trigger/membership_plan_change_date_reached

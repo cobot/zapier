@@ -43,6 +43,7 @@ const membershipResponse: MembershipApiResponse = {
   customer_number: "123",
   confirmed_at: "2012/04/12 12:00:00 +0000",
   canceled_to: "2012/04/14",
+  team_id: null,
 };
 
 const membershipOutput: MembershipOutput = {
@@ -72,6 +73,10 @@ const membershipOutput: MembershipOutput = {
   payment_method_name: "Credit Card",
   confirmed_at: "2012-04-12",
   canceled_to: "2012-04-14",
+  team: {
+    id: null,
+    name: null,
+  },
 };
 
 afterEach(() => nock.cleanAll());
