@@ -81,9 +81,9 @@ export type MembershipOutput = {
   payment_method_name: string | null;
   confirmed_at: string | null;
   canceled_to?: string;
-  team?: {
-    id: string;
-    name: string;
+  team: {
+    id: string | null;
+    name: string | null;
   };
 };
 

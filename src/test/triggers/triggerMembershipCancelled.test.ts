@@ -73,6 +73,10 @@ const membershipOutput: MembershipOutput = {
   payment_method_name: "Credit Card",
   confirmed_at: "2012-04-12",
   canceled_to: "2012-04-14",
+  team: {
+    id: null,
+    name: null,
+  },
 };
 
 afterEach(() => nock.cleanAll());

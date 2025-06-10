@@ -49,6 +49,10 @@ export async function apiResponseToMembershipOutput(
     payment_method_name: membership.payment_method?.name ?? null,
     confirmed_at:
       membership.confirmed_at?.replaceAll("/", "-").substring(0, 10) ?? null,
+    team: {
+      id: null,
+      name: null,
+    },
   };
   if (membership.canceled_to) {
     output.canceled_to = membership.canceled_to.replaceAll("/", "-");
