@@ -2296,11 +2296,6 @@ bl@^4.1.0:
     inherits "^2.0.4"
     readable-stream "^3.4.0"
 
-bluebird@3.7.2:
-  version "3.7.2"
-  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.7.2.tgz#9f229c15be272454ffa973ace0dbee79a1b0c36f"
-  integrity sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==
-
 boxen@^5.0.0:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/boxen/-/boxen-5.1.2.tgz#788cb686fc83c1f486dfa8a40c68fc2b831d2b50"
@@ -2975,6 +2970,11 @@ cross-spawn@^7.0.0, cross-spawn@^7.0.3:
     shebang-command "^2.0.0"
     which "^2.0.1"
 
+crypto-js@~3.1.2-1:
+  version "3.1.8"
+  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-3.1.8.tgz#715f070bf6014f2ae992a98b3929258b713f08d5"
+  integrity sha512-4E+PJNbUbBrzQLB9Vw86eaF5xZ8MB6dw4aaZ67YhLNduTmqJ5AziuLrYikPWHJkC59DYZp+cyj+qg3vBE8OnOQ==
+
 crypto-random-string@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/crypto-random-string/-/crypto-random-string-2.0.0.tgz#ef2a7a966ec11083388369baa02ebead229b30d5"
@@ -3222,11 +3222,6 @@ dot-prop@^5.2.0:
   integrity sha512-QM8q3zDe58hqUqjraQOmzZ1LIH9SWQJTlEKCH4kJ2oQvLZk7RbQXvtDM2XEq3fwkV9CCvvH4LA0AV+ogFsBM2Q==
   dependencies:
     is-obj "^2.0.0"
-
-dotenv@16.4.6:
-  version "16.4.6"
-  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.4.6.tgz#fc88e8a664087abf3e19d61e21f7feee1849bbb1"
-  integrity sha512-JhcR/+KIjkkjiU8yEpaB/USlzVi3i5whwOjpIRNGi9svKEXZSe+Qp6IWAjFjv+2GViAoDRCUv/QLNziQxsLqDg==
 
 dotenv@16.5.0:
   version "16.5.0"
@@ -3642,6 +3637,14 @@ fd-slicer@~1.1.0:
   integrity sha512-cE1qsB/VwyQozZ+q1dGxR8LBYNZeofhEdUNGSMbQD3Gw2lAzX9Zb3uIU6Ebc/Fmyjo9AWWfnn0AUCHqtevs/8g==
   dependencies:
     pend "~1.2.0"
+
+fernet@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/fernet/-/fernet-0.4.0.tgz#95d10a3660bf1ccfb4964687508ec2e2ba5eda25"
+  integrity sha512-FJgmKoMeG4eoM+bEbMyTzPx9US4W+sw4D0i6jSWSKHFYlFZv92UIWi6a/w6MEf2JNSO+Mth/T+u+d/ye1zwN9A==
+  dependencies:
+    crypto-js "~3.1.2-1"
+    urlsafe-base64 "1.0.0"
 
 figures@^3.0.0:
   version "3.2.0"
@@ -7249,11 +7252,6 @@ semver-diff@^3.1.1:
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.7.2.tgz#48d55db737c3287cd4835e17fa13feace1c41ef8"
   integrity sha512-cBznnQ9KjJqU67B52RMC65CMarK2600WFnbkcaiwWq3xy/5haFJlshgnpjovMVJ+Hff49d8GEn0b87C5pDQ10g==
 
-semver@7.6.3:
-  version "7.6.3"
-  resolved "https://registry.yarnpkg.com/semver/-/semver-7.6.3.tgz#980f7b5550bc175fb4dc09403085627f9eb33143"
-  integrity sha512-oVekP1cKtI+CTDvHWYFUcMtsK/00wmAEfyqKfNdARm8u1wNVhSgaX7A8d4UuIlUI5e84iEwOhs7ZPYRmzU9U6A==
-
 semver@7.7.1, semver@^7.0.0, semver@^7.1.1, semver@^7.1.3, semver@^7.2.1, semver@^7.3.2, semver@^7.3.4, semver@^7.3.5, semver@^7.5.3, semver@^7.5.4, semver@^7.6.3, semver@^7.7.1:
   version "7.7.1"
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.7.1.tgz#abd5098d82b18c6c81f6074ff2647fd3e7220c9f"
@@ -8230,6 +8228,11 @@ url-parse-lax@^3.0.0:
   dependencies:
     prepend-http "^2.0.0"
 
+urlsafe-base64@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/urlsafe-base64/-/urlsafe-base64-1.0.0.tgz#23f89069a6c62f46cf3a1d3b00169cefb90be0c6"
+  integrity sha512-RtuPeMy7c1UrHwproMZN9gN6kiZ0SvJwRaEzwZY0j9MypEkFqyBaKv176jvlPtg58Zh36bOkS0NFABXMHvvGCA==
+
 util-deprecate@^1.0.1, util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
@@ -8692,30 +8695,30 @@ zapier-platform-cli@^17.3.0:
     yeoman-environment "3.19.3"
     yeoman-generator "5.9.0"
 
-zapier-platform-core@16.5.1:
-  version "16.5.1"
-  resolved "https://registry.yarnpkg.com/zapier-platform-core/-/zapier-platform-core-16.5.1.tgz#7199ecead76da1b1bd46f7227d255d363de52b1a"
-  integrity sha512-i58cbiNKeLvGZvAovz20/IFoRXjJHSs3szAYrofyXPIricRKFjB8ENyCvf7DNZtFuNRlllSZ38qi+cm55yle1Q==
+zapier-platform-core@17.2.0:
+  version "17.2.0"
+  resolved "https://registry.yarnpkg.com/zapier-platform-core/-/zapier-platform-core-17.2.0.tgz#52e821e3138cd217f0180ed1ef4355bc5e7ff5a5"
+  integrity sha512-3jsfsHKFBe+URduyUbt4q8UW6XxHGwt3UH/wsHZ+n1KA7GQ3AkDA7KZr2aj9IMu7/58BE1/7ufRj9eZhNYkKRA==
   dependencies:
     "@zapier/secret-scrubber" "^1.1.2"
-    bluebird "3.7.2"
     content-disposition "0.5.4"
-    dotenv "16.4.6"
+    dotenv "16.5.0"
+    fernet "^0.4.0"
     form-data "4.0.1"
     lodash "4.17.21"
     mime-types "2.1.35"
     node-abort-controller "3.1.1"
     node-fetch "2.7.0"
     oauth-sign "0.9.0"
-    semver "7.6.3"
-    zapier-platform-schema "16.5.1"
+    semver "7.7.1"
+    zapier-platform-schema "17.2.0"
   optionalDependencies:
     "@types/node" "^20.3.1"
 
-zapier-platform-schema@16.5.1:
-  version "16.5.1"
-  resolved "https://registry.yarnpkg.com/zapier-platform-schema/-/zapier-platform-schema-16.5.1.tgz#f12214cf3179f9fb6c2254fe3b5c1c1f7ef419b6"
-  integrity sha512-vg2nLSHDv8FQxErD4sBf1U+kMvRAho2khDeIKLGvS3k4ZCiTbBkkpLqskc1BBEEKq3pLFh2VDohBNq5rCMNFuA==
+zapier-platform-schema@17.2.0:
+  version "17.2.0"
+  resolved "https://registry.yarnpkg.com/zapier-platform-schema/-/zapier-platform-schema-17.2.0.tgz#b5904e7634c8242058320d24fc04922439d23989"
+  integrity sha512-0R3acbDH+YdQaxZSg07Ytl/Gd3ZDc6cjzlLIfGE2DBl6HP7raNfxmRzpi2sZVdzbZRwNR4jGxjfpJ43zI20HHw==
   dependencies:
     jsonschema "1.2.2"
     lodash "4.17.21"
