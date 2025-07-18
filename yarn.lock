@@ -2970,10 +2970,10 @@ cross-spawn@^7.0.0, cross-spawn@^7.0.3:
     shebang-command "^2.0.0"
     which "^2.0.1"
 
-crypto-js@~3.1.2-1:
-  version "3.1.8"
-  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-3.1.8.tgz#715f070bf6014f2ae992a98b3929258b713f08d5"
-  integrity sha512-4E+PJNbUbBrzQLB9Vw86eaF5xZ8MB6dw4aaZ67YhLNduTmqJ5AziuLrYikPWHJkC59DYZp+cyj+qg3vBE8OnOQ==
+crypto-js@~4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-4.2.0.tgz#4d931639ecdfd12ff80e8186dba6af2c2e856631"
+  integrity sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==
 
 crypto-random-string@^2.0.0:
   version "2.0.0"
@@ -3630,12 +3630,12 @@ fd-slicer@~1.1.0:
   dependencies:
     pend "~1.2.0"
 
-fernet@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/fernet/-/fernet-0.4.0.tgz#95d10a3660bf1ccfb4964687508ec2e2ba5eda25"
-  integrity sha512-FJgmKoMeG4eoM+bEbMyTzPx9US4W+sw4D0i6jSWSKHFYlFZv92UIWi6a/w6MEf2JNSO+Mth/T+u+d/ye1zwN9A==
+fernet@^0.3.3:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/fernet/-/fernet-0.3.3.tgz#23f31a45aa55c08152bb40ea9102e5711cb6ecf9"
+  integrity sha512-DvvqouVhv3VCor83wkQbSycekYUKDRQ1IKqcInaF5n5BSKgWBVfYLbSf7RRxojwQO0DZySiz5MlM2vO4MG3SUg==
   dependencies:
-    crypto-js "~3.1.2-1"
+    crypto-js "~4.2.0"
     urlsafe-base64 "1.0.0"
 
 figures@^3.0.0:
@@ -8648,15 +8648,15 @@ zapier-platform-cli@^17.3.0:
     yeoman-environment "3.19.3"
     yeoman-generator "5.9.0"
 
-zapier-platform-core@17.2.0:
-  version "17.2.0"
-  resolved "https://registry.yarnpkg.com/zapier-platform-core/-/zapier-platform-core-17.2.0.tgz#52e821e3138cd217f0180ed1ef4355bc5e7ff5a5"
-  integrity sha512-3jsfsHKFBe+URduyUbt4q8UW6XxHGwt3UH/wsHZ+n1KA7GQ3AkDA7KZr2aj9IMu7/58BE1/7ufRj9eZhNYkKRA==
+zapier-platform-core@17.3.1:
+  version "17.3.1"
+  resolved "https://registry.yarnpkg.com/zapier-platform-core/-/zapier-platform-core-17.3.1.tgz#e5aeb06504ae20316a65e06b3a0df3d74d4e11f2"
+  integrity sha512-x0JPHNQACgToRzuvbenVHFsT1PDW6Lv79pOIMxYdIljlaasX6ptebn19LByHnNi5RtQCHQKcZqZs27hnMZbinw==
   dependencies:
     "@zapier/secret-scrubber" "^1.1.2"
     content-disposition "0.5.4"
     dotenv "16.5.0"
-    fernet "^0.4.0"
+    fernet "^0.3.3"
     form-data "4.0.1"
     lodash "4.17.21"
     mime-types "2.1.35"
@@ -8664,14 +8664,14 @@ zapier-platform-core@17.2.0:
     node-fetch "2.7.0"
     oauth-sign "0.9.0"
     semver "7.7.1"
-    zapier-platform-schema "17.2.0"
+    zapier-platform-schema "17.3.1"
   optionalDependencies:
     "@types/node" "^20.3.1"
 
-zapier-platform-schema@17.2.0:
-  version "17.2.0"
-  resolved "https://registry.yarnpkg.com/zapier-platform-schema/-/zapier-platform-schema-17.2.0.tgz#b5904e7634c8242058320d24fc04922439d23989"
-  integrity sha512-0R3acbDH+YdQaxZSg07Ytl/Gd3ZDc6cjzlLIfGE2DBl6HP7raNfxmRzpi2sZVdzbZRwNR4jGxjfpJ43zI20HHw==
+zapier-platform-schema@17.3.1:
+  version "17.3.1"
+  resolved "https://registry.yarnpkg.com/zapier-platform-schema/-/zapier-platform-schema-17.3.1.tgz#45a1e5dedef55ea04e5d4b72cbec02be4b433149"
+  integrity sha512-sYCdZ7B+hNpj1j9T3j7v8O/xPCTLK4g3qiTqlOt6e/4D/wo8cCqnG6etgfp1XJWGpMvmCqrJKzm65w/Ank/8Sg==
   dependencies:
     jsonschema "1.2.2"
     lodash "4.17.21"
