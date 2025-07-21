@@ -8608,10 +8608,10 @@ yoctocolors-cjs@^2.1.2:
   resolved "https://registry.yarnpkg.com/yoctocolors-cjs/-/yoctocolors-cjs-2.1.2.tgz#f4b905a840a37506813a7acaa28febe97767a242"
   integrity sha512-cYVsTjKl8b+FrnidjibDWskAv7UKOfcwaVZdp/it9n1s9fU3IkgDbhdIRKCW4JDsAlECJY0ytoVPT3sK6kideA==
 
-zapier-platform-cli@^17.3.0:
-  version "17.3.0"
-  resolved "https://registry.yarnpkg.com/zapier-platform-cli/-/zapier-platform-cli-17.3.0.tgz#938c2c4148709b3eda947f136aa16c9cc4f474be"
-  integrity sha512-uCcfWn/hz1+WMzSEZ93U3JB7Ez6N0Beg50OV6w4vdiPxE0s8m6cocOSJAmP8bJOuVkbmjsZGZmJfOs+lLGn4/w==
+zapier-platform-cli@^17.3.1:
+  version "17.3.1"
+  resolved "https://registry.yarnpkg.com/zapier-platform-cli/-/zapier-platform-cli-17.3.1.tgz#e3825728e85d5483a833be3cdd27e8cbff893c39"
+  integrity sha512-PHleHm54xSf1uSgbGJPYdCShuplErUZ0FikAm0Dl4D+/lPORYquMtqHcV6e9iwCk7NyxXnlId8T0VQm/3zZmuQ==
   dependencies:
     "@oclif/core" "4.3.0"
     "@oclif/plugin-autocomplete" "3.2.28"
