@@ -16,6 +16,7 @@ export type BookingOutput = {
   comments: string | null;
   units: number;
   member_name: string | null;
+  member_email: string | null;
 };
 
 export type EventOutput = {
