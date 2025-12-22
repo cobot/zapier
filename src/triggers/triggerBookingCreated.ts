@@ -2,6 +2,7 @@ import { ZObject } from "zapier-platform-core";
 import { KontentBundle } from "../types/kontentBundle";
 import {
   apiCallUrl,
+  getMembership,
   listRecentBookings,
   subscribeHook,
   unsubscribeHook,
@@ -44,7 +45,13 @@ async function parsePayload(
       z,
       bundle.cleanedRequest.url,
     )) as BookingApiResponse;
-    return [apiResponseToBookingOutput(booking)];
+    const subdomain = (bundle.inputData as any).subdomain as string;
+    const membershipId = booking.membership?.id;
+    if (membershipId && subdomain) {
+      const membership = await getMembership(z, subdomain, membershipId);
+      return [apiResponseToBookingOutput(booking, membership)];
+    }
+    return [apiResponseToBookingOutput(booking, null)];
   } else {
     return [];
   }
@@ -71,7 +78,17 @@ const trigger: HookTrigger = {
       bundle: KontentBundle<SubscribeBundleInputType>,
     ): Promise<BookingOutput[]> => {
       const apiBookings = await listRecentBookings(z, bundle);
-      return apiBookings.map((b) => apiResponseToBookingOutput(b));
+      const bookingOutputPromises = apiBookings.map(async (b) => {
+        const subdomain = (bundle.inputData as any).subdomain as string;
+        const membershipId = b.membership?.id;
+        if (membershipId && subdomain) {
+          const membership = await getMembership(z, subdomain, membershipId);
+          return apiResponseToBookingOutput(b, membership);
+        }
+        return apiResponseToBookingOutput(b, null);
+      });
+      const bookingOutputs = await Promise.all(bookingOutputPromises);
+      return bookingOutputs;
     },
     sample: bookingSample,
   },

@@ -16,6 +16,7 @@ export const bookingSample: BookingOutput = {
   price: "10.0",
   currency: "EUR",
   member_name: "John Doe",
+  member_email: "john.doe@example.com",
   comments: "coffee please",
   units: 1,
 };

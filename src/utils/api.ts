@@ -18,7 +18,6 @@ import {
   BookingApi2Response,
   DropInPassApiResponse,
 } from "../types/api-responses";
-import { InvoiceMembershipOutput } from "../types/outputs";
 
 type Space = {
   id: string;
@@ -126,6 +125,19 @@ export const listRecentEvents = async (
     return response.data.data as EventApiResponse[];
   }
   return [];
+};
+
+export const getMembership = async (
+  z: ZObject,
+  subdomain: string,
+  membershipId: string,
+): Promise<MembershipApiResponse | null> => {
+  const url = `https://${subdomain}.cobot.me/api/memberships/${membershipId}`;
+  const response = await z.request({
+    url,
+    method: "GET",
+  });
+  return response.data;
 };
 
 export const listMemberships = async (

@@ -131,6 +131,7 @@ export function apiResponseToEventOutput(event: EventApiResponse): EventOutput {
 
 export function apiResponseToBookingOutput(
   booking: BookingApiResponse,
+  membership: MembershipApiResponse | null,
 ): BookingOutput {
   return {
     id: booking.id,
@@ -143,6 +144,7 @@ export function apiResponseToBookingOutput(
     comments: booking.comments,
     units: booking.units,
     member_name: booking.membership?.name ?? null,
+    member_email: membership?.email ?? null,
   };
 }
 
