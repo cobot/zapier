@@ -1,3 +1,7 @@
+## 2.9.0
+
+- Add `membership_email` to bookings
+
 ## 2.2.1
 
 Minor changes to associated `membership` to the invoice on trigger/created_invoice.
