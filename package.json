@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
-    "@types/lodash": "^4.17.20",
+    "@types/lodash": "^4.17.23",
     "@types/luxon": "^3.7.1",
     "@types/node": "^24",
     "@types/node-fetch": "^2.6.13",
