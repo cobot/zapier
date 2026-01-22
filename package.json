@@ -18,7 +18,7 @@
     "**/*": "yarn prettier --write --ignore-unknown"
   },
   "dependencies": {
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "luxon": "^3.7.2",
     "zapier-platform-core": "17.6.0"
   },
