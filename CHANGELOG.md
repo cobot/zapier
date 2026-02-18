@@ -1,6 +1,6 @@
 ## 2.10.0
 
-- Added `attendee_list` and `attendee_message` on trigger/created_booking
+- Added `attendee_list` and `attendees_message` on trigger/created_booking
 
 ## 2.9.0
 
