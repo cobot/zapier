@@ -1,3 +1,7 @@
+## 2.10.0
+
+- Added `attendee_list` and `attendee_message` on trigger/created_booking
+
 ## 2.9.0
 
 - Add `membership_email` to bookings

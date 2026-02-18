@@ -17,6 +17,8 @@ export type BookingOutput = {
   units: number;
   member_name: string | null;
   member_email: string | null;
+  attendee_list: string[];
+  attendees_message: string | null;
 };
 
 export type EventOutput = {

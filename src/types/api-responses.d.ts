@@ -9,6 +9,8 @@ export type BookingApiResponse = {
   price: number;
   currency: string;
   units: number;
+  attendees?: { email: string }[];
+  attendeesMessage?: string | null;
 };
 
 export type BookingApi2Response = {
