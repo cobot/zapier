@@ -1,3 +1,7 @@
+## 2.11.0
+
+- Added trigger/created_membership
+
 ## 2.9.0
 
 - Add `membership_email` to bookings
