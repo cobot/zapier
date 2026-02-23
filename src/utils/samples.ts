@@ -19,6 +19,8 @@ export const bookingSample: BookingOutput = {
   member_email: "john.doe@example.com",
   comments: "coffee please",
   units: 1,
+  attendee_list: ["alice@example.com", "bob@example.com"],
+  attendees_message: "See you there",
 };
 
 export const eventSample: EventOutput = {

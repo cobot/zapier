@@ -69,6 +69,22 @@ const bookingOutput: BookingOutput = {
   member_email: "john.doe@example.com",
   comments: "coffee please",
   units: 1,
+  attendee_list: [],
+  attendees_message: null,
+};
+
+const bookingWithAttendeesResponse: BookingApiResponse = {
+  ...bookingResponse,
+  id: "booking-with-attendees",
+  attendees: [{ email: "alice@example.com" }, { email: "bob@example.com" }],
+  attendeesMessage: "See you at the meeting",
+};
+
+const bookingWithAttendeesOutput: BookingOutput = {
+  ...bookingOutput,
+  id: "booking-with-attendees",
+  attendee_list: ["alice@example.com", "bob@example.com"],
+  attendees_message: "See you at the meeting",
 };
 
 const bookingWithoutMembershipResponse: BookingApiResponse = {
@@ -96,6 +112,8 @@ const bookingWithoutMembershipOutput: BookingOutput = {
   member_email: null,
   comments: null,
   units: 1,
+  attendee_list: [],
+  attendees_message: null,
 };
 
 afterEach(() => nock.cleanAll());
@@ -182,5 +200,26 @@ describe("triggerBookingCreated", () => {
 
     expect(nock.isDone()).toBe(true);
     expect(results).toStrictEqual([bookingWithoutMembershipOutput]);
+  });
+
+  it("maps attendee_list and attendees_message when API returns them", async () => {
+    const bundle = prepareBundle({
+      url: "https://trial.cobot.me/api/bookings/b-attendees",
+    });
+    const apiScope = nock("https://trial.cobot.me");
+    apiScope
+      .get("/api/bookings/b-attendees")
+      .reply(200, bookingWithAttendeesResponse);
+    apiScope
+      .get("/api/memberships/membership-1")
+      .reply(200, membershipResponse);
+
+    const results = await appTester(
+      triggerBookingCreated.operation.perform as any,
+      bundle as any,
+    );
+
+    expect(nock.isDone()).toBe(true);
+    expect(results).toStrictEqual([bookingWithAttendeesOutput]);
   });
 });

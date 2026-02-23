@@ -133,6 +133,7 @@ export function apiResponseToBookingOutput(
   booking: BookingApiResponse,
   membership: MembershipApiResponse | null,
 ): BookingOutput {
+  const attendees = booking.attendees ?? [];
   return {
     id: booking.id,
     from: timeToIso8601(booking.from),
@@ -145,6 +146,8 @@ export function apiResponseToBookingOutput(
     units: booking.units,
     member_name: booking.membership?.name ?? null,
     member_email: membership?.email ?? null,
+    attendee_list: attendees.map((a) => a.email),
+    attendees_message: booking.attendeesMessage ?? null,
   };
 }
 
