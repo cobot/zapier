@@ -5691,11 +5691,6 @@ lodash.memoize@^4.1.2:
   resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
   integrity sha512-t7j+NzmgnQzTAYXcsHYLgimltOV1MXHtlOWf6GjL9Kj8GK5FInw5JotxvbOs+IvV1/Dzo04/fCGfLVs7aXb4Ag==
 
-lodash@4.17.21:
-  version "4.17.21"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
-  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
-
 lodash@4.17.23, lodash@^4.17.15, lodash@^4.17.21, lodash@^4.17.23:
   version "4.17.23"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.23.tgz#f113b0378386103be4f6893388c73d0bde7f2c5a"
@@ -8494,10 +8489,10 @@ yoctocolors@^2.1.1:
   resolved "https://registry.yarnpkg.com/yoctocolors/-/yoctocolors-2.1.2.tgz#d795f54d173494e7d8db93150cec0ed7f678c83a"
   integrity sha512-CzhO+pFNo8ajLM2d2IW/R93ipy99LWjtwblvC1RsoSUMZgyLbYFr221TnSNT7GjGdYui6P459mw9JH/g/zW2ug==
 
-zapier-platform-cli@^18.1.0:
-  version "18.1.0"
-  resolved "https://registry.yarnpkg.com/zapier-platform-cli/-/zapier-platform-cli-18.1.0.tgz#58bc969e7441874109e68495a484d528dda116d6"
-  integrity sha512-SODzVAbnW0Qxlm7LJq74x7jvFRv0vF5iG8SCWDJ/0Grf8KNd3yk9ksRKERj6/R1WEmxOfHAH90a833kLaTSpMQ==
+zapier-platform-cli@^18.2.1:
+  version "18.2.1"
+  resolved "https://registry.yarnpkg.com/zapier-platform-cli/-/zapier-platform-cli-18.2.1.tgz#4f30d3a33ca605fabc1e9559b9f8bbffc4207360"
+  integrity sha512-Vk5RHR6k20dqeGYdXqDmgcr+cNMDDo/Dj4Fl3mOPjjB/OFNgAfoBpWKbE09M9RXOvMcf2GWnkVQVU4i2DDeSTg==
   dependencies:
     "@oclif/core" "4.5.2"
     "@oclif/plugin-autocomplete" "3.2.34"
@@ -8519,7 +8514,7 @@ zapier-platform-cli@^18.1.0:
     ignore "7.0.5"
     inquirer "8.2.5"
     jscodeshift "^17.3.0"
-    lodash "4.17.21"
+    lodash "4.17.23"
     luxon "3.7.1"
     marked "15.0.12"
     marked-terminal "7.3.0"
