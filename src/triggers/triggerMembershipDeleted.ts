@@ -4,10 +4,7 @@ import { listMemberships, subscribeHook, unsubscribeHook } from "../utils/api";
 import { SubscribeBundleInputType } from "../types/subscribeType";
 import { getSubdomainField } from "../fields/getSudomainsField";
 import { MembershipOutput } from "../types/outputs";
-import {
-  apiResponseToMembershipOutput,
-  normalizeMembershipPayload,
-} from "../utils/api-to-output";
+import { apiResponseToMembershipOutput } from "../utils/api-to-output";
 import { membershipSample } from "../utils/samples";
 import { HookTrigger } from "../types/trigger";
 
@@ -37,9 +34,7 @@ async function parsePayload(
   bundle: KontentBundle<{}>,
 ): Promise<MembershipOutput[]> {
   if (bundle.cleanedRequest?.membership) {
-    const membership = normalizeMembershipPayload(
-      bundle.cleanedRequest.membership,
-    );
+    const membership = bundle.cleanedRequest.membership;
     return [await apiResponseToMembershipOutput(membership, z)];
   }
   return [];

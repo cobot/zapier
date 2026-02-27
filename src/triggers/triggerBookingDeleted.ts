@@ -10,10 +10,7 @@ import { getSubdomainField } from "../fields/getSudomainsField";
 import { SubscribeBundleInputType } from "../types/subscribeType";
 import { bookingSample } from "../utils/samples";
 import { BookingOutput } from "../types/outputs";
-import {
-  apiResponseToBookingOutput,
-  normalizeBookingPayload,
-} from "../utils/api-to-output";
+import { apiResponseToBookingOutput } from "../utils/api-to-output";
 import { HookTrigger } from "../types/trigger";
 
 const hookLabel = "Booking Deleted";
@@ -42,8 +39,14 @@ async function parsePayload(
   bundle: KontentBundle<{}>,
 ): Promise<BookingOutput[]> {
   if (bundle.cleanedRequest?.booking) {
-    const booking = normalizeBookingPayload(bundle.cleanedRequest.booking);
-    return [apiResponseToBookingOutput(booking, null)];
+    const booking = bundle.cleanedRequest.booking;
+    const subdomain = (bundle.inputData as any).subdomain as string;
+    const membershipId = booking.membership?.id;
+    let membership = null;
+    if (membershipId && subdomain) {
+      membership = await getMembership(z, subdomain, membershipId);
+    }
+    return [apiResponseToBookingOutput(booking, membership)];
   }
   return [];
 }

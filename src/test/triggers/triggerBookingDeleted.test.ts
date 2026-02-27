@@ -120,43 +120,18 @@ describe("triggerBookingDeleted", () => {
       booking: bookingResponse,
     };
 
+    nock("https://trial.cobot.me")
+      .get("/api/memberships/membership-1")
+      .reply(200, membershipResponse);
+
     const results = await appTester(
       triggerBookingDeleted.operation.perform as any,
       bundle as any,
     );
 
-    expect(results).toStrictEqual([bookingOutput]);
-  });
-
-  it("triggers on deleted booking with flat webhook-shape payload (resource_name)", async () => {
-    const flatWebhookPayload = {
-      id: "d58b612aaa62619aae546dd336587eb2",
-      from: "2012/04/12 12:00:00 +0000",
-      to: "2012/04/12 18:00:00 +0000",
-      title: "test booking",
-      resource_name: "Meeting Room",
-      resource_id: "resource-1",
-      membership: { id: "membership-1", name: "John Doe" },
-      comments: "coffee please",
-      price: 10.0,
-      currency: "EUR",
-      units: 1,
-    };
-
-    const bundle = prepareBundle();
-    bundle.cleanedRequest = {
-      url: "https://trial.cobot.me/api/bookings/b1",
-      booking: flatWebhookPayload,
-    };
-
-    const results = (await appTester(
-      triggerBookingDeleted.operation.perform as any,
-      bundle as any,
-    )) as BookingOutput[];
-
-    expect(results[0].id).toBe("d58b612aaa62619aae546dd336587eb2");
-    expect(results[0].resource_name).toBe("Meeting Room");
-    expect(results[0].price).toBe("10");
+    expect(results).toStrictEqual([
+      { ...bookingOutput, member_email: "john.doe@example.com" },
+    ]);
   });
 
   it("returns empty array when no booking in payload", async () => {
