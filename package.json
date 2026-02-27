@@ -20,7 +20,7 @@
   "dependencies": {
     "lodash": "^4.17.23",
     "luxon": "^3.7.2",
-    "zapier-platform-core": "18.2.1"
+    "zapier-platform-core": "18.2.2"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
