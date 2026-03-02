@@ -15,6 +15,12 @@ import triggerMembershipCancelled from "./triggers/triggerMembershipCancelled";
 import triggerMembershipCancellationDateReached from "./triggers/triggerMembershipCancellationDateReached";
 import triggerDropInPassPurchased from "./triggers/triggerDropInPassPurchased";
 import triggerExternalBookingApproved from "./triggers/triggerExternalBookingApproved";
+import triggerBookingUpdated from "./triggers/triggerBookingUpdated";
+import triggerBookingDeleted from "./triggers/triggerBookingDeleted";
+import triggerMembershipUncanceled from "./triggers/triggerMembershipUncanceled";
+import triggerMembershipReactivated from "./triggers/triggerMembershipReactivated";
+import triggerMembershipDeleted from "./triggers/triggerMembershipDeleted";
+import triggerMembershipPlanChangedEvent from "./triggers/triggerMembershipPlanChangedEvent";
 
 const { version } = require("../package.json");
 
@@ -44,6 +50,12 @@ export default {
     [triggerDropInPassPurchased.key]: triggerDropInPassPurchased,
     [triggerMembershipCancellationDateReached.key]:
       triggerMembershipCancellationDateReached,
+    [triggerBookingUpdated.key]: triggerBookingUpdated,
+    [triggerBookingDeleted.key]: triggerBookingDeleted,
+    [triggerMembershipUncanceled.key]: triggerMembershipUncanceled,
+    [triggerMembershipReactivated.key]: triggerMembershipReactivated,
+    [triggerMembershipDeleted.key]: triggerMembershipDeleted,
+    [triggerMembershipPlanChangedEvent.key]: triggerMembershipPlanChangedEvent,
     // Lists for dropdowns
     [getSubdomains.key]: getSubdomains,
   },
