@@ -1,3 +1,7 @@
+## 2.11.0
+
+- Added more triggers: Booking Deleted, Booking Updated, Membership Deleted, Membership Plan Changed, Membership Reactivated, Membership Uncanceled (@shpetimselaci)
+
 ## 2.10.0
 
 - Added `attendee_list` and `attendees_message` on trigger/created_booking
