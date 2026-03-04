@@ -16,10 +16,12 @@ import triggerMembershipCancellationDateReached from "./triggers/triggerMembersh
 import triggerDropInPassPurchased from "./triggers/triggerDropInPassPurchased";
 import triggerExternalBookingApproved from "./triggers/triggerExternalBookingApproved";
 import triggerBookingUpdated from "./triggers/triggerBookingUpdated";
+import triggerExternalBookingUpdated from "./triggers/triggerExternalBookingUpdated";
 import triggerBookingDeleted from "./triggers/triggerBookingDeleted";
 import triggerMembershipUncanceled from "./triggers/triggerMembershipUncanceled";
 import triggerMembershipReactivated from "./triggers/triggerMembershipReactivated";
 import triggerMembershipDeleted from "./triggers/triggerMembershipDeleted";
+import triggerMembershipUpdated from "./triggers/triggerMembershipUpdated";
 import triggerMembershipPlanChangedEvent from "./triggers/triggerMembershipPlanChangedEvent";
 
 const { version } = require("../package.json");
@@ -47,6 +49,7 @@ export default {
     [triggerInvoiceCreated.key]: triggerInvoiceCreated,
     [triggerExternalBookingApproved.key]: triggerExternalBookingApproved,
     [triggerExternalBookingCreated.key]: triggerExternalBookingCreated,
+    [triggerExternalBookingUpdated.key]: triggerExternalBookingUpdated,
     [triggerDropInPassPurchased.key]: triggerDropInPassPurchased,
     [triggerMembershipCancellationDateReached.key]:
       triggerMembershipCancellationDateReached,
@@ -55,6 +58,7 @@ export default {
     [triggerMembershipUncanceled.key]: triggerMembershipUncanceled,
     [triggerMembershipReactivated.key]: triggerMembershipReactivated,
     [triggerMembershipDeleted.key]: triggerMembershipDeleted,
+    [triggerMembershipUpdated.key]: triggerMembershipUpdated,
     [triggerMembershipPlanChangedEvent.key]: triggerMembershipPlanChangedEvent,
     // Lists for dropdowns
     [getSubdomains.key]: getSubdomains,
