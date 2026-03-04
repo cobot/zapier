@@ -1,3 +1,7 @@
+## 2.12.0
+
+- Added triggers: External Booking Updated, Membership Updated (@shpetimselaci)
+
 ## 2.11.0
 
 - Added more triggers: Booking Deleted, Booking Updated, Membership Deleted, Membership Plan Changed, Membership Reactivated, Membership Uncanceled (@shpetimselaci)
