@@ -5,6 +5,8 @@ import {
   ContactApiResponse,
   InvoiceApiResponse,
   DropInPassApiResponse,
+  BookingApi2Response,
+  ResourceApiResponse,
 } from "../types/api-responses";
 import {
   BookingOutput,
@@ -130,24 +132,23 @@ export function apiResponseToEventOutput(event: EventApiResponse): EventOutput {
 }
 
 export function apiResponseToBookingOutput(
-  booking: BookingApiResponse,
+  booking: BookingApi2Response,
   membership: MembershipApiResponse | null,
+  resource: ResourceApiResponse,
 ): BookingOutput {
-  const attendees = booking.attendees ?? [];
+  const attributes = booking.attributes;
   return {
     id: booking.id,
-    from: timeToIso8601(booking.from),
-    to: timeToIso8601(booking.to),
-    title: booking.title,
-    resource_name: booking.resource.name,
-    price: booking.price.toString(),
-    currency: booking.currency,
-    comments: booking.comments,
-    units: booking.units,
-    member_name: booking.membership?.name ?? null,
+    from: timeToIso8601(booking.attributes.from),
+    to: timeToIso8601(booking.attributes.to),
+    title: booking.attributes.title,
+    resource_name: resource.attributes.name,
+    price: booking.attributes.price.toString(),
+    currency: attributes.price.currency,
+    member_name: membership?.name ?? null,
     member_email: membership?.email ?? null,
-    attendee_list: attendees.map((a) => a.email),
-    attendees_message: booking.attendeesMessage ?? null,
+    attendee_list: attributes.attendees.map((a) => a.email),
+    attendees_message: attributes.attendeesMessage ?? null,
   };
 }
 

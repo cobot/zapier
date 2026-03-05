@@ -5,6 +5,7 @@ import {
   getMembership,
   subscribeHook,
   unsubscribeHook,
+  getResource,
 } from "../utils/api";
 import { getSubdomainField } from "../fields/getSudomainsField";
 import { SubscribeBundleInputType } from "../types/subscribeType";
@@ -42,11 +43,16 @@ async function parsePayload(
     const booking = bundle.cleanedRequest.booking;
     const subdomain = (bundle.inputData as any).subdomain as string;
     const membershipId = booking.membership?.id;
+    const resourceId = booking.relationships.resource.data?.id;
+    const resource = await getResource(z, resourceId);
+    if (!resource) {
+      return [];
+    }
     let membership = null;
     if (membershipId && subdomain) {
       membership = await getMembership(z, subdomain, membershipId);
     }
-    return [apiResponseToBookingOutput(booking, membership)];
+    return [apiResponseToBookingOutput(booking, membership, resource)];
   }
   return [];
 }

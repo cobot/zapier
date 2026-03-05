@@ -13,8 +13,6 @@ export type BookingOutput = {
   resource_name: string;
   price: string;
   currency: string;
-  comments: string | null;
-  units: number;
   member_name: string | null;
   member_email: string | null;
   attendee_list: string[];
