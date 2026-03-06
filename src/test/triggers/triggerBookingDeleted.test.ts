@@ -131,7 +131,7 @@ describe("triggerBookingDeleted", () => {
     apiScope
       .get("/spaces/space-1/bookings")
       .query(true)
-      .reply(200, [bookingResponse]);
+      .reply(200, { data: [bookingResponse] });
     apiScope
       .get("/resources/resource-1")
       .reply(200, { data: resourceResponse });

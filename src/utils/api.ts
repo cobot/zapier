@@ -103,7 +103,7 @@ export const listRecentBookings = async (
       "page[size]": "3",
     },
   });
-  return response.data;
+  return response.data.data;
 };
 
 export const listRecentEvents = async (
