@@ -1,3 +1,7 @@
+## 2.12.2
+
+- Fixed membership updated trigger: wrong webhook name.
+
 ## 2.12.0
 
 - Added triggers: External Booking Updated, Membership Updated (@shpetimselaci)
