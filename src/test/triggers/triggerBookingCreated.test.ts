@@ -7,24 +7,45 @@ import {
 } from "../utils/prepareMocksForWebhookSubscribeTest";
 import triggerBookingCreated from "../../triggers/triggerBookingCreated";
 import { HookTrigger } from "../../types/trigger";
-import { BookingApiResponse } from "../../types/api-responses";
+import { BookingApi2Response } from "../../types/api-responses";
 import { BookingOutput } from "../../types/outputs";
 import { MembershipApiResponse } from "../../types/api-responses";
 
 const appTester = createAppTester(App);
 nock.disableNetConnect();
 
-const bookingResponse: BookingApiResponse = {
-  id: "d58b612aaa62619aae546dd336587eb2",
-  from: "2012/04/12 12:00:00 +0000",
-  to: "2012/04/12 18:00:00 +0000",
-  title: "test booking",
-  resource: { name: "Meeting Room", id: "resource-1" },
-  membership: { id: "membership-1", name: "John Doe" },
-  comments: "coffee please",
-  price: 10.0,
+const priceAttr = {
+  net: "10",
+  gross: "10",
   currency: "EUR",
-  units: 1,
+  taxes: [] as { name: string; amount: string; rate: string }[],
+};
+
+const bookingResponse: BookingApi2Response = {
+  id: "d58b612aaa62619aae546dd336587eb2",
+  type: "bookings",
+  attributes: {
+    from: "2012/04/12 12:00:00 +0000",
+    to: "2012/04/12 18:00:00 +0000",
+    title: "test booking",
+    name: "test booking",
+    comments: "coffee please",
+    attendees: [],
+    attendeesMessage: null,
+    price: priceAttr,
+    units: 1,
+  },
+  relationships: {
+    externalBooking: { data: null },
+    membership: { data: { id: "membership-1", type: "memberships" } },
+    resource: { data: { id: "resource-1", type: "resources" } },
+  },
+};
+
+const resourceResponse = {
+  id: "resource-1",
+  type: "resources",
+  attributes: { name: "Meeting Room" },
 };
 
 const membershipResponse: MembershipApiResponse = {
@@ -64,20 +85,23 @@ const bookingOutput: BookingOutput = {
   title: "test booking",
   resource_name: "Meeting Room",
   price: "10",
+  units: 1,
   currency: "EUR",
   member_name: "John Doe",
   member_email: "john.doe@example.com",
   comments: "coffee please",
-  units: 1,
   attendee_list: [],
   attendees_message: null,
 };
 
-const bookingWithAttendeesResponse: BookingApiResponse = {
+const bookingWithAttendeesResponse: BookingApi2Response = {
   ...bookingResponse,
   id: "booking-with-attendees",
-  attendees: [{ email: "alice@example.com" }, { email: "bob@example.com" }],
-  attendeesMessage: "See you at the meeting",
+  attributes: {
+    ...bookingResponse.attributes,
+    attendees: [{ email: "alice@example.com" }, { email: "bob@example.com" }],
+    attendeesMessage: "See you at the meeting",
+  },
 };
 
 const bookingWithAttendeesOutput: BookingOutput = {
@@ -87,17 +111,37 @@ const bookingWithAttendeesOutput: BookingOutput = {
   attendees_message: "See you at the meeting",
 };
 
-const bookingWithoutMembershipResponse: BookingApiResponse = {
-  id: "booking-without-member",
-  from: "2012/04/12 12:00:00 +0000",
-  to: "2012/04/12 18:00:00 +0000",
-  title: "guest booking",
-  resource: { name: "Desk", id: "resource-2" },
-  membership: null,
-  comments: null,
-  price: 5.0,
+const priceAttrUsd = {
+  net: "5",
+  gross: "5",
   currency: "USD",
-  units: 1,
+  taxes: [] as { name: string; amount: string; rate: string }[],
+};
+
+const bookingWithoutMembershipResponse: BookingApi2Response = {
+  id: "booking-without-member",
+  type: "bookings",
+  attributes: {
+    from: "2012/04/12 12:00:00 +0000",
+    to: "2012/04/12 18:00:00 +0000",
+    title: "guest booking",
+    name: "guest booking",
+    comments: null,
+    attendees: [],
+    attendeesMessage: null,
+    price: priceAttrUsd,
+    units: 1,
+  },
+  relationships: {
+    externalBooking: { data: null },
+    resource: { data: { id: "resource-2", type: "resources" } },
+  },
+};
+
+const resourceResponse2 = {
+  id: "resource-2",
+  type: "resources",
+  attributes: { name: "Desk" },
 };
 
 const bookingWithoutMembershipOutput: BookingOutput = {
@@ -107,13 +151,19 @@ const bookingWithoutMembershipOutput: BookingOutput = {
   title: "guest booking",
   resource_name: "Desk",
   price: "5",
+  units: 1,
   currency: "USD",
   member_name: null,
   member_email: null,
   comments: null,
-  units: 1,
   attendee_list: [],
   attendees_message: null,
+};
+
+const userResponseWithSpace = {
+  included: [
+    { id: "space-1", type: "spaces", attributes: { subdomain: "trial" } },
+  ],
 };
 
 afterEach(() => nock.cleanAll());
@@ -137,9 +187,20 @@ describe("triggerBookingCreated", () => {
 
   it("lists recent bookings", async () => {
     const bundle = prepareBundle();
-    const apiScope = nock("https://trial.cobot.me");
-    apiScope.get("/api/bookings").query(true).reply(200, [bookingResponse]);
+    const apiScope = nock("https://api.cobot.me");
     apiScope
+      .get("/user")
+      .query({ include: "adminOf" })
+      .reply(200, userResponseWithSpace);
+    apiScope
+      .get("/spaces/space-1/bookings")
+      .query(true)
+      .reply(200, [bookingResponse]);
+    apiScope
+      .get("/resources/resource-1")
+      .reply(200, { data: resourceResponse });
+    const spaceScope = nock("https://trial.cobot.me");
+    spaceScope
       .get("/api/memberships/membership-1")
       .reply(200, membershipResponse);
 
@@ -152,11 +213,18 @@ describe("triggerBookingCreated", () => {
 
   it("lists recent bookings without membership", async () => {
     const bundle = prepareBundle();
-    const apiScope = nock("https://trial.cobot.me");
+    const apiScope = nock("https://api.cobot.me");
     apiScope
-      .get("/api/bookings")
+      .get("/user")
+      .query({ include: "adminOf" })
+      .reply(200, userResponseWithSpace);
+    apiScope
+      .get("/spaces/space-1/bookings")
       .query(true)
       .reply(200, [bookingWithoutMembershipResponse]);
+    apiScope
+      .get("/resources/resource-2")
+      .reply(200, { data: resourceResponse2 });
 
     const listBookings = triggerBookingCreated.operation.performList;
 
@@ -169,9 +237,13 @@ describe("triggerBookingCreated", () => {
     const bundle = prepareBundle({
       url: "https://trial.cobot.me/api/bookings/b1",
     });
-    const apiScope = nock("https://trial.cobot.me");
-    apiScope.get("/api/bookings/b1").reply(200, bookingResponse);
+    const apiScope = nock("https://api.cobot.me");
+    apiScope.get("/bookings/b1").reply(200, { data: bookingResponse });
     apiScope
+      .get("/resources/resource-1")
+      .reply(200, { data: resourceResponse });
+    const spaceScope = nock("https://trial.cobot.me");
+    spaceScope
       .get("/api/memberships/membership-1")
       .reply(200, membershipResponse);
 
@@ -188,10 +260,13 @@ describe("triggerBookingCreated", () => {
     const bundle = prepareBundle({
       url: "https://trial.cobot.me/api/bookings/b2",
     });
-    const apiScope = nock("https://trial.cobot.me");
+    const apiScope = nock("https://api.cobot.me");
     apiScope
-      .get("/api/bookings/b2")
-      .reply(200, bookingWithoutMembershipResponse);
+      .get("/bookings/b2")
+      .reply(200, { data: bookingWithoutMembershipResponse });
+    apiScope
+      .get("/resources/resource-2")
+      .reply(200, { data: resourceResponse2 });
 
     const results = await appTester(
       triggerBookingCreated.operation.perform as any,
@@ -206,11 +281,15 @@ describe("triggerBookingCreated", () => {
     const bundle = prepareBundle({
       url: "https://trial.cobot.me/api/bookings/b-attendees",
     });
-    const apiScope = nock("https://trial.cobot.me");
+    const apiScope = nock("https://api.cobot.me");
     apiScope
-      .get("/api/bookings/b-attendees")
-      .reply(200, bookingWithAttendeesResponse);
+      .get("/bookings/b-attendees")
+      .reply(200, { data: bookingWithAttendeesResponse });
     apiScope
+      .get("/resources/resource-1")
+      .reply(200, { data: resourceResponse });
+    const spaceScope = nock("https://trial.cobot.me");
+    spaceScope
       .get("/api/memberships/membership-1")
       .reply(200, membershipResponse);
 

@@ -1,5 +1,4 @@
 import {
-  BookingApiResponse,
   EventApiResponse,
   MembershipApiResponse,
   ContactApiResponse,
@@ -143,10 +142,12 @@ export function apiResponseToBookingOutput(
     to: timeToIso8601(booking.attributes.to),
     title: booking.attributes.title,
     resource_name: resource.attributes.name,
-    price: booking.attributes.price.toString(),
+    price: attributes.price.net,
+    units: attributes.units,
     currency: attributes.price.currency,
     member_name: membership?.name ?? null,
     member_email: membership?.email ?? null,
+    comments: attributes.comments ?? null,
     attendee_list: attributes.attendees.map((a) => a.email),
     attendees_message: attributes.attendeesMessage ?? null,
   };

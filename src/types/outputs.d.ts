@@ -7,12 +7,14 @@ import {
 
 export type BookingOutput = {
   id: string;
+  units: number;
   from: string;
   to: string;
   title: string | null;
   resource_name: string;
   price: string;
   currency: string;
+  comments: string | null;
   member_name: string | null;
   member_email: string | null;
   attendee_list: string[];

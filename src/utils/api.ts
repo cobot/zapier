@@ -30,7 +30,7 @@ const spaceForSubdomain = async (
   subdomain: string,
 ): Promise<Space | undefined> => {
   const userV2 = await getUserDetailV2(z);
-  var space = userV2.included.find(
+  const space = userV2.included.find(
     (x) => get(x, "attributes.subdomain", "") === subdomain,
   );
   return space;
@@ -83,16 +83,24 @@ export const apiCallUrl = async (
 export const listRecentBookings = async (
   z: ZObject,
   bundle: KontentBundle<SubscribeBundleInputType>,
-): Promise<BookingApiResponse[]> => {
-  const url = `https://${bundle.inputData.subdomain}.cobot.me/api/bookings`;
+): Promise<BookingApi2Response[]> => {
+  const subdomain = bundle.inputData.subdomain;
+  const space = await spaceForSubdomain(z, subdomain);
+  if (!space) {
+    return [];
+  }
+  const url = `https://api.cobot.me/spaces/${space.id}/bookings`;
   const [from, to] = getDateRange();
   const response = await z.request({
     url,
     method: "GET",
+    headers: {
+      Accept: "application/vnd.api+json",
+    },
     params: {
-      from,
-      to,
-      limit: 3,
+      "filter[from]": new Date(from).toISOString(),
+      "filter[to]": new Date(to).toISOString(),
+      "page[size]": "3",
     },
   });
   return response.data;
@@ -270,6 +278,10 @@ export const getBooking = async (
       Accept: "application/vnd.api+json",
     },
   });
+  if (response.status === 404) {
+    return null;
+  }
+  return response.data.data as BookingApi2Response;
 };
 
 export type ExternalBookingWithResourceApiResponse =

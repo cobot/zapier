@@ -2,6 +2,7 @@ import { ZObject } from "zapier-platform-core";
 import { KontentBundle } from "../types/kontentBundle";
 import {
   getMembership,
+  getResource,
   listRecentBookings,
   subscribeHook,
   unsubscribeHook,
@@ -70,14 +71,19 @@ const trigger: HookTrigger = {
       const apiBookings = await listRecentBookings(z, bundle);
       const bookingOutputPromises = apiBookings.map(async (b) => {
         const subdomain = (bundle.inputData as any).subdomain as string;
-        const membershipId = b.membership?.id;
-        if (membershipId && subdomain) {
-          const membership = await getMembership(z, subdomain, membershipId);
-          return apiResponseToBookingOutput(b, membership);
-        }
-        return apiResponseToBookingOutput(b, null);
+        const membershipId = b.relationships.membership?.data?.id;
+        const resourceId = b.relationships.resource.data.id;
+        const resource = await getResource(z, resourceId);
+        if (!resource) return null;
+        const membership =
+          membershipId && subdomain
+            ? await getMembership(z, subdomain, membershipId)
+            : null;
+        return apiResponseToBookingOutput(b, membership, resource);
       });
-      const bookingOutputs = await Promise.all(bookingOutputPromises);
+      const bookingOutputs = (await Promise.all(bookingOutputPromises)).filter(
+        Boolean,
+      ) as BookingOutput[];
       return bookingOutputs;
     },
     sample: bookingSample,

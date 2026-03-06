@@ -10,6 +10,7 @@ export type BookingApi2Response = {
     attendees: { email: string }[];
     attendeesMessage: string | null;
     price: Amount;
+    units: number;
   };
   relationships: {
     externalBooking: { data: { id: string; type: "externalBookings" } | null };
