@@ -1,19 +1,13 @@
 import { ZObject } from "zapier-platform-core";
 import { KontentBundle } from "../types/kontentBundle";
-import {
-  apiCallUrl,
-  getMembership,
-  listRecentBookings,
-  subscribeHook,
-  unsubscribeHook,
-} from "../utils/api";
+import { subscribeHook, unsubscribeHook } from "../utils/api";
 import { SubscribeBundleInputType } from "../types/subscribeType";
 import { getSubdomainField } from "../fields/getSudomainsField";
-import { apiResponseToBookingOutput } from "../utils/api-to-output";
 import { BookingOutput } from "../types/outputs";
 import { bookingSample } from "../utils/samples";
-import { BookingApiResponse } from "../types/api-responses";
 import { HookTrigger } from "../types/trigger";
+import { loadBookingAndConvertToOutput } from "../utils/load-to-output";
+import { listRecentBookingsAndConvertToOutput } from "../utils/list";
 
 const hookLabel = "Booking Will Begin";
 const event = "booking_will_begin";
@@ -41,17 +35,8 @@ async function parsePayload(
   bundle: KontentBundle<{}>,
 ): Promise<BookingOutput[]> {
   if (bundle.cleanedRequest) {
-    const booking = (await apiCallUrl(
-      z,
-      bundle.cleanedRequest.url,
-    )) as BookingApiResponse;
-    const subdomain = (bundle.inputData as any).subdomain as string;
-    const membershipId = booking.membership?.id;
-    if (membershipId && subdomain) {
-      const membership = await getMembership(z, subdomain, membershipId);
-      return [apiResponseToBookingOutput(booking, membership)];
-    }
-    return [apiResponseToBookingOutput(booking, null)];
+    const bookingId = bundle.cleanedRequest.url.split("/").pop();
+    return loadBookingAndConvertToOutput(z, bundle, bookingId);
   } else {
     return [];
   }
@@ -77,18 +62,7 @@ const trigger: HookTrigger = {
       z: ZObject,
       bundle: KontentBundle<SubscribeBundleInputType>,
     ): Promise<BookingOutput[]> => {
-      const apiBookings = await listRecentBookings(z, bundle);
-      const bookingOutputPromises = apiBookings.map(async (b) => {
-        const subdomain = (bundle.inputData as any).subdomain as string;
-        const membershipId = b.membership?.id;
-        if (membershipId && subdomain) {
-          const membership = await getMembership(z, subdomain, membershipId);
-          return apiResponseToBookingOutput(b, membership);
-        }
-        return apiResponseToBookingOutput(b, null);
-      });
-      const bookingOutputs = await Promise.all(bookingOutputPromises);
-      return bookingOutputs;
+      return listRecentBookingsAndConvertToOutput(z, bundle);
     },
     sample: bookingSample,
   },
