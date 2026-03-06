@@ -1,19 +1,13 @@
 import { ZObject } from "zapier-platform-core";
 import { KontentBundle } from "../types/kontentBundle";
-import {
-  getMembership,
-  getResource,
-  listRecentBookings,
-  subscribeHook,
-  unsubscribeHook,
-} from "../utils/api";
+import { subscribeHook, unsubscribeHook } from "../utils/api";
 import { getSubdomainField } from "../fields/getSudomainsField";
 import { SubscribeBundleInputType } from "../types/subscribeType";
 import { bookingSample } from "../utils/samples";
 import { BookingOutput } from "../types/outputs";
-import { apiResponseToBookingOutput } from "../utils/api-to-output";
 import { HookTrigger } from "../types/trigger";
 import { loadBookingAndConvertToOutput } from "../utils/load-to-output";
+import { listRecentBookingsAndConvertToOutput } from "../utils/list";
 
 const hookLabel = "Booking Updated";
 const event = "updated_booking";
@@ -68,23 +62,7 @@ const trigger: HookTrigger = {
       z: ZObject,
       bundle: KontentBundle<SubscribeBundleInputType>,
     ): Promise<BookingOutput[]> => {
-      const apiBookings = await listRecentBookings(z, bundle);
-      const bookingOutputPromises = apiBookings.map(async (b) => {
-        const subdomain = (bundle.inputData as any).subdomain as string;
-        const membershipId = b.relationships.membership?.data?.id;
-        const resourceId = b.relationships.resource.data.id;
-        const resource = await getResource(z, resourceId);
-        if (!resource) return null;
-        const membership =
-          membershipId && subdomain
-            ? await getMembership(z, subdomain, membershipId)
-            : null;
-        return apiResponseToBookingOutput(b, membership, resource);
-      });
-      const bookingOutputs = (await Promise.all(bookingOutputPromises)).filter(
-        Boolean,
-      ) as BookingOutput[];
-      return bookingOutputs;
+      return listRecentBookingsAndConvertToOutput(z, bundle);
     },
     sample: bookingSample,
   },
