@@ -8,7 +8,7 @@ import {
 import triggerBookingDeleted from "../../triggers/triggerBookingDeleted";
 import { HookTrigger } from "../../types/trigger";
 import {
-  BookingApiResponse,
+  BookingApi2Response,
   MembershipApiResponse,
 } from "../../types/api-responses";
 import { BookingOutput } from "../../types/outputs";
@@ -16,17 +16,44 @@ import { BookingOutput } from "../../types/outputs";
 const appTester = createAppTester(App);
 nock.disableNetConnect();
 
-const bookingResponse: BookingApiResponse = {
-  id: "d58b612aaa62619aae546dd336587eb2",
-  from: "2012/04/12 12:00:00 +0000",
-  to: "2012/04/12 18:00:00 +0000",
-  title: "test booking",
-  resource: { name: "Meeting Room", id: "resource-1" },
-  membership: { id: "membership-1", name: "John Doe" },
-  comments: "coffee please",
-  price: 10.0,
+const priceAttr = {
+  net: "10",
+  gross: "10",
   currency: "EUR",
-  units: 1,
+  taxes: [] as { name: string; amount: string; rate: string }[],
+};
+
+const bookingResponse: BookingApi2Response = {
+  id: "d58b612aaa62619aae546dd336587eb2",
+  type: "bookings",
+  attributes: {
+    from: "2012/04/12 12:00:00 +0000",
+    to: "2012/04/12 18:00:00 +0000",
+    title: "test booking",
+    name: "test booking",
+    comments: "coffee please",
+    attendees: [],
+    attendeesMessage: null,
+    price: priceAttr,
+    units: 1,
+  },
+  relationships: {
+    externalBooking: { data: null },
+    membership: { data: { id: "membership-1", type: "memberships" } },
+    resource: { data: { id: "resource-1", type: "resources" } },
+  },
+};
+
+const resourceResponse = {
+  id: "resource-1",
+  type: "resources",
+  attributes: { name: "Meeting Room" },
+};
+
+const userResponseWithSpace = {
+  included: [
+    { id: "space-1", type: "spaces", attributes: { subdomain: "trial" } },
+  ],
 };
 
 const membershipResponse: MembershipApiResponse = {
@@ -96,9 +123,20 @@ describe("triggerBookingDeleted", () => {
 
   it("lists recent bookings for sample data", async () => {
     const bundle = prepareBundle();
-    const apiScope = nock("https://trial.cobot.me");
-    apiScope.get("/api/bookings").query(true).reply(200, [bookingResponse]);
+    const apiScope = nock("https://api.cobot.me");
     apiScope
+      .get("/user")
+      .query({ include: "adminOf" })
+      .reply(200, userResponseWithSpace);
+    apiScope
+      .get("/spaces/space-1/bookings")
+      .query(true)
+      .reply(200, [bookingResponse]);
+    apiScope
+      .get("/resources/resource-1")
+      .reply(200, { data: resourceResponse });
+    const trialScope = nock("https://trial.cobot.me");
+    trialScope
       .get("/api/memberships/membership-1")
       .reply(200, membershipResponse);
 
@@ -120,7 +158,12 @@ describe("triggerBookingDeleted", () => {
       booking: bookingResponse,
     };
 
-    nock("https://trial.cobot.me")
+    const apiScope = nock("https://api.cobot.me");
+    apiScope
+      .get("/resources/resource-1")
+      .reply(200, { data: resourceResponse });
+    const trialScope = nock("https://trial.cobot.me");
+    trialScope
       .get("/api/memberships/membership-1")
       .reply(200, membershipResponse);
 
@@ -129,6 +172,7 @@ describe("triggerBookingDeleted", () => {
       bundle as any,
     );
 
+    expect(nock.isDone()).toBe(true);
     expect(results).toStrictEqual([
       { ...bookingOutput, member_email: "john.doe@example.com" },
     ]);

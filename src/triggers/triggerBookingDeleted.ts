@@ -42,7 +42,7 @@ async function parsePayload(
   if (bundle.cleanedRequest?.booking) {
     const booking = bundle.cleanedRequest.booking;
     const subdomain = (bundle.inputData as any).subdomain as string;
-    const membershipId = booking.membership?.id;
+    const membershipId = booking.relationships?.membership?.data?.id;
     const resourceId = booking.relationships.resource.data?.id;
     const resource = await getResource(z, resourceId);
     if (!resource) {

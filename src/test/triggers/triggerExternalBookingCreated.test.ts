@@ -200,13 +200,22 @@ describe("triggerExternalBooking", () => {
     const bookingResponse: BookingApi2Response = {
       id: "b1",
       type: "bookings",
+      attributes: {
+        from: "2021-01-01T00:00:00.000Z",
+        to: "2021-01-01T10:00:00.000Z",
+        title: null,
+        name: "Booking 1",
+        comments: null,
+        attendees: [],
+        attendeesMessage: null,
+        price: { net: "100", gross: "100", currency: "EUR", taxes: [] },
+        units: 1,
+      },
       relationships: {
         externalBooking: {
-          data: {
-            id: "eb1",
-            type: "externalBookings",
-          },
+          data: { id: "eb1", type: "externalBookings" },
         },
+        resource: { data: { id: "resource-1", type: "resources" } },
       },
     };
     const api2Scope = nock("https://api.cobot.me");
