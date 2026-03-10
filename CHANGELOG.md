@@ -2,6 +2,10 @@
 
 - Fixed membership updated trigger: wrong webhook name.
 
+# 2.12.1
+
+- Fix attendee list/message on booking triggers were always empty
+
 ## 2.12.0
 
 - Added triggers: External Booking Updated, Membership Updated (@shpetimselaci)

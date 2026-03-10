@@ -1,10 +1,10 @@
 import { ZObject } from "zapier-platform-core";
 import { KontentBundle } from "../types/kontentBundle";
 import {
-  listRecentBookings,
-  getMembership,
   subscribeHook,
   unsubscribeHook,
+  getResource,
+  getMembership,
 } from "../utils/api";
 import { getSubdomainField } from "../fields/getSudomainsField";
 import { SubscribeBundleInputType } from "../types/subscribeType";
@@ -12,6 +12,7 @@ import { bookingSample } from "../utils/samples";
 import { BookingOutput } from "../types/outputs";
 import { apiResponseToBookingOutput } from "../utils/api-to-output";
 import { HookTrigger } from "../types/trigger";
+import { listRecentBookingsAndConvertToOutput } from "../utils/list";
 
 const hookLabel = "Booking Deleted";
 const event = "deleted_booking";
@@ -41,12 +42,17 @@ async function parsePayload(
   if (bundle.cleanedRequest?.booking) {
     const booking = bundle.cleanedRequest.booking;
     const subdomain = (bundle.inputData as any).subdomain as string;
-    const membershipId = booking.membership?.id;
+    const membershipId = booking.relationships?.membership?.data?.id;
+    const resourceId = booking.relationships.resource.data?.id;
+    const resource = await getResource(z, resourceId);
+    if (!resource) {
+      return [];
+    }
     let membership = null;
     if (membershipId && subdomain) {
       membership = await getMembership(z, subdomain, membershipId);
     }
-    return [apiResponseToBookingOutput(booking, membership)];
+    return [apiResponseToBookingOutput(booking, membership, resource)];
   }
   return [];
 }
@@ -71,18 +77,7 @@ const trigger: HookTrigger = {
       z: ZObject,
       bundle: KontentBundle<SubscribeBundleInputType>,
     ): Promise<BookingOutput[]> => {
-      const apiBookings = await listRecentBookings(z, bundle);
-      const bookingOutputPromises = apiBookings.map(async (b) => {
-        const subdomain = (bundle.inputData as any).subdomain as string;
-        const membershipId = b.membership?.id;
-        if (membershipId && subdomain) {
-          const membership = await getMembership(z, subdomain, membershipId);
-          return apiResponseToBookingOutput(b, membership);
-        }
-        return apiResponseToBookingOutput(b, null);
-      });
-      const bookingOutputs = await Promise.all(bookingOutputPromises);
-      return bookingOutputs;
+      return listRecentBookingsAndConvertToOutput(z, bundle);
     },
     sample: bookingSample,
   },

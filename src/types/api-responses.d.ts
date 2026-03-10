@@ -1,23 +1,21 @@
-export type BookingApiResponse = {
-  id: string;
-  from: string;
-  to: string;
-  title: string | null;
-  resource: { name: string; id: string };
-  membership: { id: string; name: string } | null;
-  comments: string | null;
-  price: number;
-  currency: string;
-  units: number;
-  attendees?: { email: string }[];
-  attendeesMessage?: string | null;
-};
-
 export type BookingApi2Response = {
   id: string;
   type: "bookings";
+  attributes: {
+    from: string;
+    to: string;
+    title: string | null;
+    name: string;
+    comments: string | null;
+    attendees: { email: string }[];
+    attendeesMessage: string | null;
+    price: Amount;
+    units: number;
+  };
   relationships: {
     externalBooking: { data: { id: string; type: "externalBookings" } | null };
+    membership?: { data: { id: string; type: "memberships" } };
+    resource: { data: { id: string; type: "resources" } };
   };
 };
 
