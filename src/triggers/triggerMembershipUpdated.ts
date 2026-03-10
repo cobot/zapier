@@ -13,8 +13,8 @@ import { apiResponseToMembershipOutput } from "../utils/api-to-output";
 import { membershipSample } from "../utils/samples";
 import { HookTrigger } from "../types/trigger";
 
-const hookLabel = "Membership Updated";
-const event = "updated_membership";
+const hookLabel = "Membership Details Updated";
+const event = "updated_membership_details";
 
 async function subscribeHookExecute(
   z: ZObject,
@@ -51,7 +51,8 @@ const trigger: HookTrigger = {
   noun: hookLabel,
   display: {
     label: hookLabel,
-    description: "Triggers when a membership is updated.",
+    description:
+      "Triggers when a membership's details such as name, email, phone, address are updated.",
   },
   operation: {
     type: "hook",
