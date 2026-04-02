@@ -6,6 +6,7 @@ import ActivityCreate from "./creates/activity";
 import triggerBookingCreated from "./triggers/triggerBookingCreated";
 import triggerBookingWillBegin from "./triggers/triggerBookingWillBegin";
 import triggerMembershipConfirmed from "./triggers/triggerMembershipConfirmed";
+import triggerMembershipCreated from "./triggers/triggerMembershipCreated";
 import triggerMembershipPlanChanged from "./triggers/triggerMembershipPlanChanged";
 import triggerExternalBookingCreated from "./triggers/triggerExternalBookingCreated";
 import getSubdomains from "./triggers/dropdowns/getSubdomains";
@@ -43,6 +44,7 @@ export default {
     [triggerBookingCreated.key]: triggerBookingCreated,
     [triggerBookingWillBegin.key]: triggerBookingWillBegin,
     [triggerMembershipConfirmed.key]: triggerMembershipConfirmed,
+    [triggerMembershipCreated.key]: triggerMembershipCreated,
     [triggerMembershipCancelled.key]: triggerMembershipCancelled,
     [triggerMembershipPlanChanged.key]: triggerMembershipPlanChanged,
     [triggerEventPublished.key]: triggerEventPublished,
