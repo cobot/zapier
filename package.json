@@ -37,7 +37,7 @@
     "ts-jest": "^29.4.9",
     "ts-node": "^10.9.2",
     "typescript": "5",
-    "zapier-platform-cli": "^18.3.0"
+    "zapier-platform-cli": "^18.4.0"
   },
   "resolutions": {
     "@types/babel__traverse": "7.20.2"
