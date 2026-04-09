@@ -9,8 +9,8 @@ import { HookTrigger } from "../types/trigger";
 import { loadBookingAndConvertToOutput } from "../utils/load-to-output";
 import { listRecentBookingsAndConvertToOutput } from "../utils/list";
 
-const hookLabel = "Booking Created";
-const event = "created_booking";
+const hookLabel = "Booking Updated";
+const event = "updated_booking";
 
 async function subscribeHookExecute(
   z: ZObject,
@@ -47,7 +47,7 @@ const trigger: HookTrigger = {
   noun: hookLabel,
   display: {
     label: hookLabel,
-    description: "Triggers when a booking is made.",
+    description: "Triggers when a booking is updated.",
   },
   operation: {
     type: "hook",

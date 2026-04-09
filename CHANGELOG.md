@@ -1,6 +1,26 @@
-## 2.11.0
+## 2.1.0
 
 - Added trigger/created_membership
+
+## 2.12.2
+
+- Fixed membership updated trigger: wrong webhook name.
+
+# 2.12.1
+
+- Fix attendee list/message on booking triggers were always empty
+
+## 2.12.0
+
+- Added triggers: External Booking Updated, Membership Updated (@shpetimselaci)
+
+## 2.11.0
+
+- Added more triggers: Booking Deleted, Booking Updated, Membership Deleted, Membership Plan Changed, Membership Reactivated, Membership Uncanceled (@shpetimselaci)
+
+## 2.10.0
+
+- Added `attendee_list` and `attendees_message` on trigger/created_booking
 
 ## 2.9.0
 

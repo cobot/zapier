@@ -7,6 +7,7 @@ import {
 
 export type BookingOutput = {
   id: string;
+  units: number;
   from: string;
   to: string;
   title: string | null;
@@ -14,9 +15,10 @@ export type BookingOutput = {
   price: string;
   currency: string;
   comments: string | null;
-  units: number;
   member_name: string | null;
   member_email: string | null;
+  attendee_list: string[];
+  attendees_message: string | null;
 };
 
 export type EventOutput = {

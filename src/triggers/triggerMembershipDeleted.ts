@@ -1,16 +1,15 @@
 import { ZObject } from "zapier-platform-core";
 import { KontentBundle } from "../types/kontentBundle";
-import { subscribeHook, unsubscribeHook } from "../utils/api";
-import { getSubdomainField } from "../fields/getSudomainsField";
+import { listMemberships, subscribeHook, unsubscribeHook } from "../utils/api";
 import { SubscribeBundleInputType } from "../types/subscribeType";
-import { bookingSample } from "../utils/samples";
-import { BookingOutput } from "../types/outputs";
+import { getSubdomainField } from "../fields/getSudomainsField";
+import { MembershipOutput } from "../types/outputs";
+import { apiResponseToMembershipOutput } from "../utils/api-to-output";
+import { membershipSample } from "../utils/samples";
 import { HookTrigger } from "../types/trigger";
-import { loadBookingAndConvertToOutput } from "../utils/load-to-output";
-import { listRecentBookingsAndConvertToOutput } from "../utils/list";
 
-const hookLabel = "Booking Created";
-const event = "created_booking";
+const hookLabel = "Membership Deleted";
+const event = "deleted_membership";
 
 async function subscribeHookExecute(
   z: ZObject,
@@ -33,13 +32,12 @@ async function unsubscribeHookExecute(
 async function parsePayload(
   z: ZObject,
   bundle: KontentBundle<{}>,
-): Promise<BookingOutput[]> {
-  if (bundle.cleanedRequest) {
-    const bookingId = bundle.cleanedRequest.url.split("/").pop();
-    return loadBookingAndConvertToOutput(z, bundle, bookingId);
-  } else {
-    return [];
+): Promise<MembershipOutput[]> {
+  if (bundle.cleanedRequest?.membership) {
+    const membership = bundle.cleanedRequest.membership;
+    return [await apiResponseToMembershipOutput(membership, z)];
   }
+  return [];
 }
 
 const trigger: HookTrigger = {
@@ -47,7 +45,7 @@ const trigger: HookTrigger = {
   noun: hookLabel,
   display: {
     label: hookLabel,
-    description: "Triggers when a booking is made.",
+    description: "Triggers when a membership is deleted.",
   },
   operation: {
     type: "hook",
@@ -61,10 +59,14 @@ const trigger: HookTrigger = {
     performList: async (
       z: ZObject,
       bundle: KontentBundle<SubscribeBundleInputType>,
-    ): Promise<BookingOutput[]> => {
-      return listRecentBookingsAndConvertToOutput(z, bundle);
+    ): Promise<MembershipOutput[]> => {
+      const apiMemberships = await listMemberships(z, bundle);
+      return Promise.all(
+        apiMemberships.map((m) => apiResponseToMembershipOutput(m, z)),
+      );
     },
-    sample: bookingSample,
+
+    sample: membershipSample,
   },
 };
 export default trigger;

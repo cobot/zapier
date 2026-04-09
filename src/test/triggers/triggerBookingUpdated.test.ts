@@ -5,11 +5,13 @@ import {
   prepareBundle,
   prepareMocksForWebhookSubscribeTest,
 } from "../utils/prepareMocksForWebhookSubscribeTest";
-import triggerBookingCreated from "../../triggers/triggerBookingCreated";
+import triggerBookingUpdated from "../../triggers/triggerBookingUpdated";
 import { HookTrigger } from "../../types/trigger";
-import { BookingApi2Response } from "../../types/api-responses";
+import {
+  BookingApi2Response,
+  MembershipApiResponse,
+} from "../../types/api-responses";
 import { BookingOutput } from "../../types/outputs";
-import { MembershipApiResponse } from "../../types/api-responses";
 
 const appTester = createAppTester(App);
 nock.disableNetConnect();
@@ -85,77 +87,11 @@ const bookingOutput: BookingOutput = {
   title: "test booking",
   resource_name: "Meeting Room",
   price: "10",
-  units: 1,
   currency: "EUR",
+  units: 1,
   member_name: "John Doe",
   member_email: "john.doe@example.com",
   comments: "coffee please",
-  attendee_list: [],
-  attendees_message: null,
-};
-
-const bookingWithAttendeesResponse: BookingApi2Response = {
-  ...bookingResponse,
-  id: "booking-with-attendees",
-  attributes: {
-    ...bookingResponse.attributes,
-    attendees: [{ email: "alice@example.com" }, { email: "bob@example.com" }],
-    attendeesMessage: "See you at the meeting",
-  },
-};
-
-const bookingWithAttendeesOutput: BookingOutput = {
-  ...bookingOutput,
-  id: "booking-with-attendees",
-  attendee_list: ["alice@example.com", "bob@example.com"],
-  attendees_message: "See you at the meeting",
-};
-
-const priceAttrUsd = {
-  net: "5",
-  gross: "5",
-  currency: "USD",
-  taxes: [] as { name: string; amount: string; rate: string }[],
-};
-
-const bookingWithoutMembershipResponse: BookingApi2Response = {
-  id: "booking-without-member",
-  type: "bookings",
-  attributes: {
-    from: "2012/04/12 12:00:00 +0000",
-    to: "2012/04/12 18:00:00 +0000",
-    title: "guest booking",
-    name: "guest booking",
-    comments: null,
-    attendees: [],
-    attendeesMessage: null,
-    price: priceAttrUsd,
-    units: 1,
-  },
-  relationships: {
-    externalBooking: { data: null },
-    resource: { data: { id: "resource-2", type: "resources" } },
-  },
-};
-
-const resourceResponse2 = {
-  id: "resource-2",
-  type: "resources",
-  attributes: { name: "Desk" },
-};
-
-const bookingWithoutMembershipOutput: BookingOutput = {
-  id: "booking-without-member",
-  from: "2012-04-12T12:00:00.000Z",
-  to: "2012-04-12T18:00:00.000Z",
-  title: "guest booking",
-  resource_name: "Desk",
-  price: "5",
-  units: 1,
-  currency: "USD",
-  member_name: null,
-  member_email: null,
-  comments: null,
   attendee_list: [],
   attendees_message: null,
 };
@@ -166,14 +102,23 @@ const userResponseWithSpace = {
   ],
 };
 
+const bookingWithoutMembership: BookingApi2Response = {
+  ...bookingResponse,
+  id: "no-member",
+  relationships: {
+    ...bookingResponse.relationships,
+    membership: undefined,
+  },
+};
+
 afterEach(() => nock.cleanAll());
 
-describe("triggerBookingCreated", () => {
+describe("triggerBookingUpdated", () => {
   it("creates new webhook through CM API upon subscribe", async () => {
     const bundle = prepareMocksForWebhookSubscribeTest(
-      triggerBookingCreated.key,
+      triggerBookingUpdated.key,
     );
-    const subscribe = (App.triggers[triggerBookingCreated.key] as HookTrigger)
+    const subscribe = (App.triggers[triggerBookingUpdated.key] as HookTrigger)
       .operation.performSubscribe;
 
     const result = await appTester(subscribe as any, bundle as any);
@@ -199,41 +144,19 @@ describe("triggerBookingCreated", () => {
     apiScope
       .get("/resources/resource-1")
       .reply(200, { data: resourceResponse });
-    const spaceScope = nock("https://trial.cobot.me");
-    spaceScope
+    const trialScope = nock("https://trial.cobot.me");
+    trialScope
       .get("/api/memberships/membership-1")
       .reply(200, membershipResponse);
 
-    const listBookings = triggerBookingCreated.operation.performList;
+    const listBookings = triggerBookingUpdated.operation.performList;
 
     const results = await appTester(listBookings as any, bundle as any);
     expect(nock.isDone()).toBe(true);
     expect(results).toStrictEqual([bookingOutput]);
   });
 
-  it("lists recent bookings without membership", async () => {
-    const bundle = prepareBundle();
-    const apiScope = nock("https://api.cobot.me");
-    apiScope
-      .get("/user")
-      .query({ include: "adminOf" })
-      .reply(200, userResponseWithSpace);
-    apiScope
-      .get("/spaces/space-1/bookings")
-      .query(true)
-      .reply(200, { data: [bookingWithoutMembershipResponse] });
-    apiScope
-      .get("/resources/resource-2")
-      .reply(200, { data: resourceResponse2 });
-
-    const listBookings = triggerBookingCreated.operation.performList;
-
-    const results = await appTester(listBookings as any, bundle as any);
-    expect(nock.isDone()).toBe(true);
-    expect(results).toStrictEqual([bookingWithoutMembershipOutput]);
-  });
-
-  it("triggers on booking created", async () => {
+  it("triggers on booking updated", async () => {
     const bundle = prepareBundle({
       url: "https://trial.cobot.me/api/bookings/b1",
     });
@@ -242,13 +165,13 @@ describe("triggerBookingCreated", () => {
     apiScope
       .get("/resources/resource-1")
       .reply(200, { data: resourceResponse });
-    const spaceScope = nock("https://trial.cobot.me");
-    spaceScope
+    const trialScope = nock("https://trial.cobot.me");
+    trialScope
       .get("/api/memberships/membership-1")
       .reply(200, membershipResponse);
 
     const results = await appTester(
-      triggerBookingCreated.operation.perform as any,
+      triggerBookingUpdated.operation.perform as any,
       bundle as any,
     );
 
@@ -256,49 +179,23 @@ describe("triggerBookingCreated", () => {
     expect(results).toStrictEqual([bookingOutput]);
   });
 
-  it("triggers on booking created without membership", async () => {
+  it("triggers on booking updated without membership", async () => {
     const bundle = prepareBundle({
       url: "https://trial.cobot.me/api/bookings/b2",
     });
     const apiScope = nock("https://api.cobot.me");
-    apiScope
-      .get("/bookings/b2")
-      .reply(200, { data: bookingWithoutMembershipResponse });
-    apiScope
-      .get("/resources/resource-2")
-      .reply(200, { data: resourceResponse2 });
-
-    const results = await appTester(
-      triggerBookingCreated.operation.perform as any,
-      bundle as any,
-    );
-
-    expect(nock.isDone()).toBe(true);
-    expect(results).toStrictEqual([bookingWithoutMembershipOutput]);
-  });
-
-  it("maps attendee_list and attendees_message when API returns them", async () => {
-    const bundle = prepareBundle({
-      url: "https://trial.cobot.me/api/bookings/b-attendees",
-    });
-    const apiScope = nock("https://api.cobot.me");
-    apiScope
-      .get("/bookings/b-attendees")
-      .reply(200, { data: bookingWithAttendeesResponse });
+    apiScope.get("/bookings/b2").reply(200, { data: bookingWithoutMembership });
     apiScope
       .get("/resources/resource-1")
       .reply(200, { data: resourceResponse });
-    const spaceScope = nock("https://trial.cobot.me");
-    spaceScope
-      .get("/api/memberships/membership-1")
-      .reply(200, membershipResponse);
 
-    const results = await appTester(
-      triggerBookingCreated.operation.perform as any,
+    const results = (await appTester(
+      triggerBookingUpdated.operation.perform as any,
       bundle as any,
-    );
+    )) as BookingOutput[];
 
     expect(nock.isDone()).toBe(true);
-    expect(results).toStrictEqual([bookingWithAttendeesOutput]);
+    expect(results[0].member_name).toBeNull();
+    expect(results[0].member_email).toBeNull();
   });
 });

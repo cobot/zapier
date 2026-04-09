@@ -5,7 +5,7 @@ import {
   prepareBundle,
   prepareMocksForWebhookSubscribeTest,
 } from "../utils/prepareMocksForWebhookSubscribeTest";
-import triggerExternalBookingCreated from "../../triggers/triggerExternalBookingCreated";
+import triggerExternalBookingUpdated from "../../triggers/triggerExternalBookingUpdated";
 import {
   BookingApi2Response,
   ExternalBookingApiResponse,
@@ -17,7 +17,7 @@ import { ExternalBookingOutput } from "../../types/outputs";
 
 const appTester = createAppTester(App);
 nock.disableNetConnect();
-const trigger = App.triggers[triggerExternalBookingCreated.key] as HookTrigger;
+const trigger = App.triggers[triggerExternalBookingUpdated.key] as HookTrigger;
 
 const externalBookingResponse: ExternalBookingApiResponse = {
   id: "eb1",
@@ -86,9 +86,9 @@ const externalBookingOutput: ExternalBookingOutput = {
 
 afterEach(() => nock.cleanAll());
 
-describe("triggerExternalBooking", () => {
+describe("triggerExternalBookingUpdated", () => {
   it("creates new webhook through CM API upon subscribe", async () => {
-    const bundle = prepareMocksForWebhookSubscribeTest("created_booking");
+    const bundle = prepareMocksForWebhookSubscribeTest("updated_booking");
     const subscribe = trigger.operation.performSubscribe;
 
     const result = await appTester(subscribe as any, bundle as any);
@@ -193,7 +193,7 @@ describe("triggerExternalBooking", () => {
     expect(results).toStrictEqual([]);
   });
 
-  it("triggers on new external booking", async () => {
+  it("triggers on external booking updated", async () => {
     const bundle = prepareBundle({
       url: "https://api.cobot.me/bookings/b1",
     });
@@ -227,7 +227,7 @@ describe("triggerExternalBooking", () => {
       .get("/resources/resource-1")
       .reply(200, { data: resourceResponse });
     const results = await appTester(
-      triggerExternalBookingCreated.operation.perform as any,
+      triggerExternalBookingUpdated.operation.perform as any,
       bundle as any,
     );
 
