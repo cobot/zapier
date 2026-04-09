@@ -13,7 +13,7 @@ import { apiResponseToMembershipOutput } from "../utils/api-to-output";
 import { membershipSample } from "../utils/samples";
 import { HookTrigger } from "../types/trigger";
 
-const hookLabel = "Created Membership";
+const hookLabel = "Membership Created";
 const event = "created_membership";
 
 async function subscribeHookExecute(
