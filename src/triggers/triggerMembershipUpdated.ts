@@ -76,4 +76,16 @@ const trigger: HookTrigger = {
     sample: membershipSample,
   },
 };
+
+export const deprecatedUpdatedMembership: HookTrigger = {
+  key: "updated_membership",
+  noun: "Membership Updated",
+  display: {
+    label: "Membership Updated",
+    description: "Triggers when a membership is updated.",
+    hidden: true,
+  },
+  operation: trigger.operation,
+};
+
 export default trigger;

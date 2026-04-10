@@ -22,7 +22,9 @@ import triggerBookingDeleted from "./triggers/triggerBookingDeleted";
 import triggerMembershipUncanceled from "./triggers/triggerMembershipUncanceled";
 import triggerMembershipReactivated from "./triggers/triggerMembershipReactivated";
 import triggerMembershipDeleted from "./triggers/triggerMembershipDeleted";
-import triggerMembershipUpdated from "./triggers/triggerMembershipUpdated";
+import triggerMembershipUpdated, {
+  deprecatedUpdatedMembership,
+} from "./triggers/triggerMembershipUpdated";
 import triggerMembershipPlanChangedEvent from "./triggers/triggerMembershipPlanChangedEvent";
 
 const { version } = require("../package.json");
@@ -61,6 +63,7 @@ export default {
     [triggerMembershipReactivated.key]: triggerMembershipReactivated,
     [triggerMembershipDeleted.key]: triggerMembershipDeleted,
     [triggerMembershipUpdated.key]: triggerMembershipUpdated,
+    [deprecatedUpdatedMembership.key]: deprecatedUpdatedMembership,
     [triggerMembershipPlanChangedEvent.key]: triggerMembershipPlanChangedEvent,
     // Lists for dropdowns
     [getSubdomains.key]: getSubdomains,
