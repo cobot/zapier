@@ -82,7 +82,7 @@ export const deprecatedUpdatedMembership: HookTrigger = {
   noun: "Membership Updated",
   display: {
     label: "Membership Updated",
-    description: "Triggers when a membership is updated.",
+    description: "Not working. Don't use.",
     hidden: true,
   },
   operation: trigger.operation,
