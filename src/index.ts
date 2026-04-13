@@ -6,6 +6,7 @@ import ActivityCreate from "./creates/activity";
 import triggerBookingCreated from "./triggers/triggerBookingCreated";
 import triggerBookingWillBegin from "./triggers/triggerBookingWillBegin";
 import triggerMembershipConfirmed from "./triggers/triggerMembershipConfirmed";
+import triggerCreatedMembership from "./triggers/triggerCreatedMembership";
 import triggerMembershipPlanChanged from "./triggers/triggerMembershipPlanChanged";
 import triggerExternalBookingCreated from "./triggers/triggerExternalBookingCreated";
 import getSubdomains from "./triggers/dropdowns/getSubdomains";
@@ -21,7 +22,9 @@ import triggerBookingDeleted from "./triggers/triggerBookingDeleted";
 import triggerMembershipUncanceled from "./triggers/triggerMembershipUncanceled";
 import triggerMembershipReactivated from "./triggers/triggerMembershipReactivated";
 import triggerMembershipDeleted from "./triggers/triggerMembershipDeleted";
-import triggerMembershipUpdated from "./triggers/triggerMembershipUpdated";
+import triggerMembershipUpdated, {
+  deprecatedUpdatedMembership,
+} from "./triggers/triggerMembershipUpdated";
 import triggerMembershipPlanChangedEvent from "./triggers/triggerMembershipPlanChangedEvent";
 
 const { version } = require("../package.json");
@@ -43,6 +46,7 @@ export default {
     [triggerBookingCreated.key]: triggerBookingCreated,
     [triggerBookingWillBegin.key]: triggerBookingWillBegin,
     [triggerMembershipConfirmed.key]: triggerMembershipConfirmed,
+    [triggerCreatedMembership.key]: triggerCreatedMembership,
     [triggerMembershipCancelled.key]: triggerMembershipCancelled,
     [triggerMembershipPlanChanged.key]: triggerMembershipPlanChanged,
     [triggerEventPublished.key]: triggerEventPublished,
@@ -59,6 +63,7 @@ export default {
     [triggerMembershipReactivated.key]: triggerMembershipReactivated,
     [triggerMembershipDeleted.key]: triggerMembershipDeleted,
     [triggerMembershipUpdated.key]: triggerMembershipUpdated,
+    [deprecatedUpdatedMembership.key]: deprecatedUpdatedMembership,
     [triggerMembershipPlanChangedEvent.key]: triggerMembershipPlanChangedEvent,
     // Lists for dropdowns
     [getSubdomains.key]: getSubdomains,

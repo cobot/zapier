@@ -13,8 +13,8 @@ import { apiResponseToMembershipOutput } from "../utils/api-to-output";
 import { membershipSample } from "../utils/samples";
 import { HookTrigger } from "../types/trigger";
 
-const hookLabel = "Membership Details Updated";
-const event = "updated_membership_details";
+const hookLabel = "Membership Created";
+const event = "created_membership";
 
 async function subscribeHookExecute(
   z: ZObject,
@@ -51,8 +51,7 @@ const trigger: HookTrigger = {
   noun: hookLabel,
   display: {
     label: hookLabel,
-    description:
-      "Triggers when a membership's details such as name, email, phone, address are updated.",
+    description: "Triggers when a membership is created.",
   },
   operation: {
     type: "hook",
@@ -76,16 +75,4 @@ const trigger: HookTrigger = {
     sample: membershipSample,
   },
 };
-
-export const deprecatedUpdatedMembership: HookTrigger = {
-  key: "updated_membership",
-  noun: "Membership Updated",
-  display: {
-    label: "Membership Updated",
-    description: "Not working. Don't use.",
-    hidden: true,
-  },
-  operation: trigger.operation,
-};
-
 export default trigger;

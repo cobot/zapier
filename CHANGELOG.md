@@ -1,3 +1,11 @@
+## 2.13.1
+
+- Added back trigger/updated_membership but as deprecated and hidden since it is a wrong trigger
+
+## 2.13.0
+
+- Added trigger/created_membership
+
 ## 2.12.2
 
 - Fixed membership updated trigger: wrong webhook name.
