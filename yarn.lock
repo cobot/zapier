@@ -8530,10 +8530,10 @@ yoctocolors@^2.1.1:
   resolved "https://registry.yarnpkg.com/yoctocolors/-/yoctocolors-2.1.2.tgz#d795f54d173494e7d8db93150cec0ed7f678c83a"
   integrity sha512-CzhO+pFNo8ajLM2d2IW/R93ipy99LWjtwblvC1RsoSUMZgyLbYFr221TnSNT7GjGdYui6P459mw9JH/g/zW2ug==
 
-zapier-platform-cli@^18.4.0:
-  version "18.4.0"
-  resolved "https://registry.yarnpkg.com/zapier-platform-cli/-/zapier-platform-cli-18.4.0.tgz#6731aef9e63f7a6f2339738bb7060e652b14d79d"
-  integrity sha512-FYPJIcqa7E4mPaxBxyatMyEw59rvozEvcGYgVyqIug2gHkYz2ToFyOQyRgWbO0OMjw7OocPiLPp+CZlBpubSTQ==
+zapier-platform-cli@^18.5.0:
+  version "18.5.0"
+  resolved "https://registry.yarnpkg.com/zapier-platform-cli/-/zapier-platform-cli-18.5.0.tgz#86ed28f0066f38b79bc25aeff5d69c375bf2b112"
+  integrity sha512-pBlqTbaiurgnH6k2w5KtzyNW7euI+uxaQnJDf8Vo73Qv6R67tt3TS2fawEDktrAaJ+rZhecu2XsFz3XH+AzwEA==
   dependencies:
     "@oclif/core" "4.5.2"
     "@oclif/plugin-autocomplete" "3.2.34"
@@ -8555,7 +8555,7 @@ zapier-platform-cli@^18.4.0:
     ignore "7.0.5"
     inquirer "8.2.5"
     jscodeshift "^17.3.0"
-    lodash "4.17.23"
+    lodash "4.18.1"
     luxon "3.7.1"
     marked "15.0.12"
     marked-terminal "7.3.0"
