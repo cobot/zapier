@@ -5727,7 +5727,7 @@ lodash@4.17.23:
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.23.tgz#f113b0378386103be4f6893388c73d0bde7f2c5a"
   integrity sha512-LgVTMpQtIopCi79SJeDiP0TfWi5CNEc/L/aRdTh3yIvmZXTnheWpKjSZhnvMl8iXbC1tFg9gdHHDMLoV7CnG+w==
 
-lodash@^4.17.15, lodash@^4.17.21, lodash@^4.18.1:
+lodash@4.18.1, lodash@^4.17.15, lodash@^4.17.21, lodash@^4.18.1:
   version "4.18.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.18.1.tgz#ff2b66c1f6326d59513de2407bf881439812771c"
   integrity sha512-dMInicTPVE8d1e5otfwmmjlxkZoUpiVLwyeTdUsi/Caj/gfzzblBcCE5sRHV/AsjuCmxWrte2TNGSYuCeCq+0Q==
@@ -8573,10 +8573,10 @@ zapier-platform-cli@^18.4.0:
     yeoman-environment "4.4.3"
     yeoman-generator "7.5.1"
 
-zapier-platform-core@18.4.0:
-  version "18.4.0"
-  resolved "https://registry.yarnpkg.com/zapier-platform-core/-/zapier-platform-core-18.4.0.tgz#32b16ed15498d8e0afe45706b4291f8cc58ac322"
-  integrity sha512-A9hs/p5brkLhFDUZljbI76gcwhtJFOTHNGzkeyd/2FsHWaLkalOWMPPRtYWpGxbecOXZrnaIy2R3fOQ2XEf1QA==
+zapier-platform-core@18.5.0:
+  version "18.5.0"
+  resolved "https://registry.yarnpkg.com/zapier-platform-core/-/zapier-platform-core-18.5.0.tgz#829bf27fa648119d44837fd84f9f6882ff6938f8"
+  integrity sha512-nZtPKS7B+yX4S7rY+ZL+nayswsiMumTamcIVimc4cz9auDfqqKsx3gJ3JxCZkq1jtKUOF9cxt9Pjt0P+RyywTw==
   dependencies:
     "@zapier/secret-scrubber" "^1.1.2"
     content-disposition "0.5.4"
@@ -8584,24 +8584,24 @@ zapier-platform-core@18.4.0:
     fernet "^0.3.3"
     form-data "4.0.5"
     json-schema-to-ts "3.1.1"
-    lodash "4.17.23"
+    lodash "4.18.1"
     mime-types "3.0.1"
     node-abort-controller "3.1.1"
     node-fetch "2.7.0"
     oauth-sign "0.9.0"
     semver "7.7.2"
-    zapier-platform-schema "18.4.0"
+    zapier-platform-schema "18.5.0"
   optionalDependencies:
     "@types/node" "^20.3.1"
 
-zapier-platform-schema@18.4.0:
-  version "18.4.0"
-  resolved "https://registry.yarnpkg.com/zapier-platform-schema/-/zapier-platform-schema-18.4.0.tgz#c168afcd94dfbc1db14c9017be84c74c41181617"
-  integrity sha512-Y1TkdbREJORfD+Gcd1RMugSRBS+s6ulDIp44RnQxmt1sr6vKct1HuyyUVdBIHidWETG3Zu7lfoGZSkqakYYrRg==
+zapier-platform-schema@18.5.0:
+  version "18.5.0"
+  resolved "https://registry.yarnpkg.com/zapier-platform-schema/-/zapier-platform-schema-18.5.0.tgz#2b0a4572d5155f9aafa3ca014b58dbf366389ebd"
+  integrity sha512-S/FlyfoVDMUm5g0vLaM8hO0+UM99Gw3VEIbaV1dNOSihZK0L0ujA9uX4hfOYmK+C5CYjYpFrKOF3LQatSYC81Q==
   dependencies:
     json-metaschema "1.3.0"
     jsonschema "1.5.0"
-    lodash "4.17.23"
+    lodash "4.18.1"
 
 zip-stream@^6.0.1:
   version "6.0.1"
