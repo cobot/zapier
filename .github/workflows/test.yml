@@ -12,20 +12,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
-      - name: Set up Node.js
-        uses: actions/setup-node@v6
+      - name: Run CI in dev container
+        uses: devcontainers/ci@v0.3
         with:
-          node-version: lts/*
-          cache: yarn
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-      - name: Check formatting
-        run: yarn lint
-      - name: Run tests
-        run: |
-          yarn build
-          yarn test
-          yarn validate
+          runCmd: |
+            set -euxo pipefail # Fail on error
+            yarn install --frozen-lockfile
+            yarn lint
+            yarn build
+            yarn test
+            yarn validate
   automerge:
     needs: test
     runs-on: ubuntu-latest
