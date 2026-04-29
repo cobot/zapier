@@ -130,9 +130,20 @@ export function apiResponseToEventOutput(event: EventApiResponse): EventOutput {
   };
 }
 
+type BookingAttributes = Pick<
+  BookingApi2Response["attributes"],
+  | "from"
+  | "to"
+  | "title"
+  | "comments"
+  | "attendees"
+  | "attendeesMessage"
+  | "price"
+  | "units"
+>;
 export function apiResponseToBookingOutput(
-  booking: BookingApi2Response,
-  membership: MembershipApiResponse | null,
+  booking: { id: string; attributes: BookingAttributes },
+  membership: Pick<MembershipApiResponse, "name" | "email"> | null,
   resource: ResourceApiResponse,
 ): BookingOutput {
   const attributes = booking.attributes;

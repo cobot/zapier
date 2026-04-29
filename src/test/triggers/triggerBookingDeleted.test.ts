@@ -102,6 +102,21 @@ const bookingOutput: BookingOutput = {
   attendees_message: null,
 };
 
+/** Webhook body shape for deleted_booking (not JSON:API booking document). */
+const deletedBookingWebhookPayload = {
+  id: "d58b612aaa62619aae546dd336587eb2",
+  from: "2012/04/12 12:00:00 +0000",
+  to: "2012/04/12 18:00:00 +0000",
+  title: "test booking",
+  comments: "coffee please",
+  resource: { id: "resource-1", name: "Meeting Room" },
+  membership: { id: "membership-1", name: "John Doe" },
+  units: 1,
+  price: "10",
+  currency: "EUR",
+  tax_rate: "0",
+};
+
 afterEach(() => nock.cleanAll());
 
 describe("triggerBookingDeleted", () => {
@@ -151,19 +166,14 @@ describe("triggerBookingDeleted", () => {
     expect(results[0].id).toBe(bookingResponse.id);
   });
 
-  it("triggers on deleted booking with nested API-shape payload", async () => {
+  it("triggers on deleted booking with webhook payload shape", async () => {
     const bundle = prepareBundle();
     bundle.cleanedRequest = {
       url: "https://trial.cobot.me/api/bookings/b1",
-      booking: bookingResponse,
+      booking: deletedBookingWebhookPayload,
     };
 
-    const apiScope = nock("https://api.cobot.me");
-    apiScope
-      .get("/resources/resource-1")
-      .reply(200, { data: resourceResponse });
-    const trialScope = nock("https://trial.cobot.me");
-    trialScope
+    nock("https://trial.cobot.me")
       .get("/api/memberships/membership-1")
       .reply(200, membershipResponse);
 
@@ -176,6 +186,26 @@ describe("triggerBookingDeleted", () => {
     expect(results).toStrictEqual([
       { ...bookingOutput, member_email: "john.doe@example.com" },
     ]);
+  });
+
+  it("uses webhook payload membership data when membership endpoint returns 404", async () => {
+    const bundle = prepareBundle();
+    bundle.cleanedRequest = {
+      url: "https://trial.cobot.me/api/bookings/b1",
+      booking: deletedBookingWebhookPayload,
+    };
+
+    nock("https://trial.cobot.me")
+      .get("/api/memberships/membership-1")
+      .reply(404);
+
+    const results = await appTester(
+      triggerBookingDeleted.operation.perform as any,
+      bundle as any,
+    );
+
+    expect(nock.isDone()).toBe(true);
+    expect(results).toStrictEqual([bookingOutput]);
   });
 
   it("returns empty array when no booking in payload", async () => {
