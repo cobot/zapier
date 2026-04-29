@@ -1,3 +1,7 @@
+# 2.13.2
+
+- Fixed broken deleted_booking trigger
+
 ## 2.13.1
 
 - Added back trigger/updated_membership but as deprecated and hidden since it is a wrong trigger
