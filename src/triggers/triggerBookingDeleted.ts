@@ -61,21 +61,9 @@ async function parsePayload(
         attendeesMessage: null,
         price: {
           net: bookingPayload.price,
-          gross:
-            Number(bookingPayload.price) *
-              (1 + Number(bookingPayload.tax_rate) / 100) +
-            "",
+          gross: "",
           currency: "EUR",
-          taxes: [
-            {
-              name: "Tax",
-              amount:
-                Number(bookingPayload.price) *
-                  (Number(bookingPayload.tax_rate) / 100) +
-                "",
-              rate: bookingPayload.tax_rate,
-            },
-          ],
+          taxes: [],
         },
         units: bookingPayload.units,
       },
