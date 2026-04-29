@@ -1,11 +1,6 @@
 import { ZObject } from "zapier-platform-core";
 import { KontentBundle } from "../types/kontentBundle";
-import {
-  subscribeHook,
-  unsubscribeHook,
-  getResource,
-  getMembership,
-} from "../utils/api";
+import { subscribeHook, unsubscribeHook, getMembership } from "../utils/api";
 import { getSubdomainField } from "../fields/getSudomainsField";
 import { SubscribeBundleInputType } from "../types/subscribeType";
 import { bookingSample } from "../utils/samples";
@@ -16,7 +11,19 @@ import { listRecentBookingsAndConvertToOutput } from "../utils/list";
 
 const hookLabel = "Booking Deleted";
 const event = "deleted_booking";
-
+type BookingDeletedPayload = {
+  id: string;
+  from: string;
+  to: string;
+  title: string;
+  comments: string;
+  resource: { id: string; name: string };
+  membership: { id: string; name: string } | null;
+  units: number;
+  price: string;
+  currency: string;
+  tax_rate: string;
+};
 async function subscribeHookExecute(
   z: ZObject,
   bundle: KontentBundle<SubscribeBundleInputType>,
@@ -40,19 +47,56 @@ async function parsePayload(
   bundle: KontentBundle<{}>,
 ): Promise<BookingOutput[]> {
   if (bundle.cleanedRequest?.booking) {
-    const booking = bundle.cleanedRequest.booking;
+    const bookingPayload: BookingDeletedPayload = bundle.cleanedRequest.booking;
     const subdomain = (bundle.inputData as any).subdomain as string;
-    const membershipId = booking.relationships?.membership?.data?.id;
-    const resourceId = booking.relationships.resource.data?.id;
-    const resource = await getResource(z, resourceId);
-    if (!resource) {
-      return [];
-    }
-    let membership = null;
+
+    const booking: Parameters<typeof apiResponseToBookingOutput>[0] = {
+      id: bookingPayload.id,
+      attributes: {
+        from: bookingPayload.from,
+        to: bookingPayload.to,
+        title: bookingPayload.title,
+        comments: bookingPayload.comments,
+        attendees: [],
+        attendeesMessage: null,
+        price: {
+          net: bookingPayload.price,
+          gross: "",
+          currency: "EUR",
+          taxes: [],
+        },
+        units: bookingPayload.units,
+      },
+    };
+
+    let membership: Parameters<typeof apiResponseToBookingOutput>[1] =
+      bookingPayload.membership
+        ? { name: bookingPayload.membership.name, email: null }
+        : null;
+    const membershipId = bookingPayload.membership?.id;
     if (membershipId && subdomain) {
-      membership = await getMembership(z, subdomain, membershipId);
+      try {
+        const membershipResponse = await getMembership(
+          z,
+          subdomain,
+          membershipId,
+        );
+        if (membershipResponse) {
+          membership = {
+            name: membershipResponse.name,
+            email: membershipResponse.email,
+          };
+        }
+      } catch {
+        // 404 if membership was removed; keep webhook payload membership
+      }
     }
-    return [apiResponseToBookingOutput(booking, membership, resource)];
+    return [
+      apiResponseToBookingOutput(booking, membership, {
+        id: bookingPayload.resource.id,
+        attributes: { name: bookingPayload.resource.name },
+      }),
+    ];
   }
   return [];
 }
