@@ -5,6 +5,8 @@ import {
   MembershipOutput,
   InvoiceOutput,
   DropInPassOutput,
+  ResourceOutput,
+  ResourceDeletedOutput,
 } from "../types/outputs";
 
 export const bookingSample: BookingOutput = {
@@ -165,4 +167,26 @@ export const dropInPassSample: DropInPassOutput = {
     company: "Acme Inc.",
     fullAddress: "2 Coworking Road",
   },
+};
+
+export const resourceSample: ResourceOutput = {
+  id: "a4a99a71ac8df98d29de357180d273d3",
+  name: "Meeting Room",
+  resourceType: "room",
+  usage: "bookable",
+  description: "Large room, fits 12.",
+  capacity: 12,
+  units: 2,
+  hidden: false,
+  color: "#ff0000",
+  accountingCode: "ROOM",
+  pricePerHourNet: "10.0",
+  pricePerHourGross: "12.0",
+  currency: "EUR",
+  photoUrl:
+    "https://cdn.com/resource/photo/a4a99a71ac8df98d29de357180d273d3/default_photo.png",
+};
+
+export const resourceDeletedSample: ResourceDeletedOutput = {
+  id: "a4a99a71ac8df98d29de357180d273d3",
 };

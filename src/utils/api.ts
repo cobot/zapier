@@ -430,3 +430,23 @@ export const listRecentDropInPasses = async (
   });
   return response.data.data as DropInPassApiResponse[];
 };
+
+export const listResources = async (
+  z: ZObject,
+  bundle: KontentBundle<SubscribeBundleInputType>,
+): Promise<ResourceApiResponse[]> => {
+  const subdomain = bundle.inputData.subdomain;
+  const space = await spaceForSubdomain(z, subdomain);
+  if (!space) return [];
+  const response = await z.request({
+    url: `https://api.cobot.me/spaces/${space.id}/resources`,
+    method: "GET",
+    headers: {
+      Accept: "application/vnd.api+json",
+    },
+    params: {
+      "filter[usage]": "all",
+    },
+  });
+  return response.data.data as ResourceApiResponse[];
+};
