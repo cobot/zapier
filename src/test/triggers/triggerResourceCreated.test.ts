@@ -104,6 +104,32 @@ describe("triggerResourceCreated", () => {
 `);
   });
 
+  it("sends notify_existing when Trigger for existing is enabled", async () => {
+    const bundle = prepareBundle();
+    bundle.inputData = {
+      ...bundle.inputData,
+      trigger_for_existing: true,
+    };
+    const url = `https://${bundle.inputData.subdomain}.cobot.me/api/subscriptions`;
+    nock(url)
+      .post("", {
+        event: triggerResourceCreated.key,
+        callback_url: bundle.targetUrl,
+        notify_existing: true,
+      })
+      .reply(200, { url: "https://trial.cobot.me/api/event/callback" });
+
+    const result = await appTester(
+      trigger.operation.performSubscribe as any,
+      bundle as any,
+    );
+
+    expect(nock.isDone()).toBe(true);
+    expect(result).toEqual({
+      url: "https://trial.cobot.me/api/event/callback",
+    });
+  });
+
   it("lists resources", async () => {
     const bundle = prepareBundle();
     const userResponse: UserApiResponse = {
