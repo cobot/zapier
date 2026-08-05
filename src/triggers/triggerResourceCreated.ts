@@ -21,9 +21,13 @@ const event = "created_resource";
 const triggerForExistingField: Field = {
   label: "Trigger for existing",
   key: "trigger_for_existing",
-  type: "boolean",
+  type: "string",
   required: false,
-  default: false,
+  default: "No",
+  choices: [
+    { sample: "Yes", value: "Yes", label: "Yes" },
+    { sample: "No", value: "No", label: "No" },
+  ],
   helpText:
     "When enabled, immediately trigger for each resource that already exists in the space.",
 };
@@ -35,7 +39,9 @@ async function subscribeHookExecute(
   return subscribeHook(z, bundle, {
     event,
     callback_url: bundle.targetUrl ?? "",
-    ...(bundle.inputData.trigger_for_existing ? { notify_existing: true } : {}),
+    ...(bundle.inputData.trigger_for_existing === "Yes"
+      ? { notify_existing: true }
+      : {}),
   });
 }
 

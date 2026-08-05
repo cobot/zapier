@@ -96,7 +96,7 @@ describe("triggerResourceCreated", () => {
     const bundle = prepareBundle();
     bundle.inputData = {
       ...bundle.inputData,
-      trigger_for_existing: true,
+      trigger_for_existing: "Yes",
     };
     const url = `https://${bundle.inputData.subdomain}.cobot.me/api/subscriptions`;
     nock(url)

@@ -7,8 +7,7 @@ export type Field = Readonly<{
     | "copy"
     | "text"
     | "unicode"
-    | "float"
-    | "boolean";
+    | "float";
   label: string;
   dynamic?: string;
   list?: boolean;
@@ -18,6 +17,6 @@ export type Field = Readonly<{
   choices?: ReadonlyArray<
     Readonly<{ value: string; sample: string; label: string }>
   >;
-  default?: string | boolean;
+  default?: string;
   search?: string;
 }>;

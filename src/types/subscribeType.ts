@@ -6,5 +6,5 @@ export type SubscribePayloadType = Readonly<{
 
 export type SubscribeBundleInputType = Readonly<{
   subdomain: string;
-  trigger_for_existing?: boolean;
+  trigger_for_existing?: string;
 }>;
