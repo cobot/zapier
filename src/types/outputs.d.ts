@@ -152,9 +152,6 @@ export type ResourceOutput = {
   hidden: boolean | null;
   color: string | null;
   accountingCode: string | null;
-  pricePerHourNet: string | null;
-  pricePerHourGross: string | null;
-  currency: string | null;
   photoUrl: string | null;
 };
 

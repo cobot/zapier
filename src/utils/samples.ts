@@ -180,9 +180,6 @@ export const resourceSample: ResourceOutput = {
   hidden: false,
   color: "#ff0000",
   accountingCode: "ROOM",
-  pricePerHourNet: "10.0",
-  pricePerHourGross: "12.0",
-  currency: "EUR",
   photoUrl:
     "https://cdn.com/resource/photo/a4a99a71ac8df98d29de357180d273d3/default_photo.png",
 };

@@ -180,10 +180,6 @@ export type ResourceApiResponse = {
     hidden?: boolean;
     color?: string | null;
     accountingCode?: string | null;
-    pricing?: {
-      currency: string;
-      pricePerHour: Amount;
-    };
     photo?: Photo | null;
   };
 };

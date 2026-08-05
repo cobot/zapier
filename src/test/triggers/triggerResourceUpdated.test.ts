@@ -31,15 +31,6 @@ const resourceResponse: ResourceApiResponse = {
     hidden: false,
     color: "#ff0000",
     accountingCode: "ROOM",
-    pricing: {
-      currency: "EUR",
-      pricePerHour: {
-        net: "10.0",
-        gross: "12.0",
-        currency: "EUR",
-        taxes: [{ name: "Tax", rate: "20.0", amount: "2.0" }],
-      },
-    },
     photo: {
       icon: {
         url: "https://cdn.com/resource/photo/a4a99a71ac8df98d29de357180d273d3/icon_photo.png",
@@ -81,9 +72,6 @@ const resourceOutput: ResourceOutput = {
   hidden: false,
   color: "#ff0000",
   accountingCode: "ROOM",
-  pricePerHourNet: "10.0",
-  pricePerHourGross: "12.0",
-  currency: "EUR",
   photoUrl:
     "https://cdn.com/resource/photo/a4a99a71ac8df98d29de357180d273d3/default_photo.png",
 };

@@ -230,9 +230,6 @@ export function apiResponseToResourceOutput(
     hidden: attrs.hidden ?? null,
     color: attrs.color ?? null,
     accountingCode: attrs.accountingCode ?? null,
-    pricePerHourNet: attrs.pricing?.pricePerHour.net ?? null,
-    pricePerHourGross: attrs.pricing?.pricePerHour.gross ?? null,
-    currency: attrs.pricing?.currency ?? null,
     photoUrl: attrs.photo?.default.url ?? null,
   };
 }
