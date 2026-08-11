@@ -20,7 +20,12 @@ import {
 } from "../types/outputs";
 import { ZObject } from "zapier-platform-core";
 import { at, get } from "lodash";
-import { ExternalBookingWithResourceApiResponse, apiCallUrl } from "./api";
+import {
+  ExternalBookingWithResourceApiResponse,
+  apiCallUrl,
+  getAllocationAllocatee,
+  getResource,
+} from "./api";
 
 export async function apiResponseToMembershipOutput(
   membership: MembershipApiResponse,
@@ -236,12 +241,23 @@ export function apiResponseToResourceOutput(
   };
 }
 
-export function apiResponseToAllocationOutput(
+export async function apiResponseToAllocationOutput(
+  z: ZObject,
   allocation: AllocationApiResponse,
-): AllocationOutput {
+): Promise<AllocationOutput> {
   const attrs = allocation.attributes;
   const relationships = allocation.relationships;
-  const allocatee = relationships.allocatee.data;
+  const allocateeRelationship = relationships.allocatee.data;
+  const [resource, allocatee] = await Promise.all([
+    getResource(z, relationships.resource.data.id),
+    allocateeRelationship
+      ? getAllocationAllocatee(
+          z,
+          allocateeRelationship.id,
+          allocateeRelationship.type,
+        )
+      : null,
+  ]);
   return {
     id: allocation.id,
     startsAt: attrs.startsAt,
@@ -251,9 +267,20 @@ export function apiResponseToAllocationOutput(
     recurringMinimumCommitment: attrs.recurringMinimumCommitment,
     cancellationPeriod: attrs.cancellationPeriod ?? null,
     pricePerCycle: attrs.pricePerCycle,
-    spaceId: relationships.space.data.id,
-    resourceId: relationships.resource.data.id,
-    allocateeId: allocatee?.id ?? null,
-    allocateeType: allocatee?.type ?? null,
+    resource: {
+      id: relationships.resource.data.id,
+      name: resource?.attributes.name ?? null,
+    },
+    allocatee: allocateeRelationship
+      ? {
+          id: allocateeRelationship.id,
+          type: allocateeRelationship.type,
+          name: allocatee?.attributes.name ?? null,
+          email:
+            allocatee?.attributes.email ??
+            allocatee?.attributes.billingEmails?.[0] ??
+            null,
+        }
+      : null,
   };
 }

@@ -3,6 +3,7 @@ import {
   Address,
   InvoiceItem,
   Amount,
+  AllocationAllocateeType,
 } from "./api-responses";
 
 export type BookingOutput = {
@@ -168,10 +169,16 @@ export type AllocationOutput = {
   recurringMinimumCommitment: boolean;
   cancellationPeriod: number | null;
   pricePerCycle: Amount;
-  spaceId: string;
-  resourceId: string;
-  allocateeId: string | null;
-  allocateeType: string | null;
+  resource: {
+    id: string;
+    name: string | null;
+  };
+  allocatee: {
+    id: string;
+    type: AllocationAllocateeType;
+    name: string | null;
+    email: string | null;
+  } | null;
 };
 
 export type AllocationDeletedOutput = {

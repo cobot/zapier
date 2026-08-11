@@ -8,7 +8,7 @@ import {
 } from "../utils/api";
 import { SubscribeBundleInputType } from "../types/subscribeType";
 import { getSubdomainField } from "../fields/getSudomainsField";
-import { Field } from "../fields/field";
+import { getTriggerForExistingField } from "../fields/getTriggerForExistingField";
 import { allocationSample } from "../utils/samples";
 import { AllocationOutput } from "../types/outputs";
 import { AllocationApiResponse } from "../types/api-responses";
@@ -17,20 +17,6 @@ import { HookTrigger } from "../types/trigger";
 
 const hookLabel = "Allocation Created";
 const event = "created_allocation";
-
-const triggerForExistingField: Field = {
-  label: "Trigger for existing",
-  key: "trigger_for_existing",
-  type: "string",
-  required: false,
-  default: "No",
-  choices: [
-    { sample: "Yes", value: "Yes", label: "Yes" },
-    { sample: "No", value: "No", label: "No" },
-  ],
-  helpText:
-    "When enabled, immediately trigger for each allocation that already exists in the space.",
-};
 
 async function subscribeHookExecute(
   z: ZObject,
@@ -63,7 +49,7 @@ async function parsePayload(
         Accept: "application/vnd.api+json",
       })
     ).data as AllocationApiResponse;
-    return [apiResponseToAllocationOutput(allocation)];
+    return [await apiResponseToAllocationOutput(z, allocation)];
   }
   return [];
 }
@@ -78,7 +64,10 @@ const trigger: HookTrigger = {
   operation: {
     type: "hook",
 
-    inputFields: [getSubdomainField(), triggerForExistingField],
+    inputFields: [
+      getSubdomainField(),
+      getTriggerForExistingField("allocation"),
+    ],
 
     performSubscribe: subscribeHookExecute,
     performUnsubscribe: unsubscribeHookExecute,
@@ -89,7 +78,11 @@ const trigger: HookTrigger = {
       bundle: KontentBundle<SubscribeBundleInputType>,
     ): Promise<AllocationOutput[]> => {
       const allocations = await listAllocations(z, bundle);
-      return allocations.map(apiResponseToAllocationOutput);
+      return Promise.all(
+        allocations.map((allocation) =>
+          apiResponseToAllocationOutput(z, allocation),
+        ),
+      );
     },
 
     sample: allocationSample,

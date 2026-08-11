@@ -184,6 +184,18 @@ export type ResourceApiResponse = {
   };
 };
 
+export type AllocationAllocateeType = "memberships" | "teams";
+
+export type AllocationAllocateeApiResponse = {
+  id: string;
+  type: AllocationAllocateeType;
+  attributes: {
+    name: string | null;
+    email?: string | null;
+    billingEmails?: string[];
+  };
+};
+
 export type AllocationApiResponse = {
   id: string;
   type: "allocations";
@@ -199,7 +211,9 @@ export type AllocationApiResponse = {
   relationships: {
     space: { data: { id: string; type: "spaces" } };
     resource: { data: { id: string; type: "resources" } };
-    allocatee: { data: { id: string; type: string } | null };
+    allocatee: {
+      data: { id: string; type: AllocationAllocateeType } | null;
+    };
   };
 };
 

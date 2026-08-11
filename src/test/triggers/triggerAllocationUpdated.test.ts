@@ -10,6 +10,8 @@ import { HookTrigger } from "../../types/trigger";
 import {
   UserApiResponse,
   AllocationApiResponse,
+  AllocationAllocateeApiResponse,
+  ResourceApiResponse,
 } from "../../types/api-responses";
 import { AllocationOutput } from "../../types/outputs";
 
@@ -44,8 +46,22 @@ const allocationResponse: AllocationApiResponse = {
       data: { id: "a4a99a71ac8df98d29de357180d273d3", type: "resources" },
     },
     allocatee: {
-      data: { id: "f11h2a71ac8df98d29de357180d273a3", type: "memberships" },
+      data: { id: "team-123", type: "teams" },
     },
+  },
+};
+
+const resourceResponse: ResourceApiResponse = {
+  id: "a4a99a71ac8df98d29de357180d273d3",
+  attributes: { name: "Dedicated Desk" },
+};
+
+const allocateeResponse: AllocationAllocateeApiResponse = {
+  id: "team-123",
+  type: "teams",
+  attributes: {
+    name: "Engineering Team",
+    billingEmails: ["billing@example.com"],
   },
 };
 
@@ -63,10 +79,16 @@ const allocationOutput: AllocationOutput = {
     currency: "EUR",
     taxes: [{ name: "VAT", rate: "19.0", amount: "19.0" }],
   },
-  spaceId: "f9a99a71ac8df98d29de357180d273d3",
-  resourceId: "a4a99a71ac8df98d29de357180d273d3",
-  allocateeId: "f11h2a71ac8df98d29de357180d273a3",
-  allocateeType: "memberships",
+  resource: {
+    id: "a4a99a71ac8df98d29de357180d273d3",
+    name: "Dedicated Desk",
+  },
+  allocatee: {
+    id: "team-123",
+    type: "teams",
+    name: "Engineering Team",
+    email: "billing@example.com",
+  },
 };
 
 describe("triggerAllocationUpdated", () => {
@@ -97,6 +119,10 @@ describe("triggerAllocationUpdated", () => {
       .get("/spaces/space-1/allocations")
       .query(true)
       .reply(200, { data: [allocationResponse] });
+    scope
+      .get("/resources/a4a99a71ac8df98d29de357180d273d3")
+      .reply(200, { data: resourceResponse });
+    scope.get("/teams/team-123").reply(200, { data: allocateeResponse });
 
     const results = await appTester(
       trigger.operation.performList as any,
@@ -115,6 +141,10 @@ describe("triggerAllocationUpdated", () => {
     scope
       .get("/allocations/a8f21a71ac8df98d29de357180d27358")
       .reply(200, { data: allocationResponse });
+    scope
+      .get("/resources/a4a99a71ac8df98d29de357180d273d3")
+      .reply(200, { data: resourceResponse });
+    scope.get("/teams/team-123").reply(200, { data: allocateeResponse });
 
     const results = await appTester(
       trigger.operation.perform as any,

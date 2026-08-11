@@ -1,6 +1,6 @@
 ## 2.14.0
 
-- Added triggers: Allocation Created, Allocation Updated, Allocation Deleted
+- Added triggers: Resource Created, Resource Updated, Resource Deleted, Allocation Created, Allocation Updated, Allocation Deleted
 
 # 2.13.2
 

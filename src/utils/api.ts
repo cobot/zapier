@@ -17,6 +17,8 @@ import {
   BookingApi2Response,
   DropInPassApiResponse,
   AllocationApiResponse,
+  AllocationAllocateeApiResponse,
+  AllocationAllocateeType,
 } from "../types/api-responses";
 
 type Space = {
@@ -352,6 +354,24 @@ export const getResource = async (
   }
   const resource = resourceResponse.data.data as ResourceApiResponse;
   return resource;
+};
+
+export const getAllocationAllocatee = async (
+  z: ZObject,
+  allocateeId: string,
+  allocateeType: AllocationAllocateeType,
+): Promise<AllocationAllocateeApiResponse | null> => {
+  const response = await z.request({
+    url: `https://api.cobot.me/${allocateeType}/${allocateeId}`,
+    method: "GET",
+    headers: {
+      Accept: "application/vnd.api+json",
+    },
+  });
+  if (response.status === 404) {
+    return null;
+  }
+  return response.data.data as AllocationAllocateeApiResponse;
 };
 
 export const getExternalBookingFromBookingId = async (

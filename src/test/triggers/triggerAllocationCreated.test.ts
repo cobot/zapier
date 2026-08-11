@@ -10,6 +10,8 @@ import { HookTrigger } from "../../types/trigger";
 import {
   UserApiResponse,
   AllocationApiResponse,
+  AllocationAllocateeApiResponse,
+  ResourceApiResponse,
 } from "../../types/api-responses";
 import { AllocationOutput } from "../../types/outputs";
 
@@ -49,6 +51,20 @@ const allocationResponse: AllocationApiResponse = {
   },
 };
 
+const resourceResponse: ResourceApiResponse = {
+  id: "a4a99a71ac8df98d29de357180d273d3",
+  attributes: { name: "Dedicated Desk" },
+};
+
+const allocateeResponse: AllocationAllocateeApiResponse = {
+  id: "f11h2a71ac8df98d29de357180d273a3",
+  type: "memberships",
+  attributes: {
+    name: "Jane Doe",
+    email: "jane@example.com",
+  },
+};
+
 const allocationOutput: AllocationOutput = {
   id: "a8f21a71ac8df98d29de357180d27358",
   startsAt: "2018-01-01",
@@ -63,10 +79,16 @@ const allocationOutput: AllocationOutput = {
     currency: "EUR",
     taxes: [{ name: "VAT", rate: "19.0", amount: "19.0" }],
   },
-  spaceId: "f9a99a71ac8df98d29de357180d273d3",
-  resourceId: "a4a99a71ac8df98d29de357180d273d3",
-  allocateeId: "f11h2a71ac8df98d29de357180d273a3",
-  allocateeType: "memberships",
+  resource: {
+    id: "a4a99a71ac8df98d29de357180d273d3",
+    name: "Dedicated Desk",
+  },
+  allocatee: {
+    id: "f11h2a71ac8df98d29de357180d273a3",
+    type: "memberships",
+    name: "Jane Doe",
+    email: "jane@example.com",
+  },
 };
 
 describe("triggerAllocationCreated", () => {
@@ -123,6 +145,12 @@ describe("triggerAllocationCreated", () => {
       .get("/spaces/space-1/allocations")
       .query(true)
       .reply(200, { data: [allocationResponse] });
+    scope
+      .get("/resources/a4a99a71ac8df98d29de357180d273d3")
+      .reply(200, { data: resourceResponse });
+    scope
+      .get("/memberships/f11h2a71ac8df98d29de357180d273a3")
+      .reply(200, { data: allocateeResponse });
 
     const results = await appTester(
       trigger.operation.performList as any,
@@ -141,6 +169,12 @@ describe("triggerAllocationCreated", () => {
     scope
       .get("/allocations/a8f21a71ac8df98d29de357180d27358")
       .reply(200, { data: allocationResponse });
+    scope
+      .get("/resources/a4a99a71ac8df98d29de357180d273d3")
+      .reply(200, { data: resourceResponse });
+    scope
+      .get("/memberships/f11h2a71ac8df98d29de357180d273a3")
+      .reply(200, { data: allocateeResponse });
 
     const results = await appTester(
       trigger.operation.perform as any,

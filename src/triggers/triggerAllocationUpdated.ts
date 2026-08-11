@@ -45,7 +45,7 @@ async function parsePayload(
         Accept: "application/vnd.api+json",
       })
     ).data as AllocationApiResponse;
-    return [apiResponseToAllocationOutput(allocation)];
+    return [await apiResponseToAllocationOutput(z, allocation)];
   }
   return [];
 }
@@ -71,7 +71,11 @@ const trigger: HookTrigger = {
       bundle: KontentBundle<SubscribeBundleInputType>,
     ): Promise<AllocationOutput[]> => {
       const allocations = await listAllocations(z, bundle);
-      return allocations.map(apiResponseToAllocationOutput);
+      return Promise.all(
+        allocations.map((allocation) =>
+          apiResponseToAllocationOutput(z, allocation),
+        ),
+      );
     },
 
     sample: allocationSample,

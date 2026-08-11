@@ -204,10 +204,16 @@ export const allocationSample: AllocationOutput = {
     currency: "EUR",
     taxes: [{ name: "VAT", rate: "19.0", amount: "19.0" }],
   },
-  spaceId: "f9a99a71ac8df98d29de357180d273d3",
-  resourceId: "a4a99a71ac8df98d29de357180d273d3",
-  allocateeId: "f11h2a71ac8df98d29de357180d273a3",
-  allocateeType: "memberships",
+  resource: {
+    id: "a4a99a71ac8df98d29de357180d273d3",
+    name: "Dedicated Desk",
+  },
+  allocatee: {
+    id: "f11h2a71ac8df98d29de357180d273a3",
+    type: "memberships",
+    name: "Jane Doe",
+    email: "jane@example.com",
+  },
 };
 
 export const allocationDeletedSample: AllocationDeletedOutput = {

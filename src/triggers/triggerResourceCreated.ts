@@ -8,7 +8,7 @@ import {
 } from "../utils/api";
 import { SubscribeBundleInputType } from "../types/subscribeType";
 import { getSubdomainField } from "../fields/getSudomainsField";
-import { Field } from "../fields/field";
+import { getTriggerForExistingField } from "../fields/getTriggerForExistingField";
 import { resourceSample } from "../utils/samples";
 import { ResourceOutput } from "../types/outputs";
 import { ResourceApiResponse } from "../types/api-responses";
@@ -17,20 +17,6 @@ import { HookTrigger } from "../types/trigger";
 
 const hookLabel = "Resource Created";
 const event = "created_resource";
-
-const triggerForExistingField: Field = {
-  label: "Trigger for existing",
-  key: "trigger_for_existing",
-  type: "string",
-  required: false,
-  default: "No",
-  choices: [
-    { sample: "Yes", value: "Yes", label: "Yes" },
-    { sample: "No", value: "No", label: "No" },
-  ],
-  helpText:
-    "When enabled, immediately trigger for each resource that already exists in the space.",
-};
 
 async function subscribeHookExecute(
   z: ZObject,
@@ -78,7 +64,7 @@ const trigger: HookTrigger = {
   operation: {
     type: "hook",
 
-    inputFields: [getSubdomainField(), triggerForExistingField],
+    inputFields: [getSubdomainField(), getTriggerForExistingField("resource")],
 
     performSubscribe: subscribeHookExecute,
     performUnsubscribe: unsubscribeHookExecute,
