@@ -276,10 +276,7 @@ export async function apiResponseToAllocationOutput(
           id: allocateeRelationship.id,
           type: allocateeRelationship.type,
           name: allocatee?.attributes.name ?? null,
-          email:
-            allocatee?.attributes.email ??
-            allocatee?.attributes.billingEmails?.[0] ??
-            null,
+          email: allocatee?.attributes.email ?? null,
         }
       : null,
   };

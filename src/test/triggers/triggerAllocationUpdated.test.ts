@@ -61,7 +61,6 @@ const allocateeResponse: AllocationAllocateeApiResponse = {
   type: "teams",
   attributes: {
     name: "Engineering Team",
-    billingEmails: ["billing@example.com"],
   },
 };
 
@@ -87,7 +86,7 @@ const allocationOutput: AllocationOutput = {
     id: "team-123",
     type: "teams",
     name: "Engineering Team",
-    email: "billing@example.com",
+    email: null,
   },
 };
 

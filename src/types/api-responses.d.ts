@@ -192,7 +192,6 @@ export type AllocationAllocateeApiResponse = {
   attributes: {
     name: string | null;
     email?: string | null;
-    billingEmails?: string[];
   };
 };
 
