@@ -16,6 +16,7 @@ import {
   InvoiceApiResponse,
   BookingApi2Response,
   DropInPassApiResponse,
+  AllocationApiResponse,
 } from "../types/api-responses";
 
 type Space = {
@@ -449,4 +450,26 @@ export const listResources = async (
     },
   });
   return response.data.data as ResourceApiResponse[];
+};
+
+export const listAllocations = async (
+  z: ZObject,
+  bundle: KontentBundle<SubscribeBundleInputType>,
+): Promise<AllocationApiResponse[]> => {
+  const subdomain = bundle.inputData.subdomain;
+  const space = await spaceForSubdomain(z, subdomain);
+  if (!space) return [];
+  const [from, to] = getDateRange(true);
+  const response = await z.request({
+    url: `https://api.cobot.me/spaces/${space.id}/allocations`,
+    method: "GET",
+    headers: {
+      Accept: "application/vnd.api+json",
+    },
+    params: {
+      "filter[from]": from,
+      "filter[to]": to,
+    },
+  });
+  return response.data.data as AllocationApiResponse[];
 };

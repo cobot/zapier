@@ -19,7 +19,7 @@ export type BookingApi2Response = {
   };
 };
 
-type Amount = {
+export type Amount = {
   net: string;
   gross: string;
   currency: string;
@@ -181,6 +181,25 @@ export type ResourceApiResponse = {
     color?: string | null;
     accountingCode?: string | null;
     photo?: Photo | null;
+  };
+};
+
+export type AllocationApiResponse = {
+  id: string;
+  type: "allocations";
+  attributes: {
+    startsAt: string;
+    canceledTo: string | null;
+    cycleDuration: number;
+    minimumCommitment: number;
+    recurringMinimumCommitment: boolean;
+    cancellationPeriod: number | null;
+    pricePerCycle: Amount;
+  };
+  relationships: {
+    space: { data: { id: string; type: "spaces" } };
+    resource: { data: { id: string; type: "resources" } };
+    allocatee: { data: { id: string; type: string } | null };
   };
 };
 

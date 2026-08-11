@@ -7,6 +7,8 @@ import {
   DropInPassOutput,
   ResourceOutput,
   ResourceDeletedOutput,
+  AllocationOutput,
+  AllocationDeletedOutput,
 } from "../types/outputs";
 
 export const bookingSample: BookingOutput = {
@@ -186,4 +188,28 @@ export const resourceSample: ResourceOutput = {
 
 export const resourceDeletedSample: ResourceDeletedOutput = {
   id: "a4a99a71ac8df98d29de357180d273d3",
+};
+
+export const allocationSample: AllocationOutput = {
+  id: "a8f21a71ac8df98d29de357180d27358",
+  startsAt: "2018-01-01",
+  canceledTo: "2018-12-31",
+  cycleDuration: 1,
+  minimumCommitment: 0,
+  recurringMinimumCommitment: false,
+  cancellationPeriod: 30,
+  pricePerCycle: {
+    net: "100.0",
+    gross: "119.0",
+    currency: "EUR",
+    taxes: [{ name: "VAT", rate: "19.0", amount: "19.0" }],
+  },
+  spaceId: "f9a99a71ac8df98d29de357180d273d3",
+  resourceId: "a4a99a71ac8df98d29de357180d273d3",
+  allocateeId: "f11h2a71ac8df98d29de357180d273a3",
+  allocateeType: "memberships",
+};
+
+export const allocationDeletedSample: AllocationDeletedOutput = {
+  id: "a8f21a71ac8df98d29de357180d27358",
 };

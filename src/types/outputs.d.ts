@@ -158,3 +158,22 @@ export type ResourceOutput = {
 export type ResourceDeletedOutput = {
   id: string;
 };
+
+export type AllocationOutput = {
+  id: string;
+  startsAt: string;
+  canceledTo: string | null;
+  cycleDuration: number;
+  minimumCommitment: number;
+  recurringMinimumCommitment: boolean;
+  cancellationPeriod: number | null;
+  pricePerCycle: Amount;
+  spaceId: string;
+  resourceId: string;
+  allocateeId: string | null;
+  allocateeType: string | null;
+};
+
+export type AllocationDeletedOutput = {
+  id: string;
+};

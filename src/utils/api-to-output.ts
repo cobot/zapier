@@ -6,6 +6,7 @@ import {
   DropInPassApiResponse,
   BookingApi2Response,
   ResourceApiResponse,
+  AllocationApiResponse,
 } from "../types/api-responses";
 import {
   BookingOutput,
@@ -15,6 +16,7 @@ import {
   InvoiceOutput,
   DropInPassOutput,
   ResourceOutput,
+  AllocationOutput,
 } from "../types/outputs";
 import { ZObject } from "zapier-platform-core";
 import { at, get } from "lodash";
@@ -231,5 +233,27 @@ export function apiResponseToResourceOutput(
     color: attrs.color ?? null,
     accountingCode: attrs.accountingCode ?? null,
     photoUrl: attrs.photo?.default.url ?? null,
+  };
+}
+
+export function apiResponseToAllocationOutput(
+  allocation: AllocationApiResponse,
+): AllocationOutput {
+  const attrs = allocation.attributes;
+  const relationships = allocation.relationships;
+  const allocatee = relationships.allocatee.data;
+  return {
+    id: allocation.id,
+    startsAt: attrs.startsAt,
+    canceledTo: attrs.canceledTo ?? null,
+    cycleDuration: attrs.cycleDuration,
+    minimumCommitment: attrs.minimumCommitment,
+    recurringMinimumCommitment: attrs.recurringMinimumCommitment,
+    cancellationPeriod: attrs.cancellationPeriod ?? null,
+    pricePerCycle: attrs.pricePerCycle,
+    spaceId: relationships.space.data.id,
+    resourceId: relationships.resource.data.id,
+    allocateeId: allocatee?.id ?? null,
+    allocateeType: allocatee?.type ?? null,
   };
 }
