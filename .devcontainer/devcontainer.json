@@ -1,9 +1,7 @@
 {
   "name": "cobot-zapier",
-  "build": {
-    "dockerfile": "Dockerfile"
-  },
-  "postCreateCommand": "yarn install --frozen-lockfile",
+  "image": "node:26-bookworm",
+  "postCreateCommand": "npm ci",
   "customizations": {
     "vscode": {
       "extensions": ["esbenp.prettier-vscode"]
