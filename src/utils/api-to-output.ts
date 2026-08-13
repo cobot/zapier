@@ -14,6 +14,7 @@ import {
   MembershipOutput,
   InvoiceOutput,
   DropInPassOutput,
+  ResourceOutput,
 } from "../types/outputs";
 import { ZObject } from "zapier-platform-core";
 import { at, get } from "lodash";
@@ -211,5 +212,24 @@ export function apiResponseToDropInPassOutput(
     netPrice,
     comments: attrs.comments,
     billingAddress: attrs.billingAddress,
+  };
+}
+
+export function apiResponseToResourceOutput(
+  resource: ResourceApiResponse,
+): ResourceOutput {
+  const attrs = resource.attributes;
+  return {
+    id: resource.id,
+    name: attrs.name,
+    resourceType: attrs.resourceType ?? null,
+    usage: attrs.usage ?? null,
+    description: attrs.description ?? null,
+    capacity: attrs.capacity ?? null,
+    units: attrs.units ?? null,
+    hidden: attrs.hidden ?? null,
+    color: attrs.color ?? null,
+    accountingCode: attrs.accountingCode ?? null,
+    photoUrl: attrs.photo?.default.url ?? null,
   };
 }

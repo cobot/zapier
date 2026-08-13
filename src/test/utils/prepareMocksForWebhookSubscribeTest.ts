@@ -1,7 +1,7 @@
 import { KontentBundle } from "../../types/kontentBundle";
 import { SubscribeBundleInputType } from "../../types/subscribeType";
 import { mockBundle } from "./mockBundle";
-import * as nock from "nock";
+import nock from "nock";
 
 export const prepareMocksForWebhookSubscribeTest = (event: string) => {
   const bundle = prepareBundle();
