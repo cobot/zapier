@@ -2,9 +2,11 @@
   "include": ["src/**/*"],
   "compilerOptions": {
     "target": "es2019",
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "node16",
+    "moduleResolution": "node16",
     "lib": ["esnext", "DOM"],
+    "types": ["node", "jest"],
+    "isolatedModules": true,
     "outDir": "./lib",
     "rootDir": "./src",
     "strict": true
