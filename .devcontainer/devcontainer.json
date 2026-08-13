@@ -1,7 +1,7 @@
 {
   "name": "cobot-zapier",
-  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm",
-  "postCreateCommand": "yarn install --frozen-lockfile",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:26-bookworm",
+  "postCreateCommand": "npm ci",
   "customizations": {
     "vscode": {
       "extensions": ["esbenp.prettier-vscode"]

@@ -17,11 +17,11 @@ jobs:
         with:
           runCmd: |
             set -euxo pipefail # Fail on error
-            yarn install --frozen-lockfile
-            yarn lint
-            yarn build
-            yarn test
-            yarn validate
+            npm ci
+            npm run lint
+            npm run build
+            npm test
+            npm run validate
   automerge:
     needs: test
     runs-on: ubuntu-latest
