@@ -21,14 +21,14 @@ For a contribution to be merged, it needs to have a test (see `src/test`) and th
 ```bash
 
 # Run tests
-yarn test
+npm test
 
 # compile TS to JS
-yarn build
+npm run build
 
 # Run Zapier validations
-yarn validate
+npm run validate
 
 # Push to Zapier
-yarn push
+npm run push
 ```
