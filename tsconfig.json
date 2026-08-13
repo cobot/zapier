@@ -5,7 +5,7 @@
     "module": "node16",
     "moduleResolution": "node16",
     "lib": ["esnext", "DOM"],
-    "types": ["node", "jest"],
+    "types": ["node", "vitest/globals"],
     "isolatedModules": true,
     "outDir": "./lib",
     "rootDir": "./src",
