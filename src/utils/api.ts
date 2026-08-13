@@ -5,6 +5,7 @@ import {
   SubscribePayloadType,
 } from "../types/subscribeType";
 import { InputData as ActivityInputData } from "../creates/activity";
+import { InputData as IssueInputData } from "../creates/issue";
 import { get } from "lodash";
 import { DateTime } from "luxon";
 import {
@@ -390,6 +391,24 @@ export const createActivity = async (
       text: bundle.inputData.text,
       level: bundle.inputData.level,
       channels: bundle.inputData.channels,
+    },
+  });
+  const object = response.data;
+  object.created_at = new Date(object.created_at).toISOString();
+  return object;
+};
+
+export const createIssue = async (
+  z: ZObject,
+  bundle: KontentBundle<IssueInputData>,
+) => {
+  const response = await z.request({
+    method: "POST",
+    url: `https://${bundle.inputData.subdomain}.cobot.me/api/issues`,
+    body: {
+      subject: bundle.inputData.subject,
+      message: bundle.inputData.message,
+      private: bundle.inputData.private,
     },
   });
   const object = response.data;
