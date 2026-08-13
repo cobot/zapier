@@ -1,5 +1,5 @@
 import { createAppTester } from "zapier-platform-core";
-import * as nock from "nock";
+import nock from "nock";
 import App from "../../index";
 import {
   prepareBundle,

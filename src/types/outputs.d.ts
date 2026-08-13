@@ -140,3 +140,21 @@ export type DropInPassOutput = {
     fullAddress: string | null;
   };
 };
+
+export type ResourceOutput = {
+  id: string;
+  name: string;
+  resourceType: "room" | "desk" | "other" | null;
+  usage: "bookable" | "allocatable" | null;
+  description: string | null;
+  capacity: number | null;
+  units: number | null;
+  hidden: boolean | null;
+  color: string | null;
+  accountingCode: string | null;
+  photoUrl: string | null;
+};
+
+export type ResourceDeletedOutput = {
+  id: string;
+};

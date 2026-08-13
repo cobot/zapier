@@ -5,6 +5,7 @@ const config: Config = {
   testEnvironment: "node",
   testMatch: ["**/src/test/**/*.test.ts"],
   setupFiles: ["./setupTests.ts"],
+  setupFilesAfterEnv: ["./setupTestsAfterEnv.ts"],
 };
 
 export default config;

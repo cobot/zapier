@@ -1,6 +1,6 @@
 {
   "name": "cobot-zapier",
-  "image": "node:26-bookworm",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:26-bookworm",
   "postCreateCommand": "npm ci",
   "customizations": {
     "vscode": {

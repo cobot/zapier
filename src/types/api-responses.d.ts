@@ -168,7 +168,21 @@ export type ContactApiResponse = {
   data: { id: string; attributes: { email: string; address: Address } };
 };
 
-type ResourceApiResponse = { id: string; attributes: { name: string } };
+export type ResourceApiResponse = {
+  id: string;
+  attributes: {
+    name: string;
+    resourceType?: "room" | "desk" | "other" | null;
+    usage?: "bookable" | "allocatable";
+    description?: string | null;
+    capacity?: number | null;
+    units?: number;
+    hidden?: boolean;
+    color?: string | null;
+    accountingCode?: string | null;
+    photo?: Photo | null;
+  };
+};
 
 type UserApiResponse = {
   included: { id: string; attributes: { subdomain: string } }[];
