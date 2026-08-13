@@ -16,6 +16,9 @@ import {
   InvoiceApiResponse,
   BookingApi2Response,
   DropInPassApiResponse,
+  AllocationApiResponse,
+  AllocationAllocateeApiResponse,
+  AllocationAllocateeType,
 } from "../types/api-responses";
 
 type Space = {
@@ -353,6 +356,24 @@ export const getResource = async (
   return resource;
 };
 
+export const getAllocationAllocatee = async (
+  z: ZObject,
+  allocateeId: string,
+  allocateeType: AllocationAllocateeType,
+): Promise<AllocationAllocateeApiResponse | null> => {
+  const response = await z.request({
+    url: `https://api.cobot.me/${allocateeType}/${allocateeId}`,
+    method: "GET",
+    headers: {
+      Accept: "application/vnd.api+json",
+    },
+  });
+  if (response.status === 404) {
+    return null;
+  }
+  return response.data.data as AllocationAllocateeApiResponse;
+};
+
 export const getExternalBookingFromBookingId = async (
   z: ZObject,
   bookingId: string,
@@ -449,4 +470,26 @@ export const listResources = async (
     },
   });
   return response.data.data as ResourceApiResponse[];
+};
+
+export const listAllocations = async (
+  z: ZObject,
+  bundle: KontentBundle<SubscribeBundleInputType>,
+): Promise<AllocationApiResponse[]> => {
+  const subdomain = bundle.inputData.subdomain;
+  const space = await spaceForSubdomain(z, subdomain);
+  if (!space) return [];
+  const [from, to] = getDateRange(true);
+  const response = await z.request({
+    url: `https://api.cobot.me/spaces/${space.id}/allocations`,
+    method: "GET",
+    headers: {
+      Accept: "application/vnd.api+json",
+    },
+    params: {
+      "filter[from]": from,
+      "filter[to]": to,
+    },
+  });
+  return response.data.data as AllocationApiResponse[];
 };
