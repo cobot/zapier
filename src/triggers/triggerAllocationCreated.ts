@@ -2,21 +2,21 @@ import { ZObject } from "zapier-platform-core";
 import { KontentBundle } from "../types/kontentBundle";
 import {
   apiCallUrl,
-  listResources,
+  listAllocations,
   subscribeHook,
   unsubscribeHook,
 } from "../utils/api";
 import { SubscribeBundleInputType } from "../types/subscribeType";
 import { getSubdomainField } from "../fields/getSudomainsField";
 import { getTriggerForExistingField } from "../fields/getTriggerForExistingField";
-import { resourceSample } from "../utils/samples";
-import { ResourceOutput } from "../types/outputs";
-import { ResourceApiResponse } from "../types/api-responses";
-import { apiResponseToResourceOutput } from "../utils/api-to-output";
+import { allocationSample } from "../utils/samples";
+import { AllocationOutput } from "../types/outputs";
+import { AllocationApiResponse } from "../types/api-responses";
+import { apiResponseToAllocationOutput } from "../utils/api-to-output";
 import { HookTrigger } from "../types/trigger";
 
-const hookLabel = "Resource Created";
-const event = "created_resource";
+const hookLabel = "Allocation Created";
+const event = "created_allocation";
 
 async function subscribeHookExecute(
   z: ZObject,
@@ -42,14 +42,14 @@ async function unsubscribeHookExecute(
 async function parsePayload(
   z: ZObject,
   bundle: KontentBundle<{}>,
-): Promise<ResourceOutput[]> {
+): Promise<AllocationOutput[]> {
   if (bundle.cleanedRequest) {
-    const resource = (
+    const allocation = (
       await apiCallUrl(z, bundle.cleanedRequest.url, {
         Accept: "application/vnd.api+json",
       })
-    ).data as ResourceApiResponse;
-    return [apiResponseToResourceOutput(resource)];
+    ).data as AllocationApiResponse;
+    return [await apiResponseToAllocationOutput(z, allocation)];
   }
   return [];
 }
@@ -59,12 +59,15 @@ const trigger: HookTrigger = {
   noun: hookLabel,
   display: {
     label: hookLabel,
-    description: "Triggers when a resource is created.",
+    description: "Triggers when an allocation is created.",
   },
   operation: {
     type: "hook",
 
-    inputFields: [getSubdomainField(), getTriggerForExistingField("resource")],
+    inputFields: [
+      getSubdomainField(),
+      getTriggerForExistingField("allocation"),
+    ],
 
     performSubscribe: subscribeHookExecute,
     performUnsubscribe: unsubscribeHookExecute,
@@ -73,12 +76,16 @@ const trigger: HookTrigger = {
     performList: async (
       z: ZObject,
       bundle: KontentBundle<SubscribeBundleInputType>,
-    ): Promise<ResourceOutput[]> => {
-      const resources = await listResources(z, bundle);
-      return resources.map(apiResponseToResourceOutput);
+    ): Promise<AllocationOutput[]> => {
+      const allocations = await listAllocations(z, bundle);
+      return Promise.all(
+        allocations.map((allocation) =>
+          apiResponseToAllocationOutput(z, allocation),
+        ),
+      );
     },
 
-    sample: resourceSample,
+    sample: allocationSample,
   },
 };
 export default trigger;

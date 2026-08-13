@@ -30,6 +30,9 @@ import triggerMembershipPlanChangedEvent from "./triggers/triggerMembershipPlanC
 import triggerResourceCreated from "./triggers/triggerResourceCreated";
 import triggerResourceUpdated from "./triggers/triggerResourceUpdated";
 import triggerResourceDeleted from "./triggers/triggerResourceDeleted";
+import triggerAllocationCreated from "./triggers/triggerAllocationCreated";
+import triggerAllocationUpdated from "./triggers/triggerAllocationUpdated";
+import triggerAllocationDeleted from "./triggers/triggerAllocationDeleted";
 
 const { version } = require("../package.json");
 
@@ -72,6 +75,9 @@ export default {
     [triggerResourceCreated.key]: triggerResourceCreated,
     [triggerResourceUpdated.key]: triggerResourceUpdated,
     [triggerResourceDeleted.key]: triggerResourceDeleted,
+    [triggerAllocationCreated.key]: triggerAllocationCreated,
+    [triggerAllocationUpdated.key]: triggerAllocationUpdated,
+    [triggerAllocationDeleted.key]: triggerAllocationDeleted,
     // Lists for dropdowns
     [getSubdomains.key]: getSubdomains,
   },

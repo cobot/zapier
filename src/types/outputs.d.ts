@@ -3,6 +3,7 @@ import {
   Address,
   InvoiceItem,
   Amount,
+  AllocationAllocateeType,
 } from "./api-responses";
 
 export type BookingOutput = {
@@ -156,5 +157,30 @@ export type ResourceOutput = {
 };
 
 export type ResourceDeletedOutput = {
+  id: string;
+};
+
+export type AllocationOutput = {
+  id: string;
+  startsAt: string;
+  canceledTo: string | null;
+  cycleDuration: number;
+  minimumCommitment: number;
+  recurringMinimumCommitment: boolean;
+  cancellationPeriod: number | null;
+  pricePerCycle: Amount;
+  resource: {
+    id: string;
+    name: string | null;
+  };
+  allocatee: {
+    id: string;
+    type: AllocationAllocateeType;
+    name: string | null;
+    email: string | null;
+  } | null;
+};
+
+export type AllocationDeletedOutput = {
   id: string;
 };

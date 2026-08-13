@@ -6,6 +6,7 @@ import {
   DropInPassApiResponse,
   BookingApi2Response,
   ResourceApiResponse,
+  AllocationApiResponse,
 } from "../types/api-responses";
 import {
   BookingOutput,
@@ -15,10 +16,16 @@ import {
   InvoiceOutput,
   DropInPassOutput,
   ResourceOutput,
+  AllocationOutput,
 } from "../types/outputs";
 import { ZObject } from "zapier-platform-core";
 import { at, get } from "lodash";
-import { ExternalBookingWithResourceApiResponse, apiCallUrl } from "./api";
+import {
+  ExternalBookingWithResourceApiResponse,
+  apiCallUrl,
+  getAllocationAllocatee,
+  getResource,
+} from "./api";
 
 export async function apiResponseToMembershipOutput(
   membership: MembershipApiResponse,
@@ -231,5 +238,46 @@ export function apiResponseToResourceOutput(
     color: attrs.color ?? null,
     accountingCode: attrs.accountingCode ?? null,
     photoUrl: attrs.photo?.default.url ?? null,
+  };
+}
+
+export async function apiResponseToAllocationOutput(
+  z: ZObject,
+  allocation: AllocationApiResponse,
+): Promise<AllocationOutput> {
+  const attrs = allocation.attributes;
+  const relationships = allocation.relationships;
+  const allocateeRelationship = relationships.allocatee.data;
+  const [resource, allocatee] = await Promise.all([
+    getResource(z, relationships.resource.data.id),
+    allocateeRelationship
+      ? getAllocationAllocatee(
+          z,
+          allocateeRelationship.id,
+          allocateeRelationship.type,
+        )
+      : null,
+  ]);
+  return {
+    id: allocation.id,
+    startsAt: attrs.startsAt,
+    canceledTo: attrs.canceledTo ?? null,
+    cycleDuration: attrs.cycleDuration,
+    minimumCommitment: attrs.minimumCommitment,
+    recurringMinimumCommitment: attrs.recurringMinimumCommitment,
+    cancellationPeriod: attrs.cancellationPeriod ?? null,
+    pricePerCycle: attrs.pricePerCycle,
+    resource: {
+      id: relationships.resource.data.id,
+      name: resource?.attributes.name ?? null,
+    },
+    allocatee: allocateeRelationship
+      ? {
+          id: allocateeRelationship.id,
+          type: allocateeRelationship.type,
+          name: allocatee?.attributes.name ?? null,
+          email: allocatee?.attributes.email ?? null,
+        }
+      : null,
   };
 }
