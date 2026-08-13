@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "vitest run",
     "validate": "npm run build && zapier validate",
     "build": "npm run clean && tsc",
     "push": "npm test && npm run build && zapier push",
@@ -23,20 +23,18 @@
     "zapier-platform-core": "19.0.0"
   },
   "devDependencies": {
-    "@types/jest": "^30.0.0",
     "@types/lodash": "^4.17.24",
     "@types/luxon": "^3.7.2",
     "@types/node": "^26",
     "@types/node-fetch": "^2.6.13",
     "husky": "^9.1.7",
-    "jest": "^30.4.2",
     "lint-staged": "^17.0.8",
     "nock": "^14.0.16",
     "prettier": "3.9.5",
     "rimraf": "^6.1.3",
-    "ts-jest": "^29.4.11",
     "ts-node": "^10.9.2",
     "typescript": "6",
+    "vitest": "^4.1.10",
     "zapier-platform-cli": "^18.6.0"
   },
   "overrides": {
