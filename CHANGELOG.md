@@ -1,3 +1,7 @@
+## 2.14.0
+
+- Added triggers: Resource Created, Resource Updated, Resource Deleted, Allocation Created, Allocation Updated, Allocation Deleted
+
 # 2.13.2
 
 - Fixed broken deleted_booking trigger
