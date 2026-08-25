@@ -1,3 +1,7 @@
+## 2.15.0
+
+- Added create: Help Desk Issue
+
 ## 2.14.0
 
 - Added triggers: Resource Created, Resource Updated, Resource Deleted, Allocation Created, Allocation Updated, Allocation Deleted

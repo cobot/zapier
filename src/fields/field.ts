@@ -1,7 +1,14 @@
 export type Field = Readonly<{
   key: string;
   type:
-    "string" | "number" | "datetime" | "copy" | "text" | "unicode" | "float";
+    | "string"
+    | "number"
+    | "datetime"
+    | "copy"
+    | "text"
+    | "unicode"
+    | "float"
+    | "boolean";
   label: string;
   dynamic?: string;
   list?: boolean;

@@ -2,6 +2,7 @@ import { version as platformVersion } from "zapier-platform-core";
 import auth from "./authentication";
 
 import ActivityCreate from "./creates/activity";
+import IssueCreate from "./creates/issue";
 
 import triggerBookingCreated from "./triggers/triggerBookingCreated";
 import triggerBookingWillBegin from "./triggers/triggerBookingWillBegin";
@@ -83,5 +84,6 @@ export default {
 
   creates: {
     [ActivityCreate.key]: ActivityCreate,
+    [IssueCreate.key]: IssueCreate,
   },
 };
