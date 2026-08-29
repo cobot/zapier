@@ -235,3 +235,34 @@ export type DropInPassApiResponse = {
     timeAvailability: { from: string; to: string; weekdays: number[] }[];
   };
 };
+
+export type CostCenter = {
+  name: string;
+  number: string;
+};
+
+export type RevenueAccount = {
+  name: string;
+  number: string;
+};
+
+export type ChargeBillableType = "memberships" | "teams";
+
+export type ChargeApiResponse = {
+  id: string;
+  type: "charges";
+  attributes: {
+    description: string;
+    amount: Amount;
+    quantity: string;
+    chargeAt: string;
+    carryOver: boolean;
+    accountingCode: string | null;
+    costCenter: CostCenter | null;
+    revenueAccount: RevenueAccount | null;
+  };
+  relationships: {
+    space: { data: { id: string; type: "spaces" } };
+    owner: { data: { id: string; type: ChargeBillableType } };
+  };
+};

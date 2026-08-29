@@ -4,6 +4,7 @@ import {
   InvoiceItem,
   Amount,
   AllocationAllocateeType,
+  ChargeBillableType,
 } from "./api-responses";
 
 export type BookingOutput = {
@@ -183,4 +184,23 @@ export type AllocationOutput = {
 
 export type AllocationDeletedOutput = {
   id: string;
+};
+
+export type ChargeOutput = {
+  id: string;
+  description: string;
+  quantity: string;
+  chargeAt: string;
+  carryOver: boolean;
+  accountingCode: string | null;
+  net: string;
+  gross: string;
+  currency: string;
+  costCenterName: string | null;
+  costCenterNumber: string | null;
+  revenueAccountName: string | null;
+  revenueAccountNumber: string | null;
+  spaceId: string;
+  ownerId: string;
+  ownerType: ChargeBillableType;
 };
