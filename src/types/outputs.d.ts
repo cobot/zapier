@@ -184,3 +184,14 @@ export type AllocationOutput = {
 export type AllocationDeletedOutput = {
   id: string;
 };
+
+export type IssueOutput = {
+  id: string;
+  subject: string;
+  message: string;
+  private: boolean;
+  issuer: {
+    name: string | null;
+    membership_id: string | null;
+  };
+};

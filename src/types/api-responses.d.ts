@@ -164,6 +164,29 @@ export type MembershipApiResponse = {
   team_id: string | null;
 };
 
+export type MembershipApi2Response = {
+  id: string;
+  type: "memberships";
+  attributes: {
+    name: string | null;
+    company: string | null;
+  };
+};
+
+export type IssueApiResponse = {
+  id: string;
+  type: "issues";
+  attributes: {
+    subject: string;
+    message: string;
+    private: boolean;
+  };
+  relationships: {
+    space: { data: { id: string; type: "spaces" } };
+    issuer: { data: { id: string; type: "memberships" } | null };
+  };
+};
+
 export type ContactApiResponse = {
   data: { id: string; attributes: { email: string; address: Address } };
 };

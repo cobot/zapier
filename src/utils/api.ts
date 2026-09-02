@@ -12,6 +12,8 @@ import {
   EventApiResponse,
   ExternalBookingApiResponse,
   MembershipApiResponse,
+  MembershipApi2Response,
+  IssueApiResponse,
   ResourceApiResponse,
   UserApiResponse,
   InvoiceApiResponse,
@@ -21,6 +23,7 @@ import {
   AllocationAllocateeApiResponse,
   AllocationAllocateeType,
 } from "../types/api-responses";
+import { IssueOutput } from "../types/outputs";
 
 type Space = {
   id: string;
@@ -419,22 +422,85 @@ export const createActivity = async (
   return object;
 };
 
+export const getMembershipFromApi2 = async (
+  z: ZObject,
+  membershipId: string,
+): Promise<MembershipApi2Response | null> => {
+  const response = await z.request({
+    url: `https://api.cobot.me/memberships/${membershipId}`,
+    method: "GET",
+    headers: {
+      Accept: "application/vnd.api+json",
+    },
+  });
+  if (response.status === 404) {
+    return null;
+  }
+  return response.data.data as MembershipApi2Response;
+};
+
 export const createIssue = async (
   z: ZObject,
   bundle: KontentBundle<IssueInputData>,
-) => {
+): Promise<IssueOutput> => {
+  const space = await spaceForSubdomain(z, bundle.inputData.subdomain);
+  if (!space) {
+    throw new Error(
+      `No space found for subdomain ${bundle.inputData.subdomain}`,
+    );
+  }
+
+  const membershipId = bundle.inputData.membership_id?.trim() || undefined;
   const response = await z.request({
     method: "POST",
-    url: `https://${bundle.inputData.subdomain}.cobot.me/api/issues`,
+    url: "https://api.cobot.me/issues",
+    headers: {
+      Accept: "application/vnd.api+json",
+      "Content-Type": "application/vnd.api+json",
+    },
     body: {
-      subject: bundle.inputData.subject,
-      message: bundle.inputData.message,
-      private: bundle.inputData.private,
+      data: {
+        type: "issues",
+        attributes: {
+          subject: bundle.inputData.subject,
+          message: bundle.inputData.message,
+          private: bundle.inputData.private,
+        },
+        relationships: {
+          space: {
+            data: { id: space.id, type: "spaces" },
+          },
+          ...(membershipId
+            ? {
+                issuer: {
+                  data: { id: membershipId, type: "memberships" },
+                },
+              }
+            : {}),
+        },
+      },
     },
   });
-  const object = response.data;
-  object.created_at = new Date(object.created_at).toISOString();
-  return object;
+
+  const issue = response.data.data as IssueApiResponse;
+  const issuerId = issue.relationships.issuer.data?.id ?? null;
+  let issuerName: string | null = null;
+  if (issuerId) {
+    const membership = await getMembershipFromApi2(z, issuerId);
+    issuerName =
+      membership?.attributes.name || membership?.attributes.company || null;
+  }
+
+  return {
+    id: issue.id,
+    subject: issue.attributes.subject,
+    message: issue.attributes.message,
+    private: issue.attributes.private,
+    issuer: {
+      name: issuerName,
+      membership_id: issuerId,
+    },
+  };
 };
 
 export const getDateRange = (useISODate = false): [string, string] => {

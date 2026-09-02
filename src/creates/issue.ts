@@ -25,6 +25,14 @@ const privateField: Field = {
   helpText: "Whether the issue is visible only to space administrators.",
 };
 
+const membershipIdField: Field = {
+  label: "Membership ID",
+  key: "membership_id",
+  type: "string",
+  helpText:
+    "Membership to create the issue for. If empty, the issue is created as the connected admin.",
+};
+
 export default {
   key: "create_issue",
   noun: "Create Help Desk Issue",
@@ -38,6 +46,7 @@ export default {
     perform: createIssue,
     inputFields: [
       getSubdomainField(),
+      membershipIdField,
       subjectField,
       messageField,
       privateField,
@@ -45,15 +54,12 @@ export default {
     sample: {
       id: "5fdf75523b35335eab45adc72038cf51",
       issuer: {
-        name: "Anna Admin",
-        user_id: "5fdf75523b35335eab45adc72038ed10",
-        membership_id: null,
+        name: "Jane Fonda",
+        membership_id: "32c76cb66b5e6b39007690854fd668a1",
       },
       subject: "My issue",
       message: "Please fix me!",
       private: false,
-      created_at: "2016-05-04T12:00:00.000Z",
-      closed: false,
     },
   },
 };
@@ -63,5 +69,6 @@ export type InputData = Readonly<{
   subject: string;
   message: string;
   private: boolean;
+  membership_id?: string;
 }> &
   ElementFields;

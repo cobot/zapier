@@ -1,3 +1,7 @@
+## 2.16.0
+
+- Create Help Desk Issue: optional membership id, APIv2 create, issuer name from membership
+
 ## 2.15.0
 
 - Added create: Help Desk Issue
