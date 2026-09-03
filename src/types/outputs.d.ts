@@ -195,7 +195,7 @@ export type IssueOutput = {
     name: string | null;
     membership_id: string | null;
   };
-}
+};
 
 export type ChargeOutput = {
   id: string;

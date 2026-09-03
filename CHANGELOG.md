@@ -2,7 +2,7 @@
 
 - Create Help Desk Issue: optional membership id
 
-## 2.16.0 
+## 2.16.0
 
 - Added create: Charge
 
