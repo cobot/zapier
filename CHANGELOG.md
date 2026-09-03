@@ -1,6 +1,10 @@
-## 2.16.0
+## 2.17.0
 
-- Create Help Desk Issue: optional membership id, APIv2 create, issuer name from membership
+- Create Help Desk Issue: optional membership id
+
+## 2.16.0 
+
+- Added create: Charge
 
 ## 2.15.0
 
