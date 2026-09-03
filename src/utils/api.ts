@@ -6,8 +6,10 @@ import {
 } from "../types/subscribeType";
 import { InputData as ActivityInputData } from "../creates/activity";
 import { InputData as IssueInputData } from "../creates/issue";
+import { InputData as ChargeInputData } from "../creates/charge";
 import { get } from "lodash";
 import { DateTime } from "luxon";
+import { apiResponseToChargeOutput } from "./api-to-output";
 import {
   EventApiResponse,
   ExternalBookingApiResponse,
@@ -20,6 +22,7 @@ import {
   AllocationApiResponse,
   AllocationAllocateeApiResponse,
   AllocationAllocateeType,
+  ChargeApiResponse,
 } from "../types/api-responses";
 
 type Space = {
@@ -435,6 +438,107 @@ export const createIssue = async (
   const object = response.data;
   object.created_at = new Date(object.created_at).toISOString();
   return object;
+};
+
+const nonempty = (value: unknown): value is string =>
+  typeof value === "string" && value.trim() !== "";
+
+const toIsoDate = (value: string): string => {
+  const parsed = DateTime.fromISO(value);
+  if (parsed.isValid) {
+    return parsed.toISODate()!;
+  }
+  return value;
+};
+
+export const createCharge = async (
+  z: ZObject,
+  bundle: KontentBundle<ChargeInputData>,
+) => {
+  const membershipId = nonempty(bundle.inputData.membership_id)
+    ? bundle.inputData.membership_id
+    : undefined;
+  const teamId = nonempty(bundle.inputData.team_id)
+    ? bundle.inputData.team_id
+    : undefined;
+  if (Boolean(membershipId) === Boolean(teamId)) {
+    throw new Error("Provide either membership_id or team_id, not both.");
+  }
+
+  const space = await spaceForSubdomain(z, bundle.inputData.subdomain);
+  if (!space) {
+    throw new Error(
+      `Space not found for subdomain ${bundle.inputData.subdomain}`,
+    );
+  }
+
+  const attributes: Record<string, unknown> = {
+    description: bundle.inputData.description,
+    amount: { net: String(bundle.inputData.amount) },
+  };
+
+  if (
+    bundle.inputData.quantity !== undefined &&
+    bundle.inputData.quantity !== null &&
+    bundle.inputData.quantity !== ""
+  ) {
+    attributes.quantity = String(bundle.inputData.quantity);
+  }
+  if (nonempty(bundle.inputData.charge_at)) {
+    attributes.chargeAt = toIsoDate(bundle.inputData.charge_at);
+  }
+  if (nonempty(bundle.inputData.accounting_code)) {
+    attributes.accountingCode = bundle.inputData.accounting_code;
+  }
+  if (
+    bundle.inputData.carry_over !== undefined &&
+    bundle.inputData.carry_over !== null
+  ) {
+    attributes.carryOver = bundle.inputData.carry_over;
+  }
+  if (
+    nonempty(bundle.inputData.cost_center_name) &&
+    nonempty(bundle.inputData.cost_center_number)
+  ) {
+    attributes.costCenter = {
+      name: bundle.inputData.cost_center_name,
+      number: bundle.inputData.cost_center_number,
+    };
+  }
+  if (
+    nonempty(bundle.inputData.revenue_account_name) &&
+    nonempty(bundle.inputData.revenue_account_number)
+  ) {
+    attributes.revenueAccount = {
+      name: bundle.inputData.revenue_account_name,
+      number: bundle.inputData.revenue_account_number,
+    };
+  }
+
+  const response = await z.request({
+    method: "POST",
+    url: "https://api.cobot.me/charges",
+    headers: {
+      Accept: "application/vnd.api+json",
+      "Content-Type": "application/vnd.api+json",
+    },
+    body: {
+      data: {
+        type: "charges",
+        attributes,
+        relationships: {
+          space: { data: { id: space.id, type: "spaces" } },
+          billable: {
+            data: membershipId
+              ? { id: membershipId, type: "memberships" }
+              : { id: teamId, type: "teams" },
+          },
+        },
+      },
+    },
+  });
+
+  return apiResponseToChargeOutput(response.data.data as ChargeApiResponse);
 };
 
 export const getDateRange = (useISODate = false): [string, string] => {

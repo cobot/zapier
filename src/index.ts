@@ -3,6 +3,7 @@ import auth from "./authentication";
 
 import ActivityCreate from "./creates/activity";
 import IssueCreate from "./creates/issue";
+import ChargeCreate from "./creates/charge";
 
 import triggerBookingCreated from "./triggers/triggerBookingCreated";
 import triggerBookingWillBegin from "./triggers/triggerBookingWillBegin";
@@ -85,5 +86,6 @@ export default {
   creates: {
     [ActivityCreate.key]: ActivityCreate,
     [IssueCreate.key]: IssueCreate,
+    [ChargeCreate.key]: ChargeCreate,
   },
 };

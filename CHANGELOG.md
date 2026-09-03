@@ -1,3 +1,7 @@
+## 2.16.0
+
+- Added create: Charge
+
 ## 2.15.0
 
 - Added create: Help Desk Issue

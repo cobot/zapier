@@ -7,6 +7,7 @@ import {
   BookingApi2Response,
   ResourceApiResponse,
   AllocationApiResponse,
+  ChargeApiResponse,
 } from "../types/api-responses";
 import {
   BookingOutput,
@@ -17,6 +18,7 @@ import {
   DropInPassOutput,
   ResourceOutput,
   AllocationOutput,
+  ChargeOutput,
 } from "../types/outputs";
 import { ZObject } from "zapier-platform-core";
 import { at, get } from "lodash";
@@ -279,5 +281,29 @@ export async function apiResponseToAllocationOutput(
           email: allocatee?.attributes.email ?? null,
         }
       : null,
+  };
+}
+
+export function apiResponseToChargeOutput(
+  charge: ChargeApiResponse,
+): ChargeOutput {
+  const attrs = charge.attributes;
+  return {
+    id: charge.id,
+    description: attrs.description,
+    quantity: attrs.quantity,
+    chargeAt: attrs.chargeAt,
+    carryOver: attrs.carryOver,
+    accountingCode: attrs.accountingCode ?? null,
+    net: attrs.amount.net,
+    gross: attrs.amount.gross,
+    currency: attrs.amount.currency,
+    costCenterName: attrs.costCenter?.name ?? null,
+    costCenterNumber: attrs.costCenter?.number ?? null,
+    revenueAccountName: attrs.revenueAccount?.name ?? null,
+    revenueAccountNumber: attrs.revenueAccount?.number ?? null,
+    spaceId: charge.relationships.space.data.id,
+    ownerId: charge.relationships.owner.data.id,
+    ownerType: charge.relationships.owner.data.type,
   };
 }

@@ -9,6 +9,7 @@ import {
   ResourceDeletedOutput,
   AllocationOutput,
   AllocationDeletedOutput,
+  ChargeOutput,
 } from "../types/outputs";
 
 export const bookingSample: BookingOutput = {
@@ -218,4 +219,23 @@ export const allocationSample: AllocationOutput = {
 
 export const allocationDeletedSample: AllocationDeletedOutput = {
   id: "a8f21a71ac8df98d29de357180d27358",
+};
+
+export const chargeSample: ChargeOutput = {
+  id: "51b8fa71ac8df98d29de357180d274d8",
+  description: "Coffee",
+  quantity: "2.0",
+  chargeAt: "2018-12-15",
+  carryOver: false,
+  accountingCode: "BEV",
+  net: "10.5",
+  gross: "12.6",
+  currency: "EUR",
+  costCenterName: "Drinks",
+  costCenterNumber: "CC1",
+  revenueAccountName: "Beverages",
+  revenueAccountNumber: "RA1",
+  spaceId: "99da6cb66b5e6b39007690854fd66df9",
+  ownerId: "89da3cb66b5e6b39007690854kd66da4",
+  ownerType: "memberships",
 };
