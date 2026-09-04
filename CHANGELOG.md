@@ -1,3 +1,7 @@
+## 2.17.0
+
+- Create Help Desk Issue: optional membership id
+
 ## 2.16.0
 
 - Added create: Charge
