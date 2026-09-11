@@ -52,7 +52,7 @@ const trigger: HookTrigger = {
   display: {
     label: hookLabel,
     description:
-      "Triggers immediately when an admin confirms a membership, including those that start in the future.",
+      "Triggers when an admin confirms a membership, including those that start in the future.",
   },
   operation: {
     type: "hook",
