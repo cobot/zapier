@@ -1,3 +1,7 @@
+## 2.18.0
+
+- Added trigger: Admin Confirmed Membership
+
 ## 2.17.0
 
 - Create Help Desk Issue: optional membership id

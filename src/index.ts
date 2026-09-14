@@ -8,6 +8,7 @@ import ChargeCreate from "./creates/charge";
 import triggerBookingCreated from "./triggers/triggerBookingCreated";
 import triggerBookingWillBegin from "./triggers/triggerBookingWillBegin";
 import triggerMembershipConfirmed from "./triggers/triggerMembershipConfirmed";
+import triggerAdminConfirmedMembership from "./triggers/triggerAdminConfirmedMembership";
 import triggerCreatedMembership from "./triggers/triggerCreatedMembership";
 import triggerMembershipPlanChanged from "./triggers/triggerMembershipPlanChanged";
 import triggerExternalBookingCreated from "./triggers/triggerExternalBookingCreated";
@@ -54,6 +55,7 @@ export default {
     [triggerBookingCreated.key]: triggerBookingCreated,
     [triggerBookingWillBegin.key]: triggerBookingWillBegin,
     [triggerMembershipConfirmed.key]: triggerMembershipConfirmed,
+    [triggerAdminConfirmedMembership.key]: triggerAdminConfirmedMembership,
     [triggerCreatedMembership.key]: triggerCreatedMembership,
     [triggerMembershipCancelled.key]: triggerMembershipCancelled,
     [triggerMembershipPlanChanged.key]: triggerMembershipPlanChanged,
