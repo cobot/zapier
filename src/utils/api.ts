@@ -35,7 +35,7 @@ type Space = {
   };
 };
 
-const spaceForSubdomain = async (
+export const spaceForSubdomain = async (
   z: ZObject,
   subdomain: string,
 ): Promise<Space | undefined> => {
@@ -180,6 +180,24 @@ export const listCancelledMemberships = async (
     method: "GET",
   });
   return response.data;
+};
+
+export const searchMemberships = async (
+  z: ZObject,
+  spaceId: string,
+  query: string,
+): Promise<MembershipApi2Response[]> => {
+  const response = await z.request({
+    url: `https://api.cobot.me/spaces/${spaceId}/memberships/search`,
+    method: "GET",
+    headers: {
+      Accept: "application/vnd.api+json",
+    },
+    params: {
+      "filter[query]": query,
+    },
+  });
+  return response.data.data as MembershipApi2Response[];
 };
 
 export const getUserDetailV2 = async (z: ZObject): Promise<UserApiResponse> => {

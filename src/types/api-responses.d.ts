@@ -164,12 +164,24 @@ export type MembershipApiResponse = {
   team_id: string | null;
 };
 
+type MembershipApi2Photo = {
+  thumb: {
+    url: string;
+    width: number;
+    height: number;
+  };
+};
 export type MembershipApi2Response = {
   id: string;
   type: "memberships";
   attributes: {
     name: string | null;
     company: string | null;
+    email: string | null;
+    phone: string | null;
+    confirmedAt: string | null;
+    canceledAt: string | null;
+    photo: MembershipApi2Photo | null;
   };
 };
 

@@ -92,6 +92,17 @@ export type MembershipOutput = {
   };
 };
 
+export type MembershipApi2Output = {
+  id: string;
+  name: string | null;
+  email: string | null;
+  phone: string | null;
+  company: string | null;
+  confirmed_at: string | null;
+  canceled_at: string | null;
+  photo_url: string | null;
+};
+
 export type InvoiceMembershipOutput = { id: string; email: string | null };
 
 export type InvoiceContactOutput = {

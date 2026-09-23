@@ -36,6 +36,8 @@ import triggerAllocationCreated from "./triggers/triggerAllocationCreated";
 import triggerAllocationUpdated from "./triggers/triggerAllocationUpdated";
 import triggerAllocationDeleted from "./triggers/triggerAllocationDeleted";
 
+import SearchMemberships from "./searches/searchMemberships";
+
 const { version } = require("../package.json");
 
 export default {
@@ -89,5 +91,9 @@ export default {
     [ActivityCreate.key]: ActivityCreate,
     [IssueCreate.key]: IssueCreate,
     [ChargeCreate.key]: ChargeCreate,
+  },
+
+  searches: {
+    [SearchMemberships.key]: SearchMemberships,
   },
 };
