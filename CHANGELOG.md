@@ -1,3 +1,7 @@
+## 2.19.0
+
+- Added search: Find Membership
+
 ## 2.18.0
 
 - Added trigger: Admin Confirmed Membership

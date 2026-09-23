@@ -1,6 +1,7 @@
 import {
   EventApiResponse,
   MembershipApiResponse,
+  MembershipApi2Response,
   ContactApiResponse,
   InvoiceApiResponse,
   DropInPassApiResponse,
@@ -14,6 +15,7 @@ import {
   EventOutput,
   ExternalBookingOutput,
   MembershipOutput,
+  MembershipApi2Output,
   InvoiceOutput,
   DropInPassOutput,
   ResourceOutput,
@@ -81,6 +83,22 @@ export async function apiResponseToMembershipOutput(
     } catch (error) {}
   }
   return output;
+}
+
+export function apiResponseToMembershipApi2Output(
+  membership: MembershipApi2Response,
+): MembershipApi2Output {
+  const attrs = membership.attributes;
+  return {
+    id: membership.id,
+    name: attrs.name ?? null,
+    email: attrs.email ?? null,
+    phone: attrs.phone ?? null,
+    company: attrs.company ?? null,
+    confirmed_at: attrs.confirmedAt ?? null,
+    canceled_at: attrs.canceledAt ?? null,
+    photo_url: attrs.photo?.thumb.url ?? null,
+  };
 }
 
 export async function apiResponseToInvoiceOutput(
