@@ -3,6 +3,7 @@ import {
   EventOutput,
   ExternalBookingOutput,
   MembershipOutput,
+  MembershipApi2Output,
   InvoiceOutput,
   DropInPassOutput,
   ResourceOutput,
@@ -95,6 +96,17 @@ export const membershipSample: MembershipOutput = {
     id: null,
     name: null,
   },
+};
+
+export const membershipApi2Sample: MembershipApi2Output = {
+  id: "a8c12f62ac8df98d29de357180d673e1",
+  name: "Jane Fonda",
+  email: "foksol@di.es",
+  phone: "(746) 760-3432",
+  company: null,
+  confirmed_at: "2020-02-01",
+  canceled_at: null,
+  photo_url: "https://cdn.com/24a99a71ac8df98d29de357180d273d3/thumb_photo.png",
 };
 
 export const invoiceSample: InvoiceOutput = {
