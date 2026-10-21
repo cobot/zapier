@@ -251,7 +251,7 @@ export type AllocationApiResponse = {
   };
 };
 
-type UserApiResponse = {
+export type UserApiResponse = {
   included: { id: string; attributes: { subdomain: string } }[];
 };
 
