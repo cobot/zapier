@@ -29,6 +29,7 @@ import {
   AllocationAllocateeApiResponse,
   AllocationAllocateeType,
   ChargeApiResponse,
+  ExternalResourceApiResponse,
 } from "../types/api-responses";
 import { ExternalBookingOutput, IssueOutput } from "../types/outputs";
 
@@ -729,7 +730,7 @@ export const createExternalBooking = async (
 export const listExternalResources = async (
   z: ZObject,
   subdomain: string,
-): Promise<ResourceApiResponse[]> => {
+): Promise<ExternalResourceApiResponse[]> => {
   const space = await spaceForSubdomain(z, subdomain);
   if (!space) {
     return [];
@@ -741,7 +742,7 @@ export const listExternalResources = async (
       Accept: "application/vnd.api+json",
     },
   });
-  return response.data.data as ResourceApiResponse[];
+  return response.data.data as ExternalResourceApiResponse[];
 };
 
 export const getDateRange = (useISODate = false): [string, string] => {

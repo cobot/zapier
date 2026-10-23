@@ -281,6 +281,67 @@ export type RevenueAccount = {
   number: string;
 };
 
+export type ExternalResourceApiResponse = {
+  id: string;
+  type: "externalResources";
+  attributes: {
+    name: string;
+    resourceType: "room" | "desk" | "other" | null;
+    accountingCode: string | null;
+    costCenter: CostCenter | null;
+    revenueAccount: RevenueAccount | null;
+    description: string | null;
+    instructions: string | null;
+    capacity: number | null;
+    color: string | null;
+    bookingsRequireApproval: boolean;
+    payLater: boolean;
+    area: { unit: "sqm" | "sqft"; number: number | null }[];
+    areaPreferredUnit: "sqm" | "sqft";
+    bookingTimes: Array<
+      | { from: string; to: string; weekdays: number[] }
+      | { hours: number; minutes: number }
+    >;
+    bookingCutoff: number | null;
+    effectiveBookingCutoff: number;
+    cancellationPeriod: number | null;
+    minBookingDuration: number | null;
+    maxBookingDuration: number | null;
+    photo: {
+      icon?: PhotoItem;
+      default?: PhotoItem;
+      small?: PhotoItem;
+      medium?: PhotoItem;
+      large?: PhotoItem;
+    } | null;
+    pricing: {
+      currency: string;
+      taxes: { name: string; rate: string; amount?: string }[];
+      pricePerHour: Amount;
+      priceCap: { maximumDuration: { hours: number; minutes: number } } | null;
+      priceCaps: unknown[];
+      discounts: unknown[];
+    };
+    rates: {
+      unit: "hour" | "day";
+      cancellationPeriod: number | null;
+      bookingCutoff: number;
+      minBookingDuration: number | null;
+      maxBookingDuration: number | null;
+      pricePerUnit?: Amount;
+      priceCap?: { maximumDuration: { hours: number; minutes: number } } | null;
+      discounts?: unknown[];
+      fixedRates?: unknown[];
+    }[];
+  };
+  relationships: {
+    resource: { data: { id: string; type: "resources" } };
+    resourceAvailability: { links: { related: string } };
+    space: { data: { id: string; type: "spaces" } };
+    products: { data: { id: string; type: "products" }[] };
+  };
+};
+
 export type ChargeBillableType = "memberships" | "teams";
 
 export type ChargeApiResponse = {
