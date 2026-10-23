@@ -730,7 +730,7 @@ export const createExternalBooking = async (
 export const listExternalResources = async (
   z: ZObject,
   space: Space,
-): Promise<ResourceApiResponse[]> => {
+): Promise<ExternalResourceApiResponse[]> => {
   const response = await z.request({
     url: `https://api.cobot.me/spaces/${space.id}/external_resources`,
     method: "GET",
