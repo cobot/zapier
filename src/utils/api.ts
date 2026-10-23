@@ -661,8 +661,8 @@ export const createExternalBooking = async (
   const attributes: Record<string, unknown> = {
     from: formatTime(bundle.inputData.from),
     to: formatTime(bundle.inputData.to),
-    numberOfVisitors: Math.trunc(visitors),
-    acceptedTerms: true,
+    numberOfVisitors: visitors,
+    acceptedTerms: bundle.inputData.accepted_terms,
     name: bundle.inputData.name,
     email: bundle.inputData.email,
     billingAddress: bundle.inputData.billing_address,

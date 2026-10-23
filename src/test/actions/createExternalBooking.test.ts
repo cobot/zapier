@@ -109,6 +109,7 @@ const requiredInput: ExternalBookingInputData = {
   from: "2012-04-12T12:00:00.000Z",
   to: "2012-04-12T18:00:00.000Z",
   number_of_visitors: 3,
+  accepted_terms: true,
   name: "John Doe",
   email: "kofi@jemzahif.gf",
   billing_address: "123 Main St",
@@ -164,6 +165,47 @@ describe("createExternalBooking", () => {
 
     expect(nock.isDone()).toBe(true);
     expect(result).toEqual(externalBookingSample);
+  });
+
+  it("forwards accepted_terms from input", async () => {
+    const bundle: KontentBundle<ExternalBookingInputData> = addInputData(
+      mockBundle,
+      {
+        ...requiredInput,
+        accepted_terms: false,
+      },
+    );
+
+    const scope = nock("https://api.cobot.me");
+    scope
+      .post("/external_bookings", {
+        data: {
+          type: "externalBookings",
+          attributes: {
+            from: "2012-04-12T12:00:00Z",
+            to: "2012-04-12T18:00:00Z",
+            numberOfVisitors: 3,
+            acceptedTerms: false,
+            name: "John Doe",
+            email: "kofi@jemzahif.gf",
+            billingAddress: "123 Main St",
+          },
+          relationships: {
+            resource: {
+              data: { id: resourceId, type: "externalResources" },
+            },
+          },
+        },
+      })
+      .reply(201, { data: externalBookingResponse });
+    scope
+      .get(`/resources/${resourceId}`)
+      .reply(200, { data: resourceResponse });
+
+    const action = App.creates[ExternalBookingAction.key].operation.perform;
+    await appTester(action as any, bundle as any);
+
+    expect(nock.isDone()).toBe(true);
   });
 
   it("includes optional discount and admin comments", async () => {

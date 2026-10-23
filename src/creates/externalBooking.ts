@@ -49,6 +49,15 @@ const numberOfVisitorsField: Field = {
   default: "1",
 };
 
+const acceptedTermsField: Field = {
+  label: "Accepted Terms",
+  key: "accepted_terms",
+  type: "boolean",
+  required: true,
+  default: "true",
+  helpText: "Terms need to be accepted.",
+};
+
 const titleField: Field = {
   label: "Title",
   key: "title",
@@ -131,6 +140,7 @@ export default {
       toField,
       timeUnitField,
       numberOfVisitorsField,
+      acceptedTermsField,
       titleField,
       nameField,
       companyField,
@@ -153,6 +163,7 @@ export type InputData = Readonly<{
   to: string;
   time_unit?: string;
   number_of_visitors: number | string;
+  accepted_terms: boolean;
   title?: string;
   name: string;
   company?: string;
