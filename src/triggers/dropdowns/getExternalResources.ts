@@ -3,7 +3,7 @@ import { KontentBundle } from "../../types/kontentBundle";
 import { OutputField } from "../../fields/output/outputField";
 import { OutputFromOutputFields } from "../../fields/output/outputFromOutputFields";
 import { PollingTrigger } from "../../types/trigger";
-import { listExternalResources } from "../../utils/api";
+import { listExternalResources, spaceForSubdomain } from "../../utils/api";
 
 const execute = async (
   z: ZObject,
@@ -11,9 +11,13 @@ const execute = async (
 ): Promise<Output> => {
   const subdomain = (bundle.inputData as { subdomain?: string }).subdomain;
   if (!subdomain) {
-    return [];
+    throw new Error("Subdomain is required");
   }
-  const resources = await listExternalResources(z, subdomain);
+  const space = await spaceForSubdomain(z, subdomain);
+  if (!space) {
+    throw new Error(`No space found for subdomain ${subdomain}`);
+  }
+  const resources = await listExternalResources(z, space);
   return resources
     .map((resource) => ({
       id: resource.id,

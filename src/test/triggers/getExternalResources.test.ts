@@ -132,14 +132,15 @@ describe("getExternalResources", () => {
     ]);
   });
 
-  it("returns an empty list when subdomain is missing", async () => {
+  it("throws an error when subdomain is missing", async () => {
     const action = App.triggers[getExternalResources.key].operation.perform;
-    const result = await appTester(action as any, mockBundle as any);
 
-    expect(result).toEqual([]);
+    await expect(appTester(action as any, mockBundle as any)).rejects.toThrow(
+      "Subdomain is required",
+    );
   });
 
-  it("returns an empty list when the space is not found", async () => {
+  it("throws an error when the space is not found", async () => {
     const bundle: KontentBundle<{ subdomain: string }> = addInputData(
       mockBundle,
       { subdomain: "unknown" },
@@ -150,9 +151,10 @@ describe("getExternalResources", () => {
       .reply(200, { included: [] });
 
     const action = App.triggers[getExternalResources.key].operation.perform;
-    const result = await appTester(action as any, bundle as any);
 
+    await expect(appTester(action as any, bundle as any)).rejects.toThrow(
+      "No space found for subdomain unknown",
+    );
     expect(nock.isDone()).toBe(true);
-    expect(result).toEqual([]);
   });
 });
