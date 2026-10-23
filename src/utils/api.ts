@@ -7,9 +7,13 @@ import {
 import { InputData as ActivityInputData } from "../creates/activity";
 import { InputData as IssueInputData } from "../creates/issue";
 import { InputData as ChargeInputData } from "../creates/charge";
+import { InputData as ExternalBookingInputData } from "../creates/externalBooking";
 import { get } from "lodash";
 import { DateTime } from "luxon";
-import { apiResponseToChargeOutput } from "./api-to-output";
+import {
+  apiResponseToChargeOutput,
+  apiResponseToExternalBookingOutput,
+} from "./api-to-output";
 import {
   EventApiResponse,
   ExternalBookingApiResponse,
@@ -25,8 +29,9 @@ import {
   AllocationAllocateeApiResponse,
   AllocationAllocateeType,
   ChargeApiResponse,
+  ExternalResourceApiResponse,
 } from "../types/api-responses";
-import { IssueOutput } from "../types/outputs";
+import { ExternalBookingOutput, IssueOutput } from "../types/outputs";
 
 type Space = {
   id: string;
@@ -623,6 +628,117 @@ export const createCharge = async (
   });
 
   return apiResponseToChargeOutput(response.data.data as ChargeApiResponse);
+};
+
+const toIsoDateTime = (value: string): string => {
+  const parsed = DateTime.fromISO(value);
+  if (parsed.isValid) {
+    return parsed.toUTC().toISO({ suppressMilliseconds: true }) ?? value;
+  }
+  return value;
+};
+
+export const createExternalBooking = async (
+  z: ZObject,
+  bundle: KontentBundle<ExternalBookingInputData>,
+): Promise<ExternalBookingOutput> => {
+  const resourceId = nonempty(bundle.inputData.resource_id)
+    ? bundle.inputData.resource_id.trim()
+    : "";
+  if (!resourceId) {
+    throw new Error("Resource ID is required.");
+  }
+
+  const visitors = Number(bundle.inputData.number_of_visitors);
+  if (!Number.isFinite(visitors) || visitors < 1) {
+    throw new Error("Number of visitors must be at least 1.");
+  }
+
+  const timeUnit = nonempty(bundle.inputData.time_unit)
+    ? bundle.inputData.time_unit
+    : undefined;
+  const formatTime = timeUnit === "day" ? toIsoDate : toIsoDateTime;
+
+  const attributes: Record<string, unknown> = {
+    from: formatTime(bundle.inputData.from),
+    to: formatTime(bundle.inputData.to),
+    numberOfVisitors: visitors,
+    acceptedTerms: bundle.inputData.accepted_terms,
+    name: bundle.inputData.name,
+    email: bundle.inputData.email,
+    billingAddress: bundle.inputData.billing_address,
+  };
+
+  if (timeUnit) {
+    attributes.timeUnit = timeUnit;
+  }
+  if (nonempty(bundle.inputData.title)) {
+    attributes.title = bundle.inputData.title;
+  }
+  if (nonempty(bundle.inputData.company)) {
+    attributes.company = bundle.inputData.company;
+  }
+  if (nonempty(bundle.inputData.phone)) {
+    attributes.phone = bundle.inputData.phone;
+  }
+  if (nonempty(bundle.inputData.tax_id)) {
+    attributes.taxId = bundle.inputData.tax_id;
+  }
+  if (nonempty(bundle.inputData.comments)) {
+    attributes.comments = bundle.inputData.comments;
+  }
+  if (nonempty(bundle.inputData.admin_comments)) {
+    attributes.adminComments = bundle.inputData.admin_comments;
+  }
+
+  const relationships: Record<string, unknown> = {
+    resource: {
+      data: { id: resourceId, type: "externalResources" },
+    },
+  };
+  if (nonempty(bundle.inputData.discount_id)) {
+    relationships.discount = {
+      data: { id: bundle.inputData.discount_id, type: "discountCodes" },
+    };
+  }
+
+  const response = await z.request({
+    method: "POST",
+    url: "https://api.cobot.me/external_bookings",
+    headers: {
+      Accept: "application/vnd.api+json",
+      "Content-Type": "application/vnd.api+json",
+    },
+    body: {
+      data: {
+        type: "externalBookings",
+        attributes,
+        relationships,
+      },
+    },
+  });
+
+  const booking = response.data.data as ExternalBookingApiResponse;
+  const resource = await getResource(z, booking.relationships.resource.data.id);
+  if (!resource) {
+    throw new Error("Resource not found for created booking.");
+  }
+
+  return apiResponseToExternalBookingOutput({ ...booking, resource });
+};
+
+export const listExternalResources = async (
+  z: ZObject,
+  space: Space,
+): Promise<ExternalResourceApiResponse[]> => {
+  const response = await z.request({
+    url: `https://api.cobot.me/spaces/${space.id}/external_resources`,
+    method: "GET",
+    headers: {
+      Accept: "application/vnd.api+json",
+    },
+  });
+  return response.data.data as ExternalResourceApiResponse[];
 };
 
 export const getDateRange = (useISODate = false): [string, string] => {
