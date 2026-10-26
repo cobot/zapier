@@ -23,7 +23,7 @@
     "zapier-platform-core": "19.2.1"
   },
   "devDependencies": {
-    "@types/lodash": "^4.17.26",
+    "@types/lodash": "^4.17.27",
     "@types/luxon": "^3.7.6",
     "@types/node": "^26",
     "@types/node-fetch": "^2.6.13",
