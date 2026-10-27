@@ -1,3 +1,7 @@
+## 2.20.0
+
+- Added create: External Booking. Reconnect the Zapier app to grant `write_external_bookings` and `read_external_resources`.
+
 ## 2.19.0
 
 - Added search: Find Membership

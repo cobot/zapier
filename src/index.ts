@@ -4,6 +4,7 @@ import auth from "./authentication";
 import ActivityCreate from "./creates/activity";
 import IssueCreate from "./creates/issue";
 import ChargeCreate from "./creates/charge";
+import ExternalBookingCreate from "./creates/externalBooking";
 
 import triggerBookingCreated from "./triggers/triggerBookingCreated";
 import triggerBookingWillBegin from "./triggers/triggerBookingWillBegin";
@@ -13,6 +14,7 @@ import triggerCreatedMembership from "./triggers/triggerCreatedMembership";
 import triggerMembershipPlanChanged from "./triggers/triggerMembershipPlanChanged";
 import triggerExternalBookingCreated from "./triggers/triggerExternalBookingCreated";
 import getSubdomains from "./triggers/dropdowns/getSubdomains";
+import getExternalResources from "./triggers/dropdowns/getExternalResources";
 import triggerEventPublished from "./triggers/triggerEventPublished";
 import triggerInvoiceCreated from "./triggers/triggerInvoiceCreated";
 import triggerMembershipCancelled from "./triggers/triggerMembershipCancelled";
@@ -85,12 +87,14 @@ export default {
     [triggerAllocationDeleted.key]: triggerAllocationDeleted,
     // Lists for dropdowns
     [getSubdomains.key]: getSubdomains,
+    [getExternalResources.key]: getExternalResources,
   },
 
   creates: {
     [ActivityCreate.key]: ActivityCreate,
     [IssueCreate.key]: IssueCreate,
     [ChargeCreate.key]: ChargeCreate,
+    [ExternalBookingCreate.key]: ExternalBookingCreate,
   },
 
   searches: {
