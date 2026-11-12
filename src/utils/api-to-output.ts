@@ -24,6 +24,7 @@ import {
 } from "../types/outputs";
 import { ZObject } from "zapier-platform-core";
 import { at, get } from "lodash";
+import { isThrottledError } from "../middleware/throwForRateLimit";
 import {
   ExternalBookingWithResourceApiResponse,
   apiCallUrl,
@@ -80,7 +81,11 @@ export async function apiResponseToMembershipOutput(
         id: membership.team_id,
         name: teamsResponse.data.attributes.name,
       };
-    } catch (error) {}
+    } catch (error) {
+      if (isThrottledError(error)) {
+        throw error;
+      }
+    }
   }
   return output;
 }

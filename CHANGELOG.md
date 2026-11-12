@@ -1,3 +1,7 @@
+## Unreleased
+
+- Retry Zaps when the Cobot API returns 429, using the Retry-After header
+
 ## 2.19.0
 
 - Added search: Find Membership
