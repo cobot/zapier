@@ -1,5 +1,6 @@
 import { version as platformVersion } from "zapier-platform-core";
 import auth from "./authentication";
+import { throwForRateLimit } from "./middleware/throwForRateLimit";
 
 import ActivityCreate from "./creates/activity";
 import IssueCreate from "./creates/issue";
@@ -46,9 +47,14 @@ export default {
 
   authentication: auth.config,
 
+  flags: {
+    // Handle 429s in afterResponse so the delay is Cobot's Retry-After header.
+    throwForThrottlingEarly: false,
+  },
+
   beforeRequest: [...auth.befores],
 
-  afterResponse: [...auth.afters],
+  afterResponse: [throwForRateLimit, ...auth.afters],
 
   // If you want to define optional resources to simplify creation of triggers, searches, creates - do that here!
   resources: {},

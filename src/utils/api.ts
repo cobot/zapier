@@ -10,6 +10,7 @@ import { InputData as ChargeInputData } from "../creates/charge";
 import { get } from "lodash";
 import { DateTime } from "luxon";
 import { apiResponseToChargeOutput } from "./api-to-output";
+import { isThrottledError } from "../middleware/throwForRateLimit";
 import {
   EventApiResponse,
   ExternalBookingApiResponse,
@@ -86,6 +87,9 @@ export const apiCallUrl = async (
     });
     return response.data;
   } catch (error) {
+    if (isThrottledError(error)) {
+      throw error;
+    }
     return [];
   }
 };
