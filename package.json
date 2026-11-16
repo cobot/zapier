@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "vitest run",
-    "validate": "npm run build && zapier validate",
+    "validate": "npm run build && zapier-platform validate",
     "build": "npm run clean && tsc",
-    "push": "npm test && npm run build && zapier push",
+    "push": "npm test && npm run build && zapier-platform push",
     "clean": "rimraf ./lib ./build",
     "watch": "npm run clean && tsc --watch",
     "prepare": "husky install",
