@@ -2,7 +2,7 @@
   "include": ["src/**/*"],
   "compilerOptions": {
     "target": "es2019",
-    "module": "node16",
+    "module": "node20",
     "moduleResolution": "node16",
     "lib": ["esnext", "DOM"],
     "types": ["node", "vitest/globals"],
