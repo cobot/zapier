@@ -1,4 +1,4 @@
-## Unreleased
+## 2.20.0
 
 - Retry Zaps when the Cobot API returns 429, using the Retry-After header
 
