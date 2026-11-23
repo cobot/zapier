@@ -34,7 +34,7 @@
     "rimraf": "^6.1.4",
     "ts-node": "^10.9.2",
     "typescript": "7",
-    "vitest": "^5.1.0",
+    "vitest": "^5.1.1",
     "zapier-platform-cli": "^19.3.0"
   },
   "overrides": {
